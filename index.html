@@ -1,0 +1,705 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'none'; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
+<meta name="theme-color" content="#130E0A">
+<link rel="canonical" href="https://bravusmidia.github.io/andradeescritor/">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Andrade Escritor">
+<meta property="og:title" content="Andrade Escritor">
+<meta property="og:description" content="Pensamentos, frases, textos e poesias. O lado positivo da vida.">
+<meta property="og:url" content="https://bravusmidia.github.io/andradeescritor/">
+<meta name="twitter:card" content="summary">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Andrade","jobTitle":"Escritor","url":"https://bravusmidia.github.io/andradeescritor/","sameAs":["https://www.instagram.com/andradeescritor/","https://www.recantodasletras.com.br/autor.php?id=81643"]}</script>
+<title>Andrade Escritor</title>
+<meta name="description" content="Andrade Escritor — pensamentos, frases, textos e poesias. O lado positivo da vida.">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=IM+Fell+English:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: biblioteca à luz de vela — coluna editorial assimétrica; o livro antigo aberto é o único objeto realista, todo o resto fica em couro escuro e ouro discreto. */
+:root{
+  --ink:#130E0A;        /* couro escuro */
+  --slate:#1F1711;      /* capa gasta */
+  --slate-2:#2B2017;
+  --paper:#EFE2C6;      /* pergaminho (texto) */
+  --mute:#B9A684;       /* tinta desbotada */
+  --mute-2:#86735A;
+  --line:rgba(185,166,132,.15);
+  --line-2:rgba(185,166,132,.3);
+  --volt:#C9A25E;       /* ouro antigo */
+  --volt-soft:rgba(201,162,94,.14);
+  --parch:#E6D3A8;      /* folha envelhecida */
+  --ink-text:#2B1C10;   /* tinta sobre papel */
+  --ink-soft:#6A5133;
+  --leather:#5A3820;
+  --leather-2:#26160B;
+  --ok:#A9C08A; --warn:#D9A752; --bad:#D9826A;
+  --serif:"Cormorant Garamond", "Iowan Old Style", Georgia, "Times New Roman", serif;
+  --fell:"IM Fell English", "Cormorant Garamond", Georgia, serif;
+  --sans:"Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --gutter:max(16px, env(safe-area-inset-left, 0px));
+  --gutter-r:max(16px, env(safe-area-inset-right, 0px));
+  --max:1180px;
+  --radius:2px;
+  --noise:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .75 0 0 0 0 .62 0 0 0 0 .42 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.6' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .22 0 0 0 0 .1 0 0 0 .22 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  --fox:radial-gradient(circle at 18% 22%,rgba(150,98,40,.16) 0 1.4%,transparent 5%),radial-gradient(circle at 82% 70%,rgba(150,98,40,.13) 0 1%,transparent 4%),radial-gradient(circle at 64% 12%,rgba(150,98,40,.1) 0 .8%,transparent 3%),radial-gradient(ellipse at 50% 108%,rgba(120,80,30,.28),transparent 45%),radial-gradient(ellipse at 50% -8%,rgba(120,80,30,.2),transparent 40%);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:calc(76px + env(safe-area-inset-top,0px))}
+body{background:var(--ink);color:var(--paper);font:400 16px/1.65 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--ink)}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;
+  background:radial-gradient(ellipse at 72% 12%,rgba(201,162,94,.09),transparent 55%),radial-gradient(ellipse at 10% 90%,rgba(120,72,36,.14),transparent 60%),var(--noise)}
+a{color:inherit}
+:focus-visible{outline:1px solid var(--volt);outline-offset:3px}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+button:disabled{cursor:not-allowed;opacity:.55}
+.wrap{max-width:var(--max);margin:0 auto;padding-left:var(--gutter);padding-right:var(--gutter-r)}
+.mono{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.skip{position:absolute;left:-999px;top:8px;background:var(--paper);color:var(--ink);padding:8px 12px;z-index:100}
+.skip:focus{left:16px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;transition:background .3s,border-color .3s;border-bottom:1px solid transparent}
+header.top.scrolled{background:rgba(19,14,10,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-color:var(--line)}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:16px;height:72px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+.brand svg{width:26px;height:26px;flex:none}
+.brand .sig{display:flex;flex-direction:column;line-height:1}
+.brand .sig b{font:600 15px/1 var(--sans);letter-spacing:.42em}
+.brand .sig span{font:500 9px/1 var(--mono);letter-spacing:.5em;color:var(--mute);margin-top:6px}
+nav.main{display:flex;align-items:center;gap:4px}
+nav.main a,nav.main .explore{font:500 13px/1 var(--sans);letter-spacing:.04em;text-decoration:none;color:var(--mute);padding:10px 12px;border-radius:var(--radius);position:relative;transition:color .2s}
+nav.main a:hover,nav.main .explore:hover,nav.main a[aria-current="true"]{color:var(--paper)}
+nav.main a[aria-current="true"]::after{content:"";position:absolute;left:12px;right:12px;bottom:4px;height:1px;background:var(--volt)}
+.explore{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line-2)!important;margin-left:8px}
+.explore svg{width:10px;height:10px;transition:transform .25s}
+.explore[aria-expanded="true"]{color:var(--paper)!important;border-color:var(--volt)!important}
+.explore[aria-expanded="true"] svg{transform:rotate(180deg)}
+.account{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 14px;margin-left:4px;font:500 13px var(--sans);color:var(--ink);background:var(--volt);border-radius:var(--radius);transition:background .2s}
+.account:hover{background:#D8B472}
+.account svg{width:15px;height:15px}
+.account .dot{width:6px;height:6px;border-radius:50%;background:var(--ink);display:none}
+.account[data-role="admin"] .dot,.account[data-role="membro"] .dot{display:block}
+.burger{display:none;width:44px;height:44px;align-items:center;justify-content:center;border:1px solid var(--line-2);border-radius:var(--radius)}
+.burger span{display:block;width:18px;height:1px;background:var(--paper);box-shadow:0 -6px 0 var(--paper),0 6px 0 var(--paper)}
+
+.panel{position:absolute;right:max(16px, env(safe-area-inset-right,0px));top:calc(100% + 6px);width:min(560px,calc(100vw - 32px));background:rgba(31,23,17,.97);border:1px solid var(--line-2);padding:24px;display:grid;grid-template-columns:1fr 1fr;gap:20px 28px;opacity:0;transform:translateY(-6px);pointer-events:none;transition:opacity .18s ease,transform .18s ease;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.panel.open{opacity:1;transform:none;pointer-events:auto}
+.panel::before{content:"";position:absolute;inset:-1px -1px auto auto;width:48px;height:1px;background:var(--volt)}
+.panel h3{margin:0 0 10px;font:500 10px/1 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--mute-2)}
+.panel ul{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+.panel a{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:9px 10px;margin:0 -10px;text-decoration:none;font:400 20px/1.1 var(--serif);color:var(--paper);border-radius:var(--radius);transition:background .15s}
+.panel a small{font:400 11px var(--mono);color:var(--mute-2)}
+.panel a:hover,.panel a:focus-visible{background:var(--volt-soft)}
+.panel .foot{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;gap:12px;border-top:1px solid var(--line);padding-top:16px;flex-wrap:wrap}
+.panel .foot a{font:500 12px var(--sans);margin:0;padding:8px 0;color:var(--mute)}
+.panel .foot a:hover{background:none;color:var(--paper)}
+.panel .mobile-only{display:none}
+
+.hero{position:relative;padding-block:64px 56px}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.08fr);gap:48px;align-items:center}
+.hero .eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:28px}
+.hero .eyebrow i{display:block;width:40px;height:1px;background:var(--volt)}
+.hero h1{margin:0;font:500 clamp(56px,9vw,124px)/.88 var(--serif);letter-spacing:-.01em}
+.hero h1 em{display:block;font-style:italic;font-weight:400;color:var(--volt);font-size:.46em;letter-spacing:.02em;margin-top:14px}
+.lede{margin:32px 0 0;max-width:30ch;font:400 clamp(24px,2.8vw,31px)/1.25 var(--serif);text-wrap:balance}
+.sub{margin:18px 0 0;max-width:52ch;color:var(--mute)}
+.ctas{display:flex;gap:12px;margin-top:32px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:46px;padding:0 22px;font:500 13px/1 var(--sans);letter-spacing:.05em;text-decoration:none;border:1px solid var(--line-2);border-radius:var(--radius);transition:border-color .2s,background .2s,transform .2s}
+.btn:hover{border-color:var(--paper)}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+.btn.primary:hover{background:#F7EDD6}
+.btn.gold{background:var(--volt);color:var(--ink);border-color:var(--volt)}
+.btn.small{min-height:36px;padding:0 14px;font-size:12px}
+.btn svg{width:14px;height:14px}
+.motto{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+/* livro aberto desenhado em CSS */
+.tome-wrap{display:grid;justify-items:center;gap:18px;min-width:0;margin:0}
+.tome{position:relative;width:100%;max-width:580px;aspect-ratio:1.5}
+.tome .board{position:absolute;inset:3% 0 0;border-radius:10px 10px 14px 14px;
+  background:var(--grain),radial-gradient(ellipse at 30% 15%,#7A4E2C,var(--leather) 45%,var(--leather-2) 100%);
+  box-shadow:0 40px 70px -20px rgba(0,0,0,.75),0 14px 24px rgba(0,0,0,.4),inset 0 0 0 1px rgba(201,162,94,.18),inset 0 -10px 18px rgba(0,0,0,.45)}
+.tome .stack{position:absolute;left:4%;right:4%;bottom:5%;height:6%;border-radius:0 0 8px 8px;background:repeating-linear-gradient(180deg,#CDB384 0 1px,#A98C5A 1px 2px);box-shadow:0 2px 3px rgba(0,0,0,.4)}
+.tome .leaves{position:absolute;inset:0 3.5% 9%;display:grid;grid-template-columns:1fr 1fr}
+.leaf{position:relative;min-width:0;padding:11% 10% 9%;color:var(--ink-text);overflow:hidden;display:flex;flex-direction:column}
+.leaf.l{border-radius:4px 0 0 16px/4px 0 0 26px;transform-origin:right center;transform:perspective(900px) rotateY(4deg);
+  background:var(--grain),var(--fox),linear-gradient(90deg,#C9AF7E 0%,var(--parch) 9%,#EAD9B0 60%,#D6BE8E 88%,#9C7F4E 100%)}
+.leaf.r{border-radius:0 4px 16px 0/0 4px 26px 0;transform-origin:left center;transform:perspective(900px) rotateY(-4deg);
+  background:var(--grain),var(--fox),linear-gradient(270deg,#C9AF7E 0%,var(--parch) 9%,#EAD9B0 60%,#D6BE8E 88%,#9C7F4E 100%)}
+.leaf::after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 24px rgba(110,70,25,.28)}
+.gutter{position:absolute;top:0;bottom:9%;left:50%;width:2px;transform:translateX(-50%);background:linear-gradient(180deg,rgba(60,35,15,.5),rgba(60,35,15,.25));box-shadow:0 0 18px 6px rgba(60,35,15,.25)}
+.leaf .exl{margin:auto 0;text-align:center;display:grid;gap:10px;justify-items:center}
+.leaf .exl svg{width:36%;max-width:86px;aspect-ratio:1;filter:drop-shadow(0 1px 0 rgba(255,240,200,.5))}
+.leaf .exl b{font:400 clamp(13px,1.6vw,19px)/1 var(--fell);letter-spacing:.35em;color:var(--ink-text)}
+.leaf .exl small{font:italic 400 clamp(11px,1.2vw,14px) var(--fell);color:var(--ink-soft)}
+.leaf .orn{font:400 clamp(12px,1.4vw,16px) var(--fell);color:var(--ink-soft);text-align:center;letter-spacing:.3em;text-transform:uppercase}
+.leaf .q{margin:auto 0;font:italic 400 clamp(13px,1.75vw,21px)/1.42 var(--fell);text-wrap:pretty;transition:opacity .35s ease,filter .35s ease;cursor:pointer}
+.leaf .q::first-letter{font-style:normal;font-size:2.5em;float:left;line-height:.85;margin:.06em .08em 0 0;color:#6B3E16}
+.leaf .q.fade{opacity:0;filter:blur(2px)}
+.leaf .folio{display:flex;justify-content:space-between;font:400 clamp(10px,1.1vw,13px) var(--fell);color:var(--ink-soft)}
+.turn{display:inline-flex;align-items:center;gap:8px;font:500 12px var(--sans);letter-spacing:.06em;color:var(--mute);padding:8px 12px;border:1px solid var(--line);border-radius:var(--radius)}
+.turn:hover{color:var(--paper);border-color:var(--line-2)}
+.turn svg{width:14px;height:14px}
+
+section.block{padding-block:88px 32px}
+.head{display:grid;grid-template-columns:200px minmax(0,1fr);gap:24px;align-items:end;margin-bottom:36px}
+.head h2{margin:0;font:500 clamp(40px,6vw,64px)/1 var(--serif);text-wrap:balance}
+.head p{margin:12px 0 0;color:var(--mute);max-width:56ch}
+.filters{position:sticky;top:calc(72px + env(safe-area-inset-top,0px));z-index:20;background:rgba(19,14,10,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-block:1px solid var(--line);margin-bottom:32px}
+.filters .row{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding-block:8px}
+.filters .row::-webkit-scrollbar{display:none}
+.chip{flex:none;display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 14px;font:500 13px var(--sans);color:var(--mute);border:1px solid transparent;border-radius:var(--radius);transition:color .2s,border-color .2s}
+.chip small{font:400 10px var(--mono);color:var(--mute-2)}
+.chip:hover{color:var(--paper)}
+.chip[aria-pressed="true"]{color:var(--paper);border-color:var(--line-2);background:var(--slate)}
+.chip[aria-pressed="true"] small{color:var(--volt)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);transition:opacity .2s}
+.grid.fading{opacity:.2}
+.card{background:var(--ink);padding:36px 32px 24px;display:flex;flex-direction:column;gap:28px;min-width:0;position:relative;transition:background .25s}
+.card:hover{background:var(--slate)}
+.card::before{content:"";position:absolute;left:0;top:0;width:0;height:1px;background:var(--volt);transition:width .35s ease}
+.card:hover::before{width:64px}
+.card .meta{display:flex;justify-content:space-between;gap:12px}
+.card blockquote{margin:0;font:400 clamp(24px,2.6vw,31px)/1.28 var(--serif);text-wrap:pretty;flex:1;white-space:pre-line}
+.card blockquote::before{content:"❦";display:block;font-size:26px;line-height:1;color:var(--volt);margin-bottom:12px}
+.card .sig{font:italic 400 18px var(--serif);color:var(--mute)}
+.actions{display:flex;align-items:center;gap:4px;border-top:1px solid var(--line);padding-top:14px;margin:0 -8px}
+.act{display:inline-flex;align-items:center;gap:7px;min-height:40px;padding:0 10px;font:500 12px var(--sans);color:var(--mute);border-radius:var(--radius);transition:color .2s,background .2s;text-decoration:none}
+.act:hover{color:var(--paper);background:var(--slate-2)}
+.act svg{width:16px;height:16px;flex:none}
+.act .n{font:500 11px var(--mono);font-variant-numeric:tabular-nums}
+.act.open{margin-left:auto}
+.empty{grid-column:1/-1;background:var(--ink);padding:56px 32px;display:grid;gap:10px;justify-items:start}
+.empty p{margin:0;font:400 26px/1.3 var(--serif);max-width:32ch}
+.more{display:flex;justify-content:center;margin-top:28px}
+
+/* livro fechado em couro */
+.book{display:grid;grid-template-columns:minmax(0,320px) minmax(0,1fr);gap:64px;align-items:center;border:1px solid var(--line);padding:48px;background:linear-gradient(135deg,var(--slate),var(--ink) 70%)}
+.volume{position:relative;width:100%;max-width:270px;aspect-ratio:2/3;margin:0 auto;transform:perspective(1300px) rotateY(-16deg) rotateX(3deg);transform-style:preserve-3d}
+.volume .front{position:absolute;inset:0;border-radius:3px 10px 10px 3px;overflow:hidden;
+  background:var(--grain),radial-gradient(ellipse at 35% 25%,#7C5030,var(--leather) 50%,#2E1B0E 100%);
+  box-shadow:24px 30px 50px rgba(0,0,0,.6),inset -6px 0 12px rgba(0,0,0,.35),inset 0 0 0 1px rgba(0,0,0,.4);
+  display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:16% 14% 13% 20%;text-align:center}
+.volume .front::before{content:"";position:absolute;inset:7% 7% 7% 13%;border:1px solid rgba(214,178,105,.55);outline:1px solid rgba(214,178,105,.3);outline-offset:4px;pointer-events:none}
+.volume .front::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 100% 0,rgba(0,0,0,.45),transparent 14%),radial-gradient(circle at 100% 100%,rgba(0,0,0,.5),transparent 14%),linear-gradient(115deg,transparent 40%,rgba(255,220,160,.07) 50%,transparent 60%)}
+.volume .spine{position:absolute;left:0;top:0;bottom:0;width:11%;border-radius:3px 0 0 3px;
+  background:repeating-linear-gradient(180deg,transparent 0 18%,rgba(0,0,0,.45) 18% 19%,rgba(214,178,105,.35) 19% 19.6%,transparent 19.6% 20%),linear-gradient(90deg,#20120A,#4A2D18 60%,#2A190D)}
+.volume .edge{position:absolute;top:1.5%;bottom:1.5%;right:-4%;width:5%;border-radius:0 3px 3px 0;background:repeating-linear-gradient(90deg,#D9C394 0 1px,#B39462 1px 2px);box-shadow:inset 0 0 6px rgba(80,50,20,.5)}
+.gold{color:#D9B66E;text-shadow:0 1px 0 rgba(0,0,0,.6),0 -1px 0 rgba(255,230,170,.25)}
+.volume .t{font:500 clamp(24px,3vw,31px)/1.05 var(--serif);position:relative}
+.volume .t i{display:block;font:italic 400 14px var(--fell);margin-top:12px;opacity:.85}
+.volume .a{font:400 10px var(--mono);letter-spacing:.32em;position:relative}
+.volume svg{width:40px;height:40px;position:relative;opacity:.9}
+.book h3{margin:8px 0 6px;font:500 clamp(34px,4.5vw,52px)/1 var(--serif)}
+.book .subt{font:italic 400 22px var(--serif);color:var(--mute);margin:0 0 20px}
+.book p{color:var(--mute);max-width:58ch}
+dl.spec{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);margin:28px 0}
+dl.spec div{background:var(--ink);padding:14px 16px;min-width:0}
+dl.spec dt{font:500 10px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--mute-2)}
+dl.spec dd{margin:6px 0 0;font-size:14px}
+.status{display:inline-flex;align-items:center;gap:8px}
+.status::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--warn);box-shadow:0 0 0 3px rgba(217,167,82,.15)}
+
+.projects{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.proj{background:var(--ink);padding:32px 28px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.proj h3{margin:0;font:500 30px/1.05 var(--serif)}
+.proj p{margin:0;color:var(--mute);flex:1}
+.proj dl{margin:0;display:grid;gap:6px;font-size:13px}
+.proj dl div{display:flex;gap:10px}
+.proj dt{font:500 10px/2 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--mute-2);min-width:76px}
+.proj dd{margin:0}
+.proj a.link{display:inline-flex;align-items:center;gap:8px;font:500 13px var(--sans);text-decoration:none;color:var(--paper);border-bottom:1px solid var(--volt);align-self:flex-start;padding-bottom:3px}
+.proj.slot{background:repeating-linear-gradient(135deg,var(--ink) 0 10px,var(--slate) 10px 11px)}
+.proj.slot p{color:var(--mute-2)}
+
+.members{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:40px;align-items:center;border:1px solid var(--line-2);padding:44px;position:relative;overflow:hidden;background:radial-gradient(ellipse at 100% 0,rgba(201,162,94,.12),transparent 60%),var(--slate)}
+.members h3{margin:0 0 12px;font:500 clamp(30px,4vw,44px)/1.05 var(--serif)}
+.members p{margin:0;color:var(--mute);max-width:52ch}
+.members .seal{justify-self:end;width:150px;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 30%,#9A3B2A,#5E1E14 70%);box-shadow:inset 0 0 0 6px rgba(0,0,0,.18),inset 0 -6px 12px rgba(0,0,0,.35),0 10px 24px rgba(0,0,0,.5)}
+.members .seal svg{width:54px;height:54px;opacity:.85}
+.members .row{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px;align-items:center}
+
+.about{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:56px;align-items:start}
+.portrait{aspect-ratio:4/5;max-width:100%;border:1px dashed var(--line-2);display:grid;place-items:center;text-align:center;padding:24px;background:var(--slate)}
+.portrait svg{width:72px;height:72px;margin-bottom:16px}
+.about .big{font:400 clamp(28px,3.4vw,40px)/1.22 var(--serif);margin:0 0 24px;text-wrap:balance}
+.about p{color:var(--mute);max-width:60ch}
+.socials{display:flex;gap:12px;margin-top:32px;flex-wrap:wrap}
+.draft{display:inline-block;margin-top:18px;font:400 10px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--warn);border:1px solid rgba(217,167,82,.3);padding:5px 8px}
+
+footer{margin-top:120px;border-top:1px solid var(--line);padding-block:56px 40px}
+.fgrid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:32px}
+.fgrid h4{margin:0 0 14px;font:500 10px var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--mute-2)}
+.fgrid ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.fgrid a,.fgrid button{font-size:14px;color:var(--mute);text-decoration:none;text-align:left;padding:2px 0}
+.fgrid a:hover,.fgrid button:hover{color:var(--paper)}
+.fquote{font:italic 400 24px/1.3 var(--serif);color:var(--volt);max-width:24ch;margin:20px 0 0}
+.legal{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+.reader{position:fixed;inset:0;z-index:80;background:rgba(19,14,10,.98);overflow-y:auto;opacity:0;pointer-events:none;transition:opacity .2s;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.reader.open{opacity:1;pointer-events:auto}
+.reader .rbar{position:sticky;top:0;display:flex;justify-content:space-between;align-items:center;gap:12px;height:64px;padding-left:var(--gutter);padding-right:var(--gutter-r);background:rgba(19,14,10,.94);border-bottom:1px solid var(--line);z-index:2}
+.reader article{max-width:760px;margin:0 auto;padding:48px var(--gutter-r) 40px var(--gutter)}
+.sheetpage{position:relative;padding:clamp(28px,6vw,64px) clamp(22px,6vw,64px);color:var(--ink-text);border-radius:3px;
+  background:var(--grain),var(--fox),linear-gradient(180deg,#EAD9B1,var(--parch) 60%,#D9C292);
+  box-shadow:0 30px 60px -20px rgba(0,0,0,.7),inset 0 0 40px rgba(110,70,25,.28)}
+.sheetpage .cat{font:400 12px var(--fell);letter-spacing:.3em;text-transform:uppercase;color:var(--ink-soft)}
+.sheetpage .ptext{font:400 clamp(26px,4vw,38px)/1.35 var(--fell);margin:22px 0 28px;white-space:pre-line;text-wrap:pretty}
+.sheetpage .ptext::first-letter{font-size:2.2em;float:left;line-height:.85;margin:.05em .08em 0 0;color:#6B3E16}
+.sheetpage .by{display:flex;align-items:center;gap:12px;font:italic 400 20px var(--fell);color:var(--ink-soft)}
+.sheetpage .by i{width:28px;height:1px;background:var(--ink-soft)}
+.sheetpage .orn{text-align:center;font:400 20px var(--fell);color:var(--ink-soft);margin-top:24px;letter-spacing:.4em}
+.reader .tools{display:flex;gap:8px;flex-wrap:wrap;margin:28px 0 0;padding-block:16px;border-block:1px solid var(--line)}
+.related{margin-top:56px}
+.related ul{list-style:none;padding:0;margin:14px 0 0;display:grid;gap:1px;background:var(--line);border:1px solid var(--line)}
+.related a{display:block;background:var(--ink);padding:16px 18px;text-decoration:none;font:400 19px/1.35 var(--serif);color:var(--mute);transition:color .2s,background .2s}
+.related a:hover{color:var(--paper);background:var(--slate)}
+
+.comments{margin-top:56px}
+.comments h2{font:500 32px/1 var(--serif);margin:0 0 6px;display:flex;align-items:baseline;gap:12px}
+.comments h2 small{font:400 12px var(--mono);color:var(--mute-2)}
+.notice{border:1px solid var(--line);background:var(--slate);padding:16px 18px;color:var(--mute);font-size:14px;margin-top:20px}
+.notice a{color:var(--paper);text-decoration-color:var(--volt)}
+ol.clist{list-style:none;padding:0;margin:20px 0 0;display:grid;gap:1px;background:var(--line);border:1px solid var(--line)}
+ol.clist li{background:var(--ink);padding:18px 20px;display:grid;gap:8px;min-width:0}
+.chead{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:baseline}
+.chead b{font-weight:600;font-size:14px}
+.chead time{font:400 11px var(--mono);color:var(--mute-2)}
+.ctext{margin:0;white-space:pre-line;color:var(--paper);overflow-wrap:anywhere}
+.cfoot{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.tag{font:500 10px var(--mono);letter-spacing:.1em;text-transform:uppercase;padding:3px 7px;border:1px solid var(--line-2);color:var(--mute)}
+.tag.pend{color:var(--warn);border-color:rgba(217,167,82,.35)}
+.tag.hid,.tag.rep{color:var(--bad);border-color:rgba(217,130,106,.35)}
+.tag.ok{color:var(--ok);border-color:rgba(169,192,138,.35)}
+.mini{font:500 12px var(--sans);color:var(--mute);padding:6px 8px;border-radius:var(--radius)}
+.mini:hover{color:var(--paper);background:var(--slate-2)}
+.mini.ok:hover{color:var(--ok)}.mini.bad:hover{color:var(--bad)}
+.mini.armed{color:var(--bad);background:rgba(217,130,106,.12)}
+form.cform,.aform{margin-top:24px;display:grid;gap:16px;border:1px solid var(--line);padding:24px;background:var(--slate)}
+.field{display:grid;gap:6px;min-width:0}
+.field label{font:500 12px var(--sans);letter-spacing:.04em;color:var(--mute)}
+.field input,.field textarea,.field select{width:100%;background:var(--ink);color:var(--paper);border:1px solid var(--line-2);border-radius:var(--radius);padding:12px 14px;font:400 16px/1.5 var(--sans)}
+.field textarea{min-height:120px;resize:vertical}
+.field textarea.long{min-height:200px;font-family:var(--serif);font-size:19px}
+.field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:var(--volt);box-shadow:0 0 0 3px var(--volt-soft)}
+.field[data-invalid] input,.field[data-invalid] textarea{border-color:var(--bad)}
+.hint{display:flex;justify-content:space-between;gap:12px;font:400 11px var(--mono);color:var(--mute-2)}
+.err{color:var(--bad)}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.formrow{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.formrow small{color:var(--mute-2);font-size:12px;max-width:48ch}
+.btns{display:flex;gap:8px;flex-wrap:wrap}
+.msg{font-size:14px;min-height:1.4em}
+.msg.ok{color:var(--ok)}.msg.bad{color:var(--bad)}
+.spin{width:14px;height:14px;border:1.5px solid currentColor;border-right-color:transparent;border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.sheet{position:fixed;inset:0;z-index:90;background:rgba(10,7,5,.82);display:grid;place-items:center;padding:16px;opacity:0;pointer-events:none;transition:opacity .2s}
+.sheet.open{opacity:1;pointer-events:auto}
+.sheet .box{background:var(--ink);border:1px solid var(--line-2);width:min(680px,100%);max-height:88vh;overflow:auto;padding:28px;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.sheet.wide .box{width:min(980px,100%);padding:0}
+.sheet h2{margin:0 0 14px;font:500 32px/1.05 var(--serif)}
+.sheet p,.sheet li{color:var(--mute);font-size:15px}
+.sheet .x{float:right}
+.acct-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:24px 28px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--ink);z-index:2;flex-wrap:wrap}
+.acct-head h2{margin:4px 0 0}
+.who{display:flex;align-items:center;gap:14px;min-width:0}
+.avatar{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 30%,#9A3B2A,#5E1E14 70%);font:500 20px var(--serif);color:#F1DDB0;flex:none}
+.role{display:inline-flex;align-items:center;gap:6px;font:500 10px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--volt);border:1px solid rgba(201,162,94,.4);padding:4px 8px;margin-top:6px}
+.tabs{display:flex;gap:2px;overflow-x:auto;padding:0 20px;border-bottom:1px solid var(--line);scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:none;min-height:46px;padding:0 14px;font:500 13px var(--sans);color:var(--mute);border-bottom:1px solid transparent;margin-bottom:-1px}
+.tab[aria-selected="true"]{color:var(--paper);border-color:var(--volt)}
+.tab .n{font:500 10px var(--mono);color:var(--volt);margin-left:6px}
+.tabpanel{padding:24px 28px 32px}
+.alist{list-style:none;padding:0;margin:16px 0 0;display:grid;gap:1px;background:var(--line);border:1px solid var(--line)}
+.alist li{background:var(--ink);padding:14px 16px;display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;min-width:0}
+.alist .tx{min-width:0;flex:1 1 260px}
+.alist .tx b{display:block;font:500 18px/1.25 var(--serif);color:var(--paper)}
+.alist .tx span{display:block;font-size:13px;color:var(--mute);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.grid2{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:16px}
+.preview{margin-top:16px}
+.checks{list-style:none;padding:0;margin:12px 0 0;display:grid;gap:1px;background:var(--line);border:1px solid var(--line)}
+.checks li{background:var(--ink);padding:12px 16px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;color:var(--mute);font-size:14px}
+.checks li b{color:var(--paper);font-weight:500;display:block}
+.checks .tag{margin-top:2px}
+.mtext{background:var(--ink);padding:22px 24px}
+.mtext h4{margin:0 0 8px;font:500 24px/1.15 var(--serif)}
+.mtext p{margin:0;white-space:pre-line;color:var(--paper);font:400 19px/1.5 var(--serif)}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:var(--paper);color:var(--ink);font:500 13px var(--sans);padding:12px 18px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:120;max-width:calc(100vw - 32px)}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.reveal{transition:opacity .7s ease,transform .7s ease}
+.reveal.pre{opacity:.001;transform:translateY(14px)}
+
+@media (max-width:980px){
+  nav.main a{display:none}
+  .burger{display:inline-flex}
+  .explore{display:none!important}
+  .account .lbl{display:none}
+  .panel{grid-template-columns:1fr;left:max(16px, env(safe-area-inset-left,0px));right:max(16px, env(safe-area-inset-right,0px));width:auto;max-height:calc(100vh - 100px);overflow:auto}
+  .panel .mobile-only{display:block}
+  .hero-grid{grid-template-columns:1fr}
+  .head{grid-template-columns:1fr;gap:10px}
+  .book{grid-template-columns:1fr;padding:32px 24px;gap:40px}
+  .projects{grid-template-columns:1fr}
+  .members{grid-template-columns:1fr;padding:28px 24px}
+  .members .seal{justify-self:start;width:96px;order:-1}
+  .members .seal svg{width:36px;height:36px}
+  .about{grid-template-columns:1fr;gap:32px}
+  .portrait{max-width:320px}
+  .fgrid{grid-template-columns:1fr 1fr}
+  .grid2{grid-template-columns:1fr}
+}
+@media (max-width:640px){
+  .grid{grid-template-columns:1fr}
+  .card{padding:28px 20px 18px}
+  .hero{padding-block:36px 40px}
+  dl.spec{grid-template-columns:1fr 1fr}
+  .fgrid{grid-template-columns:1fr}
+  .act .lbl{display:none}
+  section.block{padding-block:64px 24px}
+  .tabpanel,.acct-head{padding-left:18px;padding-right:18px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .reveal.pre{opacity:1;transform:none}
+}
+</style>
+<style>
+#accountBtn,#membros,a[href="#membros"],#bioDraft{display:none!important}
+</style>
+</head>
+<body>
+<a class="skip" href="#publicacoes">Pular para as publicações</a>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="tri-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF3D6"/><stop offset="1" stop-color="#B8893F"/></linearGradient>
+    <linearGradient id="tri-ink" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8A5A26"/><stop offset="1" stop-color="#4A2C12"/></linearGradient>
+    <symbol id="tri" viewBox="0 0 32 32"><path d="M16 4 L29 27 H3 Z" fill="none" stroke="url(#tri-g)" stroke-width="1.4"/><path d="M16 11 L23 24 H9 Z" fill="url(#tri-g)" opacity=".85"/></symbol>
+    <symbol id="tri-print" viewBox="0 0 32 32"><path d="M16 4 L29 27 H3 Z" fill="none" stroke="url(#tri-ink)" stroke-width="1.1"/><path d="M16 11 L23 24 H9 Z" fill="url(#tri-ink)" opacity=".8"/><circle cx="16" cy="18.5" r="13.5" fill="none" stroke="#7A5428" stroke-width=".5" stroke-dasharray="1 2"/></symbol>
+    <symbol id="i-comment" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M16 8V4H4v12h4" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol>
+    <symbol id="i-ig" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5c3-1 6-1 8 1 2-2 5-2 8-1v14c-3-1-6-1-8 1-2-2-5-2-8-1z M12 6v14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></symbol>
+    <symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 12h9M18 12v3M21 12v2" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol>
+    <symbol id="i-turn" viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 14-5.3M20 4v4h-4M20 12a8 8 0 0 1-14 5.3M4 20v-4h4" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol>
+    <symbol id="i-down" viewBox="0 0 10 10"><path d="M1 3l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.3"/></symbol>
+  </defs>
+</svg>
+
+<header class="top" id="top">
+  <div class="wrap bar">
+    <a class="brand" href="#inicio" aria-label="Andrade Escritor — início">
+      <svg aria-hidden="true"><use href="#tri"/></svg>
+      <span class="sig"><b>ANDRADE</b><span>ESCRITOR</span></span>
+    </a>
+    <nav class="main" aria-label="Navegação principal">
+      <a href="#inicio" data-nav="inicio">Início</a>
+      <a href="#publicacoes" data-nav="publicacoes">Publicações</a>
+      <a href="#livros" data-nav="livros">Livros</a>
+      <a href="#projetos" data-nav="projetos">Projetos</a>
+      <a href="#sobre" data-nav="sobre">Sobre</a>
+      <a href="https://www.instagram.com/andradeescritor/" target="_blank" rel="noopener noreferrer">Instagram</a>
+      <button class="explore" id="exploreBtn" aria-expanded="false" aria-controls="explorePanel">Explorar <svg aria-hidden="true"><use href="#i-down"/></svg></button>
+      <button class="account" id="accountBtn" data-role="visitante" aria-haspopup="dialog"><svg aria-hidden="true"><use href="#i-key"/></svg><span class="lbl" id="accountLbl">Entrar</span><span class="dot" aria-hidden="true"></span></button>
+      <button class="burger" id="burgerBtn" aria-expanded="false" aria-controls="explorePanel" aria-label="Abrir menu"><span></span></button>
+    </nav>
+  </div>
+  <div class="panel" id="explorePanel" role="region" aria-label="Explorar" hidden>
+    <div class="mobile-only">
+      <h3>Navegar</h3>
+      <ul>
+        <li><a href="#inicio">Início</a></li>
+        <li><a href="#publicacoes">Publicações</a></li>
+        <li><a href="#livros">Livros</a></li>
+        <li><a href="#projetos">Projetos</a></li>
+        <li><a href="#membros">Área de membros</a></li>
+        <li><a href="#sobre">Sobre</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3>Escrita</h3>
+      <ul id="panelCats"></ul>
+    </div>
+    <div>
+      <h3>Obra</h3>
+      <ul>
+        <li><a href="#livros">Livros <small>01</small></a></li>
+        <li><a href="#projetos">Projetos literários</a></li>
+        <li><a href="#publicacoes">Publicações recentes</a></li>
+        <li><a href="#membros">Área de membros</a></li>
+      </ul>
+    </div>
+    <div class="foot">
+      <a href="https://www.instagram.com/andradeescritor/" target="_blank" rel="noopener noreferrer">Instagram · @andradeescritor ↗</a>
+      <a href="https://www.recantodasletras.com.br/autor.php?id=81643" target="_blank" rel="noopener noreferrer">Recanto das Letras ↗</a>
+    </div>
+  </div>
+</header>
+
+<main id="inicio">
+  <section class="hero wrap" aria-labelledby="h-hero">
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow"><i></i><span class="mono">O lado positivo da vida</span></div>
+        <h1 id="h-hero">Andrade<em>escritor</em></h1>
+        <p class="lede">Palavras que permanecem. Pensamentos que atravessam o tempo.</p>
+        <p class="sub">Um espaço dedicado à escrita, às reflexões e às palavras que encontram significado na experiência humana.</p>
+        <div class="ctas">
+          <a class="btn primary" href="#publicacoes">Explorar publicações <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <a class="btn" href="#livros"><svg aria-hidden="true"><use href="#i-book"/></svg> Conhecer os livros</a>
+        </div>
+      </div>
+      <figure class="tome-wrap">
+        <div class="tome" role="img" aria-label="Livro antigo aberto com uma frase de Andrade">
+          <div class="board"></div>
+          <div class="stack"></div>
+          <div class="leaves">
+            <div class="leaf l">
+              <div class="orn" aria-hidden="true">· ❦ ·</div>
+              <div class="exl">
+                <svg aria-hidden="true"><use href="#tri-print"/></svg>
+                <b>ANDRADE</b>
+                <small>ex libris · o lado positivo da vida</small>
+              </div>
+              <div class="folio"><span id="folioL">ii</span><span></span></div>
+            </div>
+            <div class="leaf r">
+              <div class="orn" aria-hidden="true" id="tomeCat">Pensamento</div>
+              <p class="q" id="tomeQ"></p>
+              <div class="folio"><span>— Andrade</span><span id="folioR">iii</span></div>
+            </div>
+          </div>
+          <div class="gutter" aria-hidden="true"></div>
+        </div>
+        <figcaption><button class="turn" id="turnBtn"><svg aria-hidden="true"><use href="#i-turn"/></svg> Virar a página</button></figcaption>
+      </figure>
+    </div>
+    <div class="motto">
+      <span class="mono" id="stat"></span>
+      <a class="mono" href="https://www.instagram.com/andradeescritor/" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:var(--paper)">@andradeescritor ↗</a>
+    </div>
+  </section>
+
+  <section class="block" id="publicacoes" aria-labelledby="h-pub">
+    <div class="wrap">
+      <div class="head">
+        <span class="mono">Arquivo</span>
+        <div>
+          <h2 id="h-pub">Publicações</h2>
+          <p>Pensamentos, frases, textos e poesias. Abra uma publicação para ler, copiar e comentar.</p>
+        </div>
+      </div>
+    </div>
+    <div class="filters" role="toolbar" aria-label="Filtrar por tipo de texto">
+      <div class="wrap row" id="chips"></div>
+    </div>
+    <div class="wrap">
+      <div class="grid" id="grid" aria-live="polite"></div>
+      <div class="more"><button class="btn" id="moreBtn" hidden>Carregar mais</button></div>
+    </div>
+  </section>
+
+  <section class="block" id="livros" aria-labelledby="h-liv">
+    <div class="wrap">
+      <div class="head">
+        <span class="mono">Estante</span>
+        <div><h2 id="h-liv">Livros</h2><p>Obras autorais, do primeiro rascunho à publicação.</p></div>
+      </div>
+      <article class="book reveal" aria-labelledby="b1">
+        <div class="volume" aria-hidden="true">
+          <div class="edge"></div>
+          <div class="front">
+            <svg><use href="#tri"/></svg>
+            <div class="t gold">Raízes de um Legado<i>Livro I</i></div>
+            <div class="a gold">FRANCISCO ANDRADE</div>
+          </div>
+          <div class="spine"></div>
+        </div>
+        <div>
+          <span class="mono">Poesia · Livro I</span>
+          <h3 id="b1">Raízes de um Legado</h3>
+          <p class="subt">Poesias de pai para filho</p>
+          <p>Um livro nascido das cartas escritas durante a espera de um filho. Poemas sobre origem, presença e aquilo que um pai deseja deixar como herança.</p>
+          <dl class="spec">
+            <div><dt>Gênero</dt><dd>Poesia</dd></div>
+            <div><dt>Situação</dt><dd><span class="status">Em desenvolvimento</span></dd></div>
+            <div><dt>Autoria</dt><dd>Francisco Andrade</dd></div>
+          </dl>
+          <a class="btn" href="https://www.instagram.com/andradeescritor/" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true"><use href="#i-ig"/></svg> Acompanhar o lançamento</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="block" id="projetos" aria-labelledby="h-proj">
+    <div class="wrap">
+      <div class="head">
+        <span class="mono">Em curso</span>
+        <div><h2 id="h-proj">Projetos</h2><p>Séries, acervos e iniciativas que organizam a escrita.</p></div>
+      </div>
+      <div class="projects reveal">
+        <article class="proj">
+          <span class="mono">Série</span>
+          <h3>O lado positivo da vida</h3>
+          <p>Frases e pensamentos curtos sobre atitude, persistência e o cotidiano, publicados no Instagram.</p>
+          <dl><div><dt>Onde</dt><dd>Instagram</dd></div><div><dt>Situação</dt><dd>Em andamento</dd></div></dl>
+          <a class="link" href="https://www.instagram.com/andradeescritor/" target="_blank" rel="noopener noreferrer">Ver a série ↗</a>
+        </article>
+        <article class="proj">
+          <span class="mono">Acervo</span>
+          <h3>Recanto das Letras</h3>
+          <p>Página de autor no Recanto das Letras, onde ficam reunidos textos publicados.</p>
+          <dl><div><dt>Onde</dt><dd>recantodasletras.com.br</dd></div><div><dt>Situação</dt><dd>Ativo</dd></div></dl>
+          <a class="link" href="https://www.recantodasletras.com.br/autor.php?id=81643" target="_blank" rel="noopener noreferrer">Abrir acervo ↗</a>
+        </article>
+        <article class="proj slot">
+          <span class="mono">Próximo projeto</span>
+          <h3>Espaço reservado</h3>
+          <p>Este quadro recebe o próximo projeto literário quando ele for anunciado.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="membros" aria-labelledby="h-mem">
+    <div class="wrap">
+      <div class="members reveal">
+        <div>
+          <span class="mono">Acesso restrito</span>
+          <h3 id="h-mem">Área de membros</h3>
+          <p>Textos inéditos e bastidores da escrita, reservados a quem recebe o convite do autor. O acesso é conferido pelo servidor a cada leitura.</p>
+          <div class="row">
+            <button class="btn gold" id="memBtn"><svg aria-hidden="true"><use href="#i-key"/></svg><span id="memLbl">Entrar na área de membros</span></button>
+            <span class="mono" id="memState"></span>
+          </div>
+        </div>
+        <div class="seal" aria-hidden="true"><svg><use href="#tri"/></svg></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="sobre" aria-labelledby="h-sobre">
+    <div class="wrap">
+      <div class="head">
+        <span class="mono">Autor</span>
+        <div><h2 id="h-sobre">Sobre</h2></div>
+      </div>
+      <div class="about reveal">
+        <div class="portrait">
+          <div>
+            <svg aria-hidden="true"><use href="#tri"/></svg>
+            <div class="mono">Espaço para a foto oficial</div>
+          </div>
+        </div>
+        <div>
+          <p class="big" id="bioBig">Escrevo frases, pensamentos e poesias sobre atitude, persistência e o lado positivo da vida.</p>
+          <p id="bioP1">Andrade é escritor. Sua escrita é curta, direta e construída com método: cada frase é pensada para caber num instante de leitura e permanecer depois dele.</p>
+          <p id="bioP2">Hoje trabalha em Raízes de um Legado, seu primeiro livro de poesias.</p>
+          <span class="draft" id="bioDraft">Texto provisório · edite em Painel do autor → Sobre</span>
+          <div class="socials">
+            <a class="btn primary" href="https://www.instagram.com/andradeescritor/" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true"><use href="#i-ig"/></svg> Seguir @andradeescritor</a>
+            <a class="btn" href="https://www.recantodasletras.com.br/autor.php?id=81643" target="_blank" rel="noopener noreferrer">Recanto das Letras ↗</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <a class="brand" href="#inicio" aria-label="Voltar ao início"><svg aria-hidden="true"><use href="#tri"/></svg><span class="sig"><b>ANDRADE</b><span>ESCRITOR</span></span></a>
+        <p class="fquote">Menos ruído, mais significado.</p>
+      </div>
+      <div><h4>Navegação</h4><ul><li><a href="#inicio">Início</a></li><li><a href="#publicacoes">Publicações</a></li><li><a href="#livros">Livros</a></li><li><a href="#projetos">Projetos</a></li><li><a href="#membros">Área de membros</a></li><li><a href="#sobre">Sobre</a></li></ul></div>
+      <div><h4>Categorias</h4><ul id="footCats"></ul></div>
+      <div><h4>Redes e políticas</h4><ul>
+        <li><a href="https://www.instagram.com/andradeescritor/" target="_blank" rel="noopener noreferrer">Instagram ↗</a></li>
+        <li><a href="https://www.recantodasletras.com.br/autor.php?id=81643" target="_blank" rel="noopener noreferrer">Recanto das Letras ↗</a></li>
+        <li><button data-sheet="privacidade">Política de privacidade</button></li>
+        <li><button data-sheet="comentarios">Política de comentários</button></li>
+      </ul></div>
+    </div>
+    <div class="legal">
+      <span class="mono">© <span id="year"></span> Andrade Escritor · Todos os direitos reservados</span>
+      <span class="mono">Sem rastreadores · Acesso verificado no servidor</span>
+    </div>
+  </div>
+</footer>
+
+<div class="reader" id="reader" role="dialog" aria-modal="true" aria-labelledby="rTitle" hidden>
+  <div class="rbar">
+    <button class="btn small" id="rClose"><svg aria-hidden="true" style="transform:rotate(180deg)"><use href="#i-arrow"/></svg> Voltar</button>
+    <span class="mono" id="rIdx"></span>
+  </div>
+  <article>
+    <div class="sheetpage">
+      <span class="cat" id="rCat"></span>
+      <h1 class="sr" id="rTitle"></h1>
+      <p class="ptext" id="rText"></p>
+      <div class="by"><i></i>Andrade</div>
+      <div class="orn" aria-hidden="true">❦</div>
+    </div>
+    <div class="tools">
+      <button class="act" id="rCopy"><svg aria-hidden="true"><use href="#i-copy"/></svg> Copiar texto</button>
+      <button class="act" id="rCopyLink"><svg aria-hidden="true"><use href="#i-arrow"/></svg> Copiar link</button>
+      <a class="act" href="https://www.instagram.com/andradeescritor/" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true"><use href="#i-ig"/></svg> Ver no Instagram</a>
+      <span class="mono" id="rTime" style="margin-left:auto;align-self:center"></span>
+    </div>
+    <section class="comments" aria-labelledby="cTitle">
+      <h2 id="cTitle">Comentários <small id="cCount"></small></h2>
+      <div id="cState"></div>
+      <ol class="clist" id="cList" hidden></ol>
+      <div class="more"><button class="btn" id="cMore" hidden>Ver mais comentários</button></div>
+      <form class="cform" id="cForm" novalidate hidden>
+        <div class="field" id="fName">
+          <label for="cName">Nome ou apelido</label>
+          <input id="cName" name="nome" autocomplete="nickname" maxlength="40" required>
+          <div class="hint"><span class="err" id="eName"></span><span>2–40</span></div>
+        </div>
+        <div class="field" id="fText">
+          <label for="cText">Seu comentário</label>
+          <textarea id="cText" name="texto" maxlength="600" required></textarea>
+          <div class="hint"><span class="err" id="eText"></span><span id="cCounter">0 / 600</span></div>
+        </div>
+        <div class="hp" aria-hidden="true"><label for="cSite">Site</label><input id="cSite" tabindex="-1" autocomplete="off"></div>
+        <div class="formrow">
+          <small>Comentários passam por moderação antes de aparecer. Ao enviar, você concorda com a <button type="button" class="mini" data-sheet="comentarios" style="padding:0;text-decoration:underline">política de comentários</button>.</small>
+          <button class="btn primary" id="cSend" type="submit"><span>Enviar comentário</span></button>
+        </div>
+        <div class="msg" id="cMsg" role="status" aria-live="polite"></div>
+      </form>
+    </section>
+    <nav class="related" aria-label="Publicações relacionadas">
+      <span class="mono">Leia também</span>
+      <ul id="rRel"></ul>
+    </nav>
+  </article>
+</div>
+
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sTitle" hidden>
+  <div class="box" id="sBox"></div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="app.js" defer></script>
+</body>
+</html>
