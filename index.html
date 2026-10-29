@@ -378,21 +378,35 @@ form.cform,.aform{margin-top:24px;display:grid;gap:16px;border:1px solid var(--l
   .reveal.pre{opacity:1;transform:none}
 }
 
-/* foto real do livro + folha de pergaminho */
-.photo{position:relative;width:100%;max-width:620px;margin-bottom:56px}
-.photo img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;filter:sepia(.12) saturate(1.05) contrast(1.04);
-  -webkit-mask-image:radial-gradient(ellipse 72% 68% at 56% 46%,#000 58%,transparent 100%);mask-image:radial-gradient(ellipse 72% 68% at 56% 46%,#000 58%,transparent 100%)}
-.photo::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 70% 20%,rgba(201,162,94,.10),transparent 55%)}
-.note{position:absolute;left:0;bottom:-48px;width:min(64%,340px);padding:22px 22px 14px;color:var(--ink-text);transform:rotate(-1.6deg);z-index:1;
-  background:var(--grain),var(--fox),linear-gradient(180deg,#EBDAB2,var(--parch) 65%,#D7BF8F);box-shadow:0 24px 40px -12px rgba(0,0,0,.7),inset 0 0 26px rgba(110,70,25,.28);border-radius:2px}
+/* hero com fotografia atrás das letras */
+.hero{position:relative;isolation:isolate;min-height:clamp(560px,86vh,860px);display:flex;flex-direction:column;justify-content:center;padding-block:96px 40px}
+.hero-bg{position:absolute;top:-96px;bottom:0;left:50%;width:100vw;transform:translateX(-50%);z-index:-1;overflow:hidden;background:var(--ink)}
+.hero-bg img{width:100%;height:100%;object-fit:cover;object-position:68% 50%;filter:sepia(.18) saturate(1.05) contrast(1.06) brightness(.82);transform:scale(1.04);animation:drift 18s ease-out both}
+.hero-bg::after{content:"";position:absolute;inset:0;
+  background:
+    linear-gradient(90deg,var(--ink) 0%,rgba(19,14,10,.92) 26%,rgba(19,14,10,.55) 52%,rgba(19,14,10,.18) 72%,rgba(19,14,10,.45) 100%),
+    linear-gradient(180deg,rgba(19,14,10,.75) 0%,transparent 22%,transparent 70%,var(--ink) 100%),
+    radial-gradient(ellipse at 70% 35%,rgba(201,162,94,.14),transparent 50%),var(--noise)}
+@keyframes drift{from{transform:scale(1.1)}to{transform:scale(1.04)}}
+.hero h1,.hero .lede{text-shadow:0 2px 24px rgba(0,0,0,.55)}
+.hero .sub{color:#CDBB98}
+.leaf-wrap{margin:0;display:grid;justify-items:end;align-self:end;gap:14px}
+.note{position:relative;width:min(100%,360px);padding:24px 24px 16px;color:var(--ink-text);transform:rotate(-1.6deg);
+  background:var(--grain),var(--fox),linear-gradient(180deg,#EBDAB2,var(--parch) 65%,#D7BF8F);box-shadow:0 30px 50px -14px rgba(0,0,0,.8),inset 0 0 26px rgba(110,70,25,.28);border-radius:2px}
 .note .orn{display:block;font:400 11px var(--fell);letter-spacing:.32em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:10px}
 .note .q{margin:0 0 14px;font:italic 400 clamp(16px,1.7vw,20px)/1.42 var(--fell);cursor:pointer;transition:opacity .35s ease,filter .35s ease}
 .note .q::first-letter{font-style:normal;font-size:2.3em;float:left;line-height:.85;margin:.06em .08em 0 0;color:#6B3E16}
 .note .q.fade{opacity:0;filter:blur(2px)}
 .note .folio{display:flex;justify-content:space-between;font:400 12px var(--fell);color:var(--ink-soft)}
-.cap{display:flex;align-items:center;justify-content:flex-end;gap:16px;flex-wrap:wrap;width:100%;max-width:620px}
-.credit{font:400 10px var(--mono);letter-spacing:.1em;color:var(--mute-2)}
-@media (max-width:980px){.photo{margin-inline:auto}.note{width:min(80%,340px);bottom:-56px}.cap{justify-content:space-between}}
+.turn{background:rgba(19,14,10,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.credit{font-size:10px!important;color:var(--mute-2)!important}
+.motto{margin-top:56px}
+@media (max-width:980px){
+  .hero{min-height:0;padding-block:72px 32px}
+  .hero-bg img{object-position:70% 50%}
+  .hero-bg::after{background:linear-gradient(180deg,rgba(19,14,10,.7) 0%,rgba(19,14,10,.82) 45%,rgba(19,14,10,.6) 70%,var(--ink) 100%),var(--noise)}
+  .leaf-wrap{justify-items:start;margin-top:12px}
+}
 </style>
 <style>
 #accountBtn,#membros,a[href="#membros"],#bioDraft{display:none!important}
@@ -470,6 +484,9 @@ form.cform,.aform{margin-top:24px;display:grid;gap:16px;border:1px solid var(--l
 
 <main id="inicio">
   <section class="hero wrap" aria-labelledby="h-hero">
+    <div class="hero-bg" aria-hidden="true">
+      <img src="https://images.unsplash.com/photo-1617936805450-ae3b3796137f?w=1920&h=1080&q=72&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1617936805450-ae3b3796137f?w=900&h=1200&q=70&auto=format&fit=crop 900w, https://images.unsplash.com/photo-1617936805450-ae3b3796137f?w=1600&h=900&q=72&auto=format&fit=crop 1600w, https://images.unsplash.com/photo-1617936805450-ae3b3796137f?w=2400&h=1350&q=72&auto=format&fit=crop 2400w" sizes="100vw" alt="" fetchpriority="high" decoding="async">
+    </div>
     <div class="hero-grid">
       <div>
         <div class="eyebrow"><i></i><span class="mono">O lado positivo da vida</span></div>
@@ -481,20 +498,18 @@ form.cform,.aform{margin-top:24px;display:grid;gap:16px;border:1px solid var(--l
           <a class="btn" href="#livros"><svg aria-hidden="true"><use href="#i-book"/></svg> Conhecer os livros</a>
         </div>
       </div>
-      <figure class="tome-wrap">
-        <div class="photo">
-          <img src="https://images.unsplash.com/photo-1617936805450-ae3b3796137f?w=1200&h=800&q=75&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1617936805450-ae3b3796137f?w=700&h=467&q=72&auto=format&fit=crop 700w, https://images.unsplash.com/photo-1617936805450-ae3b3796137f?w=1200&h=800&q=75&auto=format&fit=crop 1200w, https://images.unsplash.com/photo-1617936805450-ae3b3796137f?w=1800&h=1200&q=75&auto=format&fit=crop 1800w" sizes="(max-width: 980px) 92vw, 600px" width="1200" height="800" alt="Livro antigo com capa de couro gasta sobre fundo escuro" fetchpriority="high" decoding="async">
-          <div class="note">
-            <span class="orn" id="tomeCat">Pensamento</span>
-            <p class="q" id="tomeQ"></p>
-            <div class="folio"><span>— Andrade</span><span><span id="folioL" hidden></span><span id="folioR">iii</span></span></div>
-          </div>
+      <figure class="leaf-wrap">
+        <div class="note">
+          <span class="orn" id="tomeCat">Pensamento</span>
+          <p class="q" id="tomeQ"></p>
+          <div class="folio"><span>— Andrade</span><span><span id="folioL" hidden></span><span id="folioR">iii</span></span></div>
         </div>
-        <figcaption class="cap"><button class="turn" id="turnBtn"><svg aria-hidden="true"><use href="#i-turn"/></svg> Virar a página</button><span class="credit">Foto: Mishaal Zahed · Unsplash</span></figcaption>
+        <figcaption class="cap"><button class="turn" id="turnBtn"><svg aria-hidden="true"><use href="#i-turn"/></svg> Virar a página</button></figcaption>
       </figure>
     </div>
     <div class="motto">
       <span class="mono" id="stat"></span>
+      <span class="mono credit">Foto: Mishaal Zahed · Unsplash</span>
       <a class="mono" href="https://www.instagram.com/andradeescritor/" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:var(--paper)">@andradeescritor ↗</a>
     </div>
   </section>
