@@ -186,6 +186,19 @@ function route(){
   const s=h&&document.getElementById(h); if(s&&scroll) s.scrollIntoView();
 }
 addEventListener("hashchange",route);
+/* Mantém a âncora do link (#livros, #projetos…) no lugar enquanto as publicações carregam e empurram a página */
+let pinUntil=Date.now()+6000;
+const unpin=()=>{ pinUntil=0; };
+["wheel","touchstart","keydown","mousedown"].forEach(ev=>addEventListener(ev,unpin,{once:true,passive:true}));
+function keepAnchor(){
+  if(Date.now()>pinUntil) return;
+  const h=decodeURIComponent(location.hash.slice(1));
+  if(!h||h.startsWith("p-")||!$("#reader").hidden) return;
+  const t=(CAT_IDS.includes(h)||h==="publicacoes")?document.getElementById("publicacoes"):document.getElementById(h);
+  if(t) t.scrollIntoView({behavior:"instant",block:"start"});
+}
+if(window.ResizeObserver) new ResizeObserver(keepAnchor).observe(document.body);
+addEventListener("load",keepAnchor);
 
 /* Folha (políticas / conta) */
 const SHEETS={
@@ -515,7 +528,7 @@ function applyAbout(){
 
 /* Sincronização */
 let refreshT;
-function refresh(){ clearTimeout(refreshT); refreshT=setTimeout(()=>{ rebuildPosts(); renderGrid(); showTome(); renderComments(); applyRole(); if(sheetMode==="account") safeRedraw(); },40); }
+function refresh(){ clearTimeout(refreshT); refreshT=setTimeout(()=>{ rebuildPosts(); renderGrid(); showTome(); renderComments(); applyRole(); if(sheetMode==="account") safeRedraw(); keepAnchor(); },40); }
 function ingestComments(snap){
   const all=[], byUser={};
   snap.docs.forEach(d=>{ const v=d.data()||{}; const itens=Array.isArray(v.itens)?v.itens:[]; byUser[d.id]={nome:typeof v.nome==="string"?v.nome.slice(0,40):"",itens};
