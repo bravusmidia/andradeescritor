@@ -66,7 +66,7 @@ function rebuildPosts(){
     .sort((a,b)=>a.em.localeCompare(b.em)).forEach((p,i)=>out.push({...p, ord:BASE.length+i}));
   out.forEach(p => p.n = String(p.ord+1).padStart(3,"0"));
   POSTS = out.sort((a,b)=>b.ord-a.ord);
-  $("#stat").textContent = `${POSTS.length} publicações · 1 livro em desenvolvimento`;
+  $("#stat").textContent = `${POSTS.length} publicações · 1 livro publicado`;
   renderNavCounts();
 }
 

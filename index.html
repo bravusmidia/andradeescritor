@@ -13,7 +13,10 @@
 <meta property="og:title" content="Andrade Escritor">
 <meta property="og:description" content="Pensamentos, frases, textos e poesias. O lado positivo da vida.">
 <meta property="og:url" content="https://bravusmidia.github.io/andradeescritor/">
-<meta name="twitter:card" content="summary">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:image" content="https://bravusmidia.github.io/andradeescritor/assets/raizes-de-um-legado-og.jpg">
+<meta property="og:image:alt" content="Raízes de um Legado — livro de poesias de Francisco Andrade">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Book","name":"Raízes de um Legado","alternativeHeadline":"Poesias de um pai para seu filho","author":{"@type":"Person","name":"Francisco Andrade"},"publisher":{"@type":"Organization","name":"Bravus Academy"},"inLanguage":"pt-BR","genre":"Poesia","bookFormat":"https://schema.org/EBook","datePublished":"2026","image":"https://bravusmidia.github.io/andradeescritor/assets/raizes-de-um-legado-capa.jpg","url":"https://bravusmidia.github.io/andradeescritor/#livros","offers":{"@type":"Offer","url":"https://pay.kiwify.com.br/RNsQhYc","priceCurrency":"BRL","availability":"https://schema.org/InStock"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Andrade","jobTitle":"Escritor","url":"https://bravusmidia.github.io/andradeescritor/","sameAs":["https://www.instagram.com/andradeescritor/","https://www.recantodasletras.com.br/autor.php?id=81643"]}</script>
 <title>Andrade Escritor</title>
 <meta name="description" content="Andrade Escritor — pensamentos, frases, textos e poesias. O lado positivo da vida.">
@@ -211,6 +214,20 @@ dl.spec div{background:var(--ink);padding:14px 16px;min-width:0}
 dl.spec dt{font:500 10px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--mute-2)}
 dl.spec dd{margin:6px 0 0;font-size:14px}
 .status{display:inline-flex;align-items:center;gap:8px}
+.status.ok::before{background:var(--ok)!important;box-shadow:0 0 0 3px rgba(169,192,138,.18)!important}
+.volume.real{display:block;transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.volume.real:hover{transform:perspective(1300px) rotateY(-8deg) rotateX(2deg) translateY(-4px)}
+.volume.real img.front{display:block;width:100%;height:100%;object-fit:cover;padding:0;border-radius:2px 8px 8px 2px}
+.volume.real .spine{width:5%;opacity:.85;background:linear-gradient(90deg,rgba(0,0,0,.55),rgba(255,255,255,.12) 60%,rgba(0,0,0,.25))}
+.volume .ribbon{position:absolute;top:18px;right:-10px;background:var(--volt);color:var(--ink);font:500 10px var(--mono);letter-spacing:.2em;text-transform:uppercase;padding:7px 12px;box-shadow:0 6px 14px rgba(0,0,0,.45)}
+.book blockquote.epi{margin:22px 0 0;padding-left:18px;border-left:1px solid var(--volt);font:italic 400 20px/1.5 var(--serif);color:var(--paper)}
+.book .buy{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.book .buy-cta{min-height:54px;padding:0 28px;font-size:14px;box-shadow:0 10px 30px rgba(201,162,94,.22)}
+.book .buy-cta:hover{background:#D9B66E;border-color:#D9B66E;transform:translateY(-1px)}
+.book .safe{display:flex;align-items:center;gap:8px;margin:14px 0 0;font:400 12px var(--sans);color:var(--mute-2)}
+.book .safe svg{width:14px;height:14px;flex:none}
+#bioP2 a{color:var(--volt)}
+@media (max-width:640px){.book .buy{flex-direction:column;align-items:stretch}.book .buy .btn{width:100%}}
 .status::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--warn);box-shadow:0 0 0 3px rgba(217,167,82,.15)}
 
 .projects{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
@@ -495,7 +512,7 @@ form.cform,.aform{margin-top:24px;display:grid;gap:16px;border:1px solid var(--l
         <p class="sub">Um espaço dedicado à escrita, às reflexões e às palavras que encontram significado na experiência humana.</p>
         <div class="ctas">
           <a class="btn primary" href="#publicacoes">Explorar publicações <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
-          <a class="btn" href="#livros"><svg aria-hidden="true"><use href="#i-book"/></svg> Conhecer os livros</a>
+          <a class="btn" href="#livros"><svg aria-hidden="true"><use href="#i-book"/></svg> Novo livro: Raízes de um Legado</a>
         </div>
       </div>
       <figure class="leaf-wrap">
@@ -540,26 +557,28 @@ form.cform,.aform{margin-top:24px;display:grid;gap:16px;border:1px solid var(--l
         <div><h2 id="h-liv">Livros</h2><p>Obras autorais, do primeiro rascunho à publicação.</p></div>
       </div>
       <article class="book reveal" aria-labelledby="b1">
-        <div class="volume" aria-hidden="true">
-          <div class="edge"></div>
-          <div class="front">
-            <svg><use href="#tri"/></svg>
-            <div class="t gold">Raízes de um Legado<i>Livro I</i></div>
-            <div class="a gold">FRANCISCO ANDRADE</div>
-          </div>
-          <div class="spine"></div>
-        </div>
+        <a class="volume real" href="https://pay.kiwify.com.br/RNsQhYc" target="_blank" rel="noopener noreferrer" aria-label="Comprar Raízes de um Legado na Kiwify">
+          <div class="edge" aria-hidden="true"></div>
+          <img class="front" src="assets/raizes-de-um-legado-capa.jpg" width="600" height="900" alt="Capa do livro Raízes de um Legado, de Francisco Andrade" loading="lazy" decoding="async">
+          <div class="spine" aria-hidden="true"></div>
+          <span class="ribbon" aria-hidden="true">Lançamento</span>
+        </a>
         <div>
-          <span class="mono">Poesia · Livro I</span>
+          <span class="mono">Poesia · Livro I · E-book</span>
           <h3 id="b1">Raízes de um Legado</h3>
-          <p class="subt">Poesias de pai para filho</p>
-          <p>Um livro nascido das cartas escritas durante a espera de um filho. Poemas sobre origem, presença e aquilo que um pai deseja deixar como herança.</p>
+          <p class="subt">Poesias de um pai para seu filho</p>
+          <p>Entre maio e dezembro de 2021, um pai escreveu ao filho que ainda ia nascer. Anotações de madrugada, do lado de fora da sala de ultrassom, a caminho do hospital. Este livro reúne essas palavras em poemas: a notícia, a espera, o nascimento e aquilo que um pai deseja ensinar e deixar ao filho.</p>
+          <blockquote class="epi">Antes de surgir, há amor.<br>Antes de nascer, será escrito.</blockquote>
           <dl class="spec">
             <div><dt>Gênero</dt><dd>Poesia</dd></div>
-            <div><dt>Situação</dt><dd><span class="status">Em desenvolvimento</span></dd></div>
+            <div><dt>Situação</dt><dd><span class="status ok">Disponível</span></dd></div>
             <div><dt>Autoria</dt><dd>Francisco Andrade</dd></div>
           </dl>
-          <a class="btn" href="https://www.instagram.com/andradeescritor/" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true"><use href="#i-ig"/></svg> Acompanhar o lançamento</a>
+          <div class="buy">
+            <a class="btn gold buy-cta" href="https://pay.kiwify.com.br/RNsQhYc" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true"><use href="#i-book"/></svg> Comprar o livro <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            <a class="btn" href="https://www.instagram.com/andradeescritor/" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true"><use href="#i-ig"/></svg> @andradeescritor</a>
+          </div>
+          <p class="safe"><svg aria-hidden="true"><use href="#i-key"/></svg> Compra segura pela Kiwify · Pix ou cartão · acesso imediato por e-mail</p>
         </div>
       </article>
     </div>
@@ -628,7 +647,7 @@ form.cform,.aform{margin-top:24px;display:grid;gap:16px;border:1px solid var(--l
         <div>
           <p class="big" id="bioBig">Escrevo frases, pensamentos e poesias sobre atitude, persistência e o lado positivo da vida.</p>
           <p id="bioP1">Andrade é escritor. Sua escrita é curta, direta e construída com método: cada frase é pensada para caber num instante de leitura e permanecer depois dele.</p>
-          <p id="bioP2">Hoje trabalha em Raízes de um Legado, seu primeiro livro de poesias.</p>
+          <p id="bioP2">Raízes de um Legado, seu primeiro livro de poesias, já está disponível. <a href="https://pay.kiwify.com.br/RNsQhYc" target="_blank" rel="noopener noreferrer">Comprar o livro</a>.</p>
           <span class="draft" id="bioDraft">Texto provisório · edite em Painel do autor → Sobre</span>
           <div class="socials">
             <a class="btn primary" href="https://www.instagram.com/andradeescritor/" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true"><use href="#i-ig"/></svg> Seguir @andradeescritor</a>
