@@ -74,10 +74,19 @@ function rebuildPosts(){
 const header = $("#top");
 addEventListener("scroll", () => header.classList.toggle("scrolled", scrollY>8), {passive:true});
 const navLinks = [...document.querySelectorAll("nav.main a[data-nav]")];
-const io = new IntersectionObserver(es => es.forEach(e => {
-  if (e.isIntersecting) navLinks.forEach(a => a.setAttribute("aria-current", a.dataset.nav===e.target.id ? "true":"false"));
-}), {rootMargin:"-45% 0px -50% 0px"});
-["inicio","publicacoes","livros","projetos","sobre"].forEach(id=>{const s=document.getElementById(id); if(s) io.observe(s)});
+/* Páginas: cada área abre como uma página própria */
+const PAGES={inicio:["hero","caminhos"],publicacoes:["publicacoes"],livros:["livros"],sobre:["sobre","projetos","membros"]};
+const SECTIONS=Object.values(PAGES).flat();
+let page=null;
+function pageOf(h){ if(!h||h==="inicio"||h==="top") return "inicio"; if(h==="publicacoes"||CAT_IDS.includes(h)||h.startsWith("p-")) return "publicacoes"; if(h==="livros") return "livros"; if(["sobre","projetos","membros"].includes(h)) return "sobre"; return null; }
+function showPage(p){
+  const changed=p!==page; page=p; document.body.dataset.page=p;
+  SECTIONS.forEach(id=>{ const s=document.getElementById(id); if(s) s.hidden=!PAGES[p].includes(id); });
+  navLinks.forEach(a=>a.setAttribute("aria-current", a.dataset.nav===p?"true":"false"));
+  const titles={inicio:"Andrade Escritor",publicacoes:"Publicações · Andrade Escritor",livros:"Livros · Andrade Escritor",sobre:"Sobre · Andrade Escritor"};
+  document.title=titles[p];
+  return changed;
+}
 
 const panel=$("#explorePanel"), exBtn=$("#exploreBtn"), burger=$("#burgerBtn");
 let panelOpener=null;
@@ -95,6 +104,7 @@ document.addEventListener("keydown", e=>{
 let filter="tudo", shown=PAGE;
 const count = id => id==="tudo" ? POSTS.length : POSTS.filter(p=>p.cat===id).length;
 function renderNavCounts(){
+  const pcn=$("#pathCount"); if(pcn) pcn.textContent=pad(POSTS.length);
   const chips=$("#chips"); chips.replaceChildren();
   CATS.forEach(c => { const b=el("button",{class:"chip","aria-pressed":String(c.id===filter),"data-cat":c.id}, c.label+" ", el("small",{text:pad(count(c.id))})); b.addEventListener("click",()=>go(c.id==="tudo"?"publicacoes":c.id,false)); chips.append(b); });
   const pc=$("#panelCats"); pc.replaceChildren();
@@ -180,10 +190,14 @@ let scrollNext=true, commentsNext=false;
 function go(hash,scroll=true,toComments=false){ scrollNext=scroll; commentsNext=toComments; if(location.hash==="#"+hash) route(); else location.hash=hash; }
 function route(){
   const h=decodeURIComponent(location.hash.slice(1)); const scroll=scrollNext; scrollNext=true; const toC=commentsNext; commentsNext=false;
-  if (h.startsWith("p-")){ const p=POSTS.find(x=>x.slug===h.slice(2)); if(p){ openReader(p,toC); return; } }
+  if (h.startsWith("p-")){ const p=POSTS.find(x=>x.slug===h.slice(2)); if(p){ if(!page) showPage("publicacoes"); openReader(p,toC); return; } }
   if (!$("#reader").hidden){ $("#reader").classList.remove("open"); $("#reader").hidden=true; document.body.style.overflow=""; current=null; }
-  if (CAT_IDS.includes(h)||h==="publicacoes"){ const f=h==="publicacoes"?"tudo":h; if(f!==filter){ filter=f; shown=PAGE; renderGrid(); } listHash=h; if(scroll) document.getElementById("publicacoes").scrollIntoView(); return; }
-  const s=h&&document.getElementById(h); if(s&&scroll) s.scrollIntoView();
+  const pg=pageOf(h)||"inicio"; const changed=showPage(pg);
+  document.querySelectorAll(".subnav a").forEach(x=>x.setAttribute("aria-current", x.dataset.sub===(pg==="sobre"?h:"")?"true":"false"));
+  const top=()=>scrollTo({top:0,behavior:"instant"});
+  if (pg==="publicacoes"){ const f=(h===""||h==="publicacoes")?"tudo":h; if(f!==filter){ filter=f; shown=PAGE; renderGrid(); } listHash=h||"publicacoes"; if(changed||scroll) top(); return; }
+  if (pg==="sobre" && h!=="sobre"){ const s=document.getElementById(h); if(s) s.scrollIntoView({behavior:changed?"instant":"smooth"}); return; }
+  if (changed||scroll) top();
 }
 addEventListener("hashchange",route);
 /* Mantém a âncora do link (#livros, #projetos…) no lugar enquanto as publicações carregam e empurram a página */
@@ -194,8 +208,7 @@ function keepAnchor(){
   if(Date.now()>pinUntil) return;
   const h=decodeURIComponent(location.hash.slice(1));
   if(!h||h.startsWith("p-")||!$("#reader").hidden) return;
-  const t=(CAT_IDS.includes(h)||h==="publicacoes")?document.getElementById("publicacoes"):document.getElementById(h);
-  if(t) t.scrollIntoView({behavior:"instant",block:"start"});
+  if(h==="projetos"||h==="membros"){ const t=document.getElementById(h); if(t) t.scrollIntoView({behavior:"instant",block:"start"}); }
 }
 if(window.ResizeObserver) new ResizeObserver(keepAnchor).observe(document.body);
 addEventListener("load",keepAnchor);

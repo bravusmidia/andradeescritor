@@ -238,6 +238,13 @@ dl.spec dd{margin:6px 0 0;font-size:14px}
 .proj dl div{display:flex;gap:10px}
 .proj dt{font:500 10px/2 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--mute-2);min-width:76px}
 .proj dd{margin:0}
+main>section[hidden]{display:none!important}
+body:not([data-page="inicio"]) main{padding-top:calc(48px + env(safe-area-inset-top,0px))}
+.subnav{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 36px}
+.subnav a{font:500 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--mute);border:1px solid var(--line);padding:11px 14px}
+.subnav a:hover,.subnav a[aria-current="true"]{color:var(--paper);border-color:var(--volt)}
+.paths .proj{text-decoration:none;color:inherit;transition:background .2s}
+.paths .proj:hover{background:color-mix(in srgb,var(--ink) 88%,var(--volt))}
 .proj a.link{display:inline-flex;align-items:center;gap:8px;font:500 13px var(--sans);text-decoration:none;color:var(--paper);border-bottom:1px solid var(--volt);align-self:flex-start;padding-bottom:3px}
 .proj.slot{background:repeating-linear-gradient(135deg,var(--ink) 0 10px,var(--slate) 10px 11px)}
 .proj.slot p{color:var(--mute-2)}
@@ -459,7 +466,6 @@ form.cform,.aform{margin-top:24px;display:grid;gap:16px;border:1px solid var(--l
       <a href="#inicio" data-nav="inicio">Início</a>
       <a href="#publicacoes" data-nav="publicacoes">Publicações</a>
       <a href="#livros" data-nav="livros">Livros</a>
-      <a href="#projetos" data-nav="projetos">Projetos</a>
       <a href="#sobre" data-nav="sobre">Sobre</a>
       <a href="https://www.instagram.com/andradeescritor/" target="_blank" rel="noopener noreferrer">Instagram</a>
       <button class="explore" id="exploreBtn" aria-expanded="false" aria-controls="explorePanel">Explorar <svg aria-hidden="true"><use href="#i-down"/></svg></button>
@@ -474,9 +480,9 @@ form.cform,.aform{margin-top:24px;display:grid;gap:16px;border:1px solid var(--l
         <li><a href="#inicio">Início</a></li>
         <li><a href="#publicacoes">Publicações</a></li>
         <li><a href="#livros">Livros</a></li>
+        <li><a href="#sobre">Sobre</a></li>
         <li><a href="#projetos">Projetos</a></li>
         <li><a href="#membros">Área de membros</a></li>
-        <li><a href="#sobre">Sobre</a></li>
       </ul>
     </div>
     <div>
@@ -500,7 +506,7 @@ form.cform,.aform{margin-top:24px;display:grid;gap:16px;border:1px solid var(--l
 </header>
 
 <main id="inicio">
-  <section class="hero wrap" aria-labelledby="h-hero">
+  <section class="hero wrap" id="hero" aria-labelledby="h-hero">
     <div class="hero-bg" aria-hidden="true">
       <img src="https://images.unsplash.com/photo-1617936805450-ae3b3796137f?w=1920&h=1080&q=72&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1617936805450-ae3b3796137f?w=900&h=1200&q=70&auto=format&fit=crop 900w, https://images.unsplash.com/photo-1617936805450-ae3b3796137f?w=1600&h=900&q=72&auto=format&fit=crop 1600w, https://images.unsplash.com/photo-1617936805450-ae3b3796137f?w=2400&h=1350&q=72&auto=format&fit=crop 2400w" sizes="100vw" alt="" fetchpriority="high" decoding="async">
     </div>
@@ -528,6 +534,35 @@ form.cform,.aform{margin-top:24px;display:grid;gap:16px;border:1px solid var(--l
       <span class="mono" id="stat"></span>
       <span class="mono credit">Foto: Mishaal Zahed · Unsplash</span>
       <a class="mono" href="https://www.instagram.com/andradeescritor/" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:var(--paper)">@andradeescritor ↗</a>
+    </div>
+  </section>
+
+  <section class="block" id="caminhos" aria-labelledby="h-cam">
+    <div class="wrap">
+      <div class="head">
+        <span class="mono">Caminhos</span>
+        <div><h2 id="h-cam">Por onde começar</h2></div>
+      </div>
+      <div class="projects paths reveal">
+        <a class="proj" href="#publicacoes">
+          <span class="mono">Publicações · <span id="pathCount">00</span></span>
+          <h3>Textos</h3>
+          <p>Pensamentos, frases, textos e poesias para ler, copiar e comentar.</p>
+          <span class="link" style="display:inline-flex;align-self:flex-start;font:500 13px var(--sans);color:var(--paper);border-bottom:1px solid var(--volt);padding-bottom:3px">Ler os textos →</span>
+        </a>
+        <a class="proj" href="#livros">
+          <span class="mono">Livros · Lançamento</span>
+          <h3>Raízes de um Legado</h3>
+          <p>Poesias de um pai para seu filho. O primeiro livro do autor, já disponível.</p>
+          <span class="link" style="display:inline-flex;align-self:flex-start;font:500 13px var(--sans);color:var(--paper);border-bottom:1px solid var(--volt);padding-bottom:3px">Conhecer o livro →</span>
+        </a>
+        <a class="proj" href="#sobre">
+          <span class="mono">Autor</span>
+          <h3>Sobre mim</h3>
+          <p>Quem escreve, como escreve e os projetos que organizam a escrita.</p>
+          <span class="link" style="display:inline-flex;align-self:flex-start;font:500 13px var(--sans);color:var(--paper);border-bottom:1px solid var(--volt);padding-bottom:3px">Conhecer o autor →</span>
+        </a>
+      </div>
     </div>
   </section>
 
@@ -584,6 +619,38 @@ form.cform,.aform{margin-top:24px;display:grid;gap:16px;border:1px solid var(--l
     </div>
   </section>
 
+  <section class="block" id="sobre" aria-labelledby="h-sobre">
+    <div class="wrap">
+      <div class="head">
+        <span class="mono">Autor</span>
+        <div><h2 id="h-sobre">Sobre mim</h2></div>
+      </div>
+      <nav class="subnav" aria-label="Seções de Sobre">
+        <a href="#sobre" data-sub="sobre">Sobre mim</a>
+        <a href="#projetos" data-sub="projetos">Projetos</a>
+        <a href="#membros" data-sub="membros">Área de membros</a>
+      </nav>
+      <div class="about reveal">
+        <div class="portrait">
+          <div>
+            <svg aria-hidden="true"><use href="#tri"/></svg>
+            <div class="mono">Espaço para a foto oficial</div>
+          </div>
+        </div>
+        <div>
+          <p class="big" id="bioBig">Escrevo frases, pensamentos e poesias sobre atitude, persistência e o lado positivo da vida.</p>
+          <p id="bioP1">Andrade é escritor. Sua escrita é curta, direta e construída com método: cada frase é pensada para caber num instante de leitura e permanecer depois dele.</p>
+          <p id="bioP2">Raízes de um Legado, seu primeiro livro de poesias, já está disponível. <a href="https://pay.kiwify.com.br/RNsQhYc" target="_blank" rel="noopener noreferrer">Comprar o livro</a>.</p>
+          <span class="draft" id="bioDraft">Texto provisório · edite em Painel do autor → Sobre</span>
+          <div class="socials">
+            <a class="btn primary" href="https://www.instagram.com/andradeescritor/" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true"><use href="#i-ig"/></svg> Seguir @andradeescritor</a>
+            <a class="btn" href="https://www.recantodasletras.com.br/autor.php?id=81643" target="_blank" rel="noopener noreferrer">Recanto das Letras ↗</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="block" id="projetos" aria-labelledby="h-proj">
     <div class="wrap">
       <div class="head">
@@ -631,32 +698,6 @@ form.cform,.aform{margin-top:24px;display:grid;gap:16px;border:1px solid var(--l
     </div>
   </section>
 
-  <section class="block" id="sobre" aria-labelledby="h-sobre">
-    <div class="wrap">
-      <div class="head">
-        <span class="mono">Autor</span>
-        <div><h2 id="h-sobre">Sobre</h2></div>
-      </div>
-      <div class="about reveal">
-        <div class="portrait">
-          <div>
-            <svg aria-hidden="true"><use href="#tri"/></svg>
-            <div class="mono">Espaço para a foto oficial</div>
-          </div>
-        </div>
-        <div>
-          <p class="big" id="bioBig">Escrevo frases, pensamentos e poesias sobre atitude, persistência e o lado positivo da vida.</p>
-          <p id="bioP1">Andrade é escritor. Sua escrita é curta, direta e construída com método: cada frase é pensada para caber num instante de leitura e permanecer depois dele.</p>
-          <p id="bioP2">Raízes de um Legado, seu primeiro livro de poesias, já está disponível. <a href="https://pay.kiwify.com.br/RNsQhYc" target="_blank" rel="noopener noreferrer">Comprar o livro</a>.</p>
-          <span class="draft" id="bioDraft">Texto provisório · edite em Painel do autor → Sobre</span>
-          <div class="socials">
-            <a class="btn primary" href="https://www.instagram.com/andradeescritor/" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true"><use href="#i-ig"/></svg> Seguir @andradeescritor</a>
-            <a class="btn" href="https://www.recantodasletras.com.br/autor.php?id=81643" target="_blank" rel="noopener noreferrer">Recanto das Letras ↗</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 </main>
 
 <footer>
