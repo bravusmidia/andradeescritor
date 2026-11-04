@@ -1,0 +1,39 @@
+name: Sincronizar Recanto das Letras
+
+on:
+  schedule:
+    - cron: "17 */3 * * *"   # a cada 3 horas
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/recanto_sync.py"
+      - ".github/workflows/recanto.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: recanto-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Ler o Recanto
+        run: python scripts/recanto_sync.py
+      - name: Publicar se mudou
+        run: |
+          if git diff --quiet -- recanto-data.js; then echo "Nada novo."; exit 0; fi
+          git config user.name "recanto-sync"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add recanto-data.js
+          git commit -m "Recanto: atualiza textos e leituras"
+          git pull --rebase origin main
+          git push
