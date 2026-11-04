@@ -75,15 +75,15 @@ const header = $("#top");
 addEventListener("scroll", () => header.classList.toggle("scrolled", scrollY>8), {passive:true});
 const navLinks = [...document.querySelectorAll("nav.main a[data-nav]")];
 /* Páginas: cada área abre como uma página própria */
-const PAGES={inicio:["hero","caminhos"],publicacoes:["publicacoes"],livros:["livros"],sobre:["sobre","projetos","membros"]};
+const PAGES={inicio:["hero","caminhos"],publicacoes:["publicacoes"],livros:["livros"],sobre:["sobre","projetos","membros"],recanto:["recanto"]};
 const SECTIONS=Object.values(PAGES).flat();
 let page=null;
-function pageOf(h){ if(!h||h==="inicio"||h==="top") return "inicio"; if(h==="publicacoes"||CAT_IDS.includes(h)||h.startsWith("p-")) return "publicacoes"; if(h==="livros") return "livros"; if(["sobre","projetos","membros"].includes(h)) return "sobre"; return null; }
+function pageOf(h){ if(!h||h==="inicio"||h==="top") return "inicio"; if(h==="publicacoes"||CAT_IDS.includes(h)||h.startsWith("p-")) return "publicacoes"; if(h==="livros") return "livros"; if(["sobre","projetos","membros"].includes(h)) return "sobre"; if(h==="recanto") return "recanto"; return null; }
 function showPage(p){
   const changed=p!==page; page=p; document.body.dataset.page=p;
   SECTIONS.forEach(id=>{ const s=document.getElementById(id); if(s) s.hidden=!PAGES[p].includes(id); });
   navLinks.forEach(a=>a.setAttribute("aria-current", a.dataset.nav===p?"true":"false"));
-  const titles={inicio:"Andrade Escritor",publicacoes:"Publicações · Andrade Escritor",livros:"Livros · Andrade Escritor",sobre:"Sobre · Andrade Escritor"};
+  const titles={inicio:"Andrade Escritor",publicacoes:"Publicações · Andrade Escritor",livros:"Livros · Andrade Escritor",sobre:"Sobre · Andrade Escritor",recanto:"Recanto das Letras · Andrade Escritor"};
   document.title=titles[p];
   return changed;
 }
@@ -583,5 +583,35 @@ function reveal(){
   els.forEach(e=>ob.observe(e));
 }
 
+/* Recanto das Letras — dados de recanto-data.js, atualizados pelo GitHub Actions */
+(function(){
+  const R=window.RECANTO; if(!R) return;
+  const RSTEP=15; let rShown=RSTEP;
+  const fmt=n=>typeof n==="number"?n.toLocaleString("pt-BR"):"—";
+  const safe=u=>{ try{ const x=new URL(u); return x.protocol==="https:"&&/(^|\.)recantodasletras\.com\.br$/.test(x.hostname)?x.href:null; }catch(e){ return null; } };
+  const P=R.profile||{};
+  $("#recName").textContent=P.name||"Andradeescritor";
+  if(P.location) $("#recLoc").textContent=P.location;
+  $("#recTexts").textContent=fmt(P.texts); $("#recReads").textContent=fmt(P.reads);
+  if(safe(P.url)) $("#recPerfil").href=safe(P.url);
+  if(safe(P.listUrl)){ $("#recTodos").href=safe(P.listUrl); $("#recAll").href=safe(P.listUrl); }
+  if(R.updated){ const d=new Date(R.updated); if(!isNaN(d)) $("#recUpd").textContent="Atualizado em "+d.toLocaleDateString("pt-BR")+" · "+d.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"}); }
+  const cats=$("#recCats");
+  (R.categories||[]).forEach(c=>{ const u=safe(c.url); if(u&&c.label) cats.append(el("a",{href:u,target:"_blank",rel:"noopener noreferrer",text:c.label})); });
+  const texts=(R.texts||[]).filter(t=>t&&t.title&&safe(t.url));
+  const list=$("#recList"), more=$("#recMore");
+  function renderRec(){
+    list.replaceChildren();
+    if(!texts.length){ list.append(el("li",{class:"rec-empty",text:"Os textos aparecem aqui após a primeira sincronização com o Recanto."})); more.hidden=true; return; }
+    texts.slice(0,rShown).forEach(t=>{
+      const meta=[t.date, typeof t.reads==="number"?fmt(t.reads)+" leituras":null].filter(Boolean).join(" · ");
+      list.append(el("li",{},el("a",{href:safe(t.url),target:"_blank",rel:"noopener noreferrer"},
+        el("span",{class:"c",text:t.cat||"Texto"}), el("span",{class:"t",text:t.title}), el("span",{class:"m",text:(meta?meta+"  ":"")+"↗"}))));
+    });
+    more.hidden=rShown>=texts.length;
+  }
+  more.addEventListener("click",()=>{ rShown+=RSTEP; renderRec(); });
+  renderRec();
+})();
 rebuildPosts(); renderGrid(); showTome(); applyRole(); reveal(); route(); init();
 })();

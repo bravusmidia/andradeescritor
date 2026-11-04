@@ -368,6 +368,37 @@ form.cform,.aform{margin-top:24px;display:grid;gap:16px;border:1px solid var(--l
 .reveal{transition:opacity .7s ease,transform .7s ease}
 .reveal.pre{opacity:.001;transform:translateY(14px)}
 
+/* Recanto das Letras */
+.rec-prof{display:grid;grid-template-columns:minmax(0,1.4fr) auto auto;gap:32px;align-items:center;border:1px solid var(--line);background:var(--slate);padding:28px 32px;margin-bottom:24px}
+.rec-id{display:flex;gap:20px;align-items:center;min-width:0}
+.rec-id .seal{width:64px;height:64px;flex:none;display:grid;place-items:center;border:1px solid var(--line-2);border-radius:50%}
+.rec-id .seal svg{width:30px;height:30px}
+.rec-id h3{margin:4px 0 2px;font:500 32px/1.05 var(--serif);overflow-wrap:anywhere}
+.rec-id p{margin:0;color:var(--mute);font-size:14px}
+.rec-stats{display:flex;gap:28px;margin:0}
+.rec-stats dt{font:500 10px/1.6 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--mute-2)}
+.rec-stats dd{margin:0;font:500 38px/1 var(--serif);color:var(--volt)}
+.rec-btns{display:flex;gap:8px;flex-wrap:wrap}
+.rec-cats{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 32px}
+.rec-cats:empty{display:none}
+.rec-cats a{font:500 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;text-decoration:none;color:var(--mute);border:1px solid var(--line);padding:10px 12px;transition:color .2s,border-color .2s}
+.rec-cats a:hover{color:var(--paper);border-color:var(--volt)}
+.rec-list-head{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.rec-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.rec-list li{border-bottom:1px solid var(--line)}
+.rec-list a{display:grid;grid-template-columns:120px minmax(0,1fr) auto;gap:20px;align-items:baseline;padding:18px 4px;text-decoration:none;color:var(--paper);transition:background .2s,padding .2s}
+.rec-list a:hover{background:var(--slate);padding-left:14px}
+.rec-list .c{font:500 10px/1.4 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--volt)}
+.rec-list .t{font:500 24px/1.2 var(--serif);overflow-wrap:anywhere}
+.rec-list .m{font:400 11px var(--mono);color:var(--mute-2);white-space:nowrap;text-align:right}
+#recMore[hidden]{display:none}
+.rec-empty{padding:28px 4px;color:var(--mute)}
+@media (max-width:980px){
+  .rec-prof{grid-template-columns:1fr;gap:22px;padding:24px 20px}
+  .rec-list a{grid-template-columns:minmax(0,1fr);gap:6px}
+  .rec-list .m{text-align:left}
+}
+
 @media (max-width:980px){
   nav.main a{display:none}
   .burger{display:inline-flex}
@@ -467,6 +498,7 @@ form.cform,.aform{margin-top:24px;display:grid;gap:16px;border:1px solid var(--l
       <a href="#publicacoes" data-nav="publicacoes">Publicações</a>
       <a href="#livros" data-nav="livros">Livros</a>
       <a href="#sobre" data-nav="sobre">Sobre</a>
+      <a href="#recanto" data-nav="recanto">Recanto</a>
       <a href="https://www.instagram.com/andradeescritor/" target="_blank" rel="noopener noreferrer">Instagram</a>
       <button class="explore" id="exploreBtn" aria-expanded="false" aria-controls="explorePanel">Explorar <svg aria-hidden="true"><use href="#i-down"/></svg></button>
       <button class="account" id="accountBtn" data-role="visitante" aria-haspopup="dialog"><svg aria-hidden="true"><use href="#i-key"/></svg><span class="lbl" id="accountLbl">Entrar</span><span class="dot" aria-hidden="true"></span></button>
@@ -481,6 +513,7 @@ form.cform,.aform{margin-top:24px;display:grid;gap:16px;border:1px solid var(--l
         <li><a href="#publicacoes">Publicações</a></li>
         <li><a href="#livros">Livros</a></li>
         <li><a href="#sobre">Sobre</a></li>
+        <li><a href="#recanto">Recanto</a></li>
         <li><a href="#projetos">Projetos</a></li>
         <li><a href="#membros">Área de membros</a></li>
       </ul>
@@ -495,6 +528,7 @@ form.cform,.aform{margin-top:24px;display:grid;gap:16px;border:1px solid var(--l
         <li><a href="#livros">Livros <small>01</small></a></li>
         <li><a href="#projetos">Projetos literários</a></li>
         <li><a href="#publicacoes">Publicações recentes</a></li>
+        <li><a href="#recanto">Recanto das Letras</a></li>
         <li><a href="#membros">Área de membros</a></li>
       </ul>
     </div>
@@ -698,6 +732,37 @@ form.cform,.aform{margin-top:24px;display:grid;gap:16px;border:1px solid var(--l
     </div>
   </section>
 
+  <section class="block" id="recanto" aria-labelledby="h-rec" hidden>
+    <div class="wrap">
+      <div class="head">
+        <span class="mono">Acervo</span>
+        <div><h2 id="h-rec">Recanto das Letras</h2><p>Os textos publicados no Recanto das Letras, atualizados automaticamente.</p></div>
+      </div>
+      <div class="rec-prof reveal">
+        <div class="rec-id">
+          <div class="seal" aria-hidden="true"><svg><use href="#tri"/></svg></div>
+          <div>
+            <span class="mono">Autor no Recanto</span>
+            <h3 id="recName">Andradeescritor</h3>
+            <p id="recLoc">Fortaleza - Ceará - Brasil</p>
+          </div>
+        </div>
+        <dl class="rec-stats">
+          <div><dt>Textos</dt><dd id="recTexts">—</dd></div>
+          <div><dt>Leituras</dt><dd id="recReads">—</dd></div>
+        </dl>
+        <div class="rec-btns">
+          <a class="btn small" id="recPerfil" href="https://www.recantodasletras.com.br/autor.php?id=81643" target="_blank" rel="noopener noreferrer">Perfil ↗</a>
+          <a class="btn small" id="recTodos" href="https://www.recantodasletras.com.br/autor_textos.php?id=81643&amp;categoria=&amp;lista=ultimas" target="_blank" rel="noopener noreferrer">Textos ↗</a>
+        </div>
+      </div>
+      <div class="rec-cats" id="recCats"></div>
+      <div class="rec-list-head"><span class="mono">Últimos textos</span><span class="mono" id="recUpd"></span></div>
+      <ol class="rec-list" id="recList" aria-live="polite"></ol>
+      <div class="more"><button class="btn" id="recMore" hidden>Carregar mais</button> <a class="btn gold" id="recAll" href="https://www.recantodasletras.com.br/autor_textos.php?id=81643&amp;categoria=&amp;lista=ultimas" target="_blank" rel="noopener noreferrer">Ver todos no Recanto ↗</a></div>
+    </div>
+  </section>
+
 </main>
 
 <footer>
@@ -779,6 +844,7 @@ form.cform,.aform{margin-top:24px;display:grid;gap:16px;border:1px solid var(--l
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+<script src="recanto-data.js" defer></script>
 <script src="app.js" defer></script>
 </body>
 </html>
