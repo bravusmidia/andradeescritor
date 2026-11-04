@@ -25,7 +25,8 @@ LABELS = {
     "discursos": "Discurso", "homenagens": "Homenagem", "cronicas": "Crônica", "contos": "Conto",
     "sonetos": "Soneto", "reflexoes": "Reflexão", "artigos": "Artigo", "mensagens": "Mensagem",
     "prosapoetica": "Prosa poética", "acrosticos": "Acróstico", "trovas": "Trova",
-    "ensaios": "Ensaio", "letras": "Letra", "frases-e-pensamentos": "Pensamento",
+    "ensaios": "Ensaio", "resenhas": "Resenha", "redacoes": "Redação", "oracoes": "Oração",
+    "cordel": "Cordel", "duetos": "Dueto", "entrevistas": "Entrevista", "letras": "Letra", "frases-e-pensamentos": "Pensamento",
 }
 
 
