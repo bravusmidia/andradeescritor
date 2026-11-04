@@ -123,7 +123,7 @@ window.RECANTO={
   {
    "id": "8341893",
    "title": "PRECISO DE AJUDA DOS AMIGOS DO RECANTO",
-   "cat": "Resenhasdelivros",
+   "cat": "Resenha",
    "slug": "resenhasdelivros",
    "url": "https://www.recantodasletras.com.br/resenhasdelivros/8341893",
    "date": null,
@@ -724,5 +724,5 @@ window.RECANTO={
    "reads": null
   }
  ],
- "updated": "2026-11-04T19:59:48Z"
+ "updated": "2026-11-04T20:01:00Z"
 };
