@@ -30,7 +30,7 @@ jobs:
         run: python scripts/recanto_sync.py
       - name: Publicar se mudou
         run: |
-          if git diff --quiet -- recanto-data.js; then echo "Nada novo."; exit 0; fi
+          if [ -z "$(git status --porcelain -- recanto-data.js)" ]; then echo "Nada novo."; exit 0; fi
           git config user.name "recanto-sync"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add recanto-data.js
