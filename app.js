@@ -217,7 +217,7 @@ addEventListener("load",keepAnchor);
 const SHEETS={
   privacidade:["Política de privacidade",[
     "Este site não usa cookies de publicidade nem ferramentas de rastreamento.",
-    "Este site não tem cadastro, login nem formulários: nenhum dado pessoal é coletado ou guardado.",
+    "Leitores não precisam de cadastro: nenhum dado pessoal de visitante é coletado. Só o autor e membros convidados têm login, com e-mail e senha guardados de forma protegida no Supabase.",
     "As fontes são carregadas do Google Fonts. Comentários sobre os textos são feitos no Instagram @andradeescritor, seguindo a política do próprio Instagram."]],
   comentarios:["Política de comentários",[
     "Os comentários são bem-vindos quando conversam com o texto.",
@@ -364,10 +364,11 @@ function drawAccount(){
   box.replaceChildren();
   const initial=(S.name||"A").trim().charAt(0).toUpperCase();
   const close=btn("Fechar","btn small",closeSheet); close.id="aClose";
+  const out = S.role!=="visitante" && window.ESCRITOR_DB ? btn("Sair","btn small",async()=>{ try{ await window.ESCRITOR_DB.signOut(); }catch{} location.reload(); }) : null;
   box.append(el("div",{class:"acct-head"},
     el("div",{class:"who"}, el("div",{class:"avatar",text:initial,"aria-hidden":"true"}),
       el("div",{}, el("span",{class:"mono",text:"Minha área"}), el("h2",{id:"aTitle",text:S.role==="visitante"?"Entrar":(S.name||"Sua conta")}), el("span",{class:"role",text:ROLE_LABEL[S.role]}))),
-    close));
+    out ? el("div",{class:"formrow",style:"gap:8px;margin:0"},out,close) : close));
   if (S.role==="visitante"){ box.append(visitorPanel()); return; }
   const tabs = isAdmin()
     ? [["publicacoes","Publicações",POSTS.length],["rascunhos","Rascunhos",S.drafts.length],["comentarios","Comentários",pendingCount()],["membros","Membros",S.members.filter(m=>m.id!=="_acesso").length],["sobre","Sobre",0],["seguranca","Segurança",0]]
@@ -385,14 +386,43 @@ function drawAccount(){
 }
 /* redesenhos automáticos não podem apagar o que o autor está digitando */
 function safeRedraw(){ const box=$("#sBox"); const typing=box.querySelector("form input:focus,form textarea:focus,form select:focus"); if(!typing) drawAccount(); }
+function loginForm(){
+  const B=window.ESCRITOR_DB;
+  const em=el("input",{id:"lgEmail",type:"email",autocomplete:"username",maxlength:"120",required:""});
+  const pw=el("input",{id:"lgPass",type:"password",autocomplete:"current-password",maxlength:"128",required:""});
+  const msg=el("div",{class:"msg",role:"status"});
+  const b=el("button",{class:"btn small gold",type:"submit",text:"Entrar"});
+  const forgot=el("button",{class:"btn small",type:"button",text:"Esqueci a senha"});
+  const f=el("form",{class:"aform",novalidate:""},
+    el("div",{class:"field"},el("label",{for:"lgEmail",text:"E-mail"}),em),
+    el("div",{class:"field"},el("label",{for:"lgPass",text:"Senha"}),pw),
+    el("div",{class:"formrow"},forgot,b),msg);
+  let tries=0;
+  f.addEventListener("submit",async e=>{ e.preventDefault();
+    if(!B){ msg.className="msg bad"; msg.textContent="O login não carregou. Recarregue a página."; return; }
+    const email=em.value.trim().toLowerCase(), senha=pw.value;
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)||senha.length<6){ msg.className="msg bad"; msg.textContent="Confira o e-mail e a senha."; return; }
+    if(tries>=5){ msg.className="msg bad"; msg.textContent="Muitas tentativas. Aguarde 1 minuto."; return; }
+    b.disabled=true; msg.className="msg"; msg.textContent="Entrando…";
+    try{ await B.signIn(email,senha); pw.value=""; location.reload(); }
+    catch(err){ tries++; if(tries>=5) setTimeout(()=>{tries=0;},60000); msg.className="msg bad"; msg.textContent="E-mail ou senha incorretos."; b.disabled=false; }
+  });
+  forgot.addEventListener("click",async()=>{ const email=em.value.trim().toLowerCase();
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ msg.className="msg bad"; msg.textContent="Digite seu e-mail acima e clique de novo."; return; }
+    try{ await B.resetPassword(email); }catch{}
+    msg.className="msg ok"; msg.textContent="Se o e-mail tiver acesso, chega um link para criar uma nova senha.";
+  });
+  return f;
+}
 function visitorPanel(){
   return el("div",{class:"tabpanel"},
-    el("p",{text:"O acesso é feito com a sua conta conectada. Não existe senha deste site para ser descoberta ou vazada: quem você é e o que pode fazer são conferidos pelo servidor a cada ação."}),
+    loginForm(),
+    el("p",{text:"Quem você é e o que pode fazer são conferidos pelo servidor a cada ação, não pela página."}),
     el("ol",{class:"checks"},
-      el("li",{},el("span",{class:"tag",text:"1"}),el("div",{},el("b",{text:"Autor"}),"Entra com a própria conta e vê o painel de administração completo.")),
-      el("li",{},el("span",{class:"tag",text:"2"}),el("div",{},el("b",{text:"Membros"}),"Recebem um convite do autor. Depois de aceito, a área de membros abre automaticamente.")),
-      el("li",{},el("span",{class:"tag",text:"3"}),el("div",{},el("b",{text:"Leitores"}),"Navegam livremente. Para comentar, basta estar conectado."))),
-    el("div",{class:"notice"},"Não está conseguindo entrar? Abra o site conectado à sua conta. Para virar membro, peça o convite pelo ", el("a",{href:IG,target:"_blank",rel:"noopener noreferrer",text:"Instagram @andradeescritor"}),"."));
+      el("li",{},el("span",{class:"tag",text:"1"}),el("div",{},el("b",{text:"Autor"}),"Entra com e-mail e senha e vê o painel completo: escrever, publicar, rascunhos e moderação.")),
+      el("li",{},el("span",{class:"tag",text:"2"}),el("div",{},el("b",{text:"Membros"}),"Recebem acesso do autor. Ao entrar, a área de membros abre automaticamente.")),
+      el("li",{},el("span",{class:"tag",text:"3"}),el("div",{},el("b",{text:"Leitores"}),"Navegam livremente, sem cadastro."))),
+    el("div",{class:"notice"},"Para virar membro, peça o acesso pelo ", el("a",{href:IG,target:"_blank",rel:"noopener noreferrer",text:"Instagram @andradeescritor"}),"."));
 }
 function editorForm(){
   const ed = editing;
@@ -469,7 +499,7 @@ function tabMembers(p){
   const list=S.members.filter(m=>m.id!=="_acesso");
   p.append(el("h2",{text:isAdmin()?"Área de membros":"Textos para membros",style:"margin:0"}));
   if (isAdmin()){
-    p.append(el("p",{text:"Para dar acesso a um membro, compartilhe este site com a pessoa como Colaborador (Contributor) no menu Compartilhar. Ela passa a ler esta área; quem só pode visualizar não consegue."}));
+    p.append(el("p",{text:"Textos publicados aqui só aparecem para você e para membros com acesso liberado. Para liberar um membro, a pessoa precisa de uma conta de acesso criada para ela."}));
     const t=el("input",{id:"mTitle",maxlength:"120"}), x=el("textarea",{id:"mText",class:"long",maxlength:"5000"}), msg=el("div",{class:"msg",role:"status"});
     const f=el("form",{class:"aform",novalidate:""},
       el("div",{class:"field"},el("label",{for:"mTitle",text:"Título do texto exclusivo"}),t),
@@ -507,16 +537,16 @@ function tabMine(p){
 }
 function tabSecurity(p){
   const rows=[
-    ["Ativo","Sem senha própria no site","O login usa a sua conta conectada. Não há senha deste site para ser roubada, adivinhada ou vazada, e nenhum token fica na página, na URL ou no navegador."],
+    ["Ativo","Login protegido","E-mail e senha verificados pelo Supabase. A senha nunca fica salva na página, e depois de 5 tentativas erradas o formulário trava por 1 minuto."],
     ["Ativo","Permissões conferidas no servidor","Cada leitura e escrita passa pelas regras de acesso do servidor. Mostrar ou esconder botões é só conforto visual: quem não tem permissão é recusado mesmo alterando o código da página."],
-    ["Ativo","Menor privilégio","Visitantes só leem. Leitores conectados escrevem apenas os próprios comentários. Membros leem a área de membros. Só o autor publica, edita, modera e lê rascunhos e denúncias."],
+    ["Ativo","Menor privilégio","Visitantes só leem o que está publicado. Membros leem a área de membros. Só o autor publica, edita, modera e lê rascunhos. As tabelas do site ficam isoladas das demais."],
     ["Ativo","Proteção contra XSS","Tudo o que vem de leitores é exibido como texto puro, nunca como HTML. Caracteres invisíveis e de controle são removidos."],
     ["Ativo","Validação e limites","Tamanho máximo nos campos, um comentário a cada 30 s, bloqueio de repetição, no máximo 1 link por comentário e armadilha anti-robô."],
     ["Ativo","Política de segurança de conteúdo","A página só carrega scripts e fontes de origens autorizadas; o resto é bloqueado pelo navegador. Links externos abrem sem dar acesso à página."],
     ["Ativo","Exclusão em duas etapas","Apagar qualquer item pede confirmação, para evitar perdas por clique acidental."],
     ["Ativo","Sem rastreadores","Nenhum script de terceiros, cookie de publicidade ou pixel."],
-    ["Recomendado","Verificação em duas etapas","Ative a verificação em duas etapas na conta (Google ou e-mail) que você usa para entrar. É a principal defesa do painel do autor."],
-    ["Recomendado","Revise quem tem acesso","No menu Compartilhar, dê Editor só para quem pode administrar. Membros devem ser Colaboradores."]
+    ["Recomendado","Senha forte e única","Use uma senha longa no seu login, guardada num gerenciador de senhas, e ative a verificação em duas etapas do e-mail. É a principal defesa do painel do autor."],
+    ["Ativo","Dados no servidor","Publicações, rascunhos e textos de membros ficam no banco de dados do site, não no navegador: abra o painel de qualquer aparelho."]
   ];
   p.append(el("h2",{text:"Segurança",style:"margin:0"}),el("p",{text:"O que protege esta área hoje."}));
   const ul=el("ul",{class:"checks"}); rows.forEach(([s,t,d])=>ul.append(el("li",{},el("span",{class:"tag "+(s==="Ativo"?"ok":"pend"),text:s}),el("div",{},el("b",{text:t}),d)))); p.append(ul);
@@ -549,16 +579,14 @@ function ingestComments(snap){
   S.all=all; S.byUser=byUser; refresh();
 }
 async function init(){
-  if (!window.claude||typeof window.claude.use!=="function") return;
+  const B=window.ESCRITOR_DB; if (!B) return;
   try{
-    const [db,user]=await Promise.all([claude.use("db"),claude.use("user")]);
-    if (!db) return;
+    const db=B.db, user=await B.user();
     S.db=db; S.user=user;
     S.uid = user ? await user.id() : null;
     const admin = user ? await user.canEdit() : false;
-    if (user){ try{ const me=await user.me(); S.name=(me&&me.name)||""; }catch{} }
-    let member=false;
-    try{ const acc=await db.doc("membros/_acesso").get(); member=acc.exists; }catch{}
+    if (user){ try{ const me=await user.me(); S.name=(me&&me.name)||""; S.email=(me&&me.email)||""; }catch{} }
+    const member = user && !admin ? await user.isMember() : false;
     S.role = admin ? "admin" : member ? "membro" : S.uid ? "leitor" : "visitante";
     S.writable = !!S.uid;
     S.ready = true;

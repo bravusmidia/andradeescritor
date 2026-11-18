@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com; connect-src 'none'; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com; connect-src https://kfoapsxrzfebjyvmvktf.supabase.co; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="theme-color" content="#130E0A">
 <link rel="canonical" href="https://bravusmidia.github.io/andradeescritor/">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -464,7 +464,7 @@ form.cform,.aform{margin-top:24px;display:grid;gap:16px;border:1px solid var(--l
 }
 </style>
 <style>
-#accountBtn,#membros,a[href="#membros"],#bioDraft{display:none!important}
+#membros,a[href="#membros"],#bioDraft{display:none!important}
 </style>
 </head>
 <body>
@@ -844,6 +844,8 @@ form.cform,.aform{margin-top:24px;display:grid;gap:16px;border:1px solid var(--l
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+<script src="vendor/supabase-2.119.1.js" defer></script>
+<script src="banco.js" defer></script>
 <script src="recanto-data.js" defer></script>
 <script src="app.js" defer></script>
 </body>
