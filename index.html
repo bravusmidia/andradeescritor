@@ -331,6 +331,8 @@ form.cform,.aform{margin-top:24px;display:grid;gap:16px;border:1px solid var(--l
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 #tomeEdit[hidden]{display:none!important}
 nav.main a{white-space:nowrap}
+a.sym{display:inline-flex;align-items:center;gap:8px}
+a.sym svg{width:18px;height:18px;flex:none}
 .formrow{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
 .formrow small{color:var(--mute-2);font-size:12px;max-width:48ch}
 .btns{display:flex;gap:8px;flex-wrap:wrap}
@@ -479,8 +481,6 @@ nav.main a{white-space:nowrap}
 .insc{max-width:860px}
 .insc .hint{color:var(--mute-2);font-size:12px}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
-#tomeEdit[hidden]{display:none!important}
-nav.main a{white-space:nowrap}
 .counts{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:10px}
 .counts span{font:500 12px var(--mono, monospace);letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
 .counts b{color:var(--volt);font-weight:600}
@@ -502,7 +502,7 @@ nav.main a{white-space:nowrap}
     <symbol id="i-comment" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></symbol>
     <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M16 8V4H4v12h4" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol>
     <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol>
-    <symbol id="i-ig" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor"/></symbol>
+    <symbol id="i-ig" viewBox="0 0 24 24"><defs><radialGradient id="igG" cx="30%" cy="107%" r="150%"><stop offset="0" stop-color="#FDF497"/><stop offset=".05" stop-color="#FDF497"/><stop offset=".45" stop-color="#FD5949"/><stop offset=".6" stop-color="#D6249F"/><stop offset=".9" stop-color="#285AEB"/></radialGradient></defs><rect x="1.5" y="1.5" width="21" height="21" rx="6" fill="url(#igG)"/><rect x="5.6" y="5.6" width="12.8" height="12.8" rx="3.8" fill="none" stroke="#fff" stroke-width="1.7"/><circle cx="12" cy="12" r="3.1" fill="none" stroke="#fff" stroke-width="1.7"/><circle cx="16.4" cy="7.6" r=".95" fill="#fff"/></symbol>
     <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5c3-1 6-1 8 1 2-2 5-2 8-1v14c-3-1-6-1-8 1-2-2-5-2-8-1z M12 6v14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></symbol>
     <symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 12h9M18 12v3M21 12v2" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol>
     <symbol id="i-turn" viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 14-5.3M20 4v4h-4M20 12a8 8 0 0 1-14 5.3M4 20v-4h4" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol>
@@ -533,7 +533,7 @@ nav.main a{white-space:nowrap}
       <a href="#sobre" data-nav="sobre">Sobre</a>
       <a href="#recanto" data-nav="recanto">Recanto</a>
       <a href="#inscrever" data-nav="inscrever">Inscreva-se</a>
-      <a href="https://www.instagram.com/andradeescritor/" target="_blank" rel="noopener noreferrer">Instagram</a>
+      <a class="sym" href="https://www.instagram.com/andradeescritor/" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true"><use href="#i-ig"/></svg>Instagram</a>
       <button class="explore" id="exploreBtn" aria-expanded="false" aria-controls="explorePanel">Explorar <svg aria-hidden="true"><use href="#i-down"/></svg></button>
       <label class="langpick" title="Traduzir o site"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3 12h18M12 3c2.8 3 2.8 15 0 18M12 3c-2.8 3-2.8 15 0 18" fill="none" stroke="currentColor" stroke-width="1.6"/></svg><span class="sr">Idioma</span><select id="langSel" aria-label="Traduzir o site"></select></label>
       <button class="account" id="accountBtn" data-role="visitante" aria-haspopup="dialog"><svg aria-hidden="true"><use href="#i-key"/></svg><span class="lbl" id="accountLbl">Entrar</span><span class="dot" aria-hidden="true"></span></button>
@@ -824,13 +824,13 @@ nav.main a{white-space:nowrap}
   <div class="wrap">
     <div class="fgrid">
       <div>
-        <a class="brand" href="#inicio" aria-label="Voltar ao início"><svg aria-hidden="true"><use href="#tri"/></svg><span class="sig"><b>ANDRADE</b><span>ESCRITOR</span></span></a>
+        <a class="brand" href="#inicio" id="brandFoot" aria-label="Voltar ao início"><span class="pyr" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M20 3 L5 31 L22 35 Z" fill="url(#pyrL)"/><path d="M20 3 L22 35 L35 30 Z" fill="url(#pyrR)"/><path d="M5 31 L22 35 L35 30" fill="none" stroke="url(#pyrB)" stroke-width=".8"/><path d="M20 3 L22 35" stroke="#FFF1C9" stroke-opacity=".55" stroke-width=".6"/></svg><i class="pyr-shadow"></i></span><span class="sig"><b>ANDRADE</b><span>ESCRITOR</span></span></a>
         <p class="fquote">Menos ruído, mais significado.</p>
       </div>
       <div><h4>Navegação</h4><ul><li><a href="#inicio">Início</a></li><li><a href="#publicacoes">Publicações</a></li><li><a href="#livros">Livros</a></li><li><a href="#projetos">Projetos</a></li><li><a href="#membros">Área de membros</a></li><li><a href="#sobre">Sobre</a></li></ul></div>
       <div><h4>Categorias</h4><ul id="footCats"></ul></div>
       <div><h4>Redes e políticas</h4><ul>
-        <li><a href="https://www.instagram.com/andradeescritor/" target="_blank" rel="noopener noreferrer">Instagram ↗</a></li>
+        <li><a class="sym" href="https://www.instagram.com/andradeescritor/" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true"><use href="#i-ig"/></svg>Instagram</a></li>
         <li><a href="https://www.recantodasletras.com.br/autor.php?id=81643" target="_blank" rel="noopener noreferrer">Recanto das Letras ↗</a></li>
         <li><button data-sheet="privacidade">Política de privacidade</button></li>
         <li><button data-sheet="comentarios">Política de comentários</button></li>

@@ -129,6 +129,7 @@ $("#turnBtn").addEventListener("click", () => {
   const q=$("#tomeQ"); q.classList.add("fade");
   setTimeout(()=>{ tomeI++; showTome(); q.classList.remove("fade"); }, matchMedia("(prefers-reduced-motion: reduce)").matches?0:320);
 });
+$("#brandFoot").addEventListener("click", e => { e.preventDefault(); $("#brandLink").click(); });
 $("#brandLink").addEventListener("click", e => { e.preventDefault(); if(location.hash&&location.hash!=="#inicio") history.pushState(null,"",location.pathname+location.search+"#inicio"); route(); scrollTo({top:0,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"}); });
 $("#tomeEdit").addEventListener("click", () => { if(!isAdmin()) return; const p=POSTS[tomeI%POSTS.length]; if(!p) return; editing={mode:"editar",slug:p.slug,title:p.title,cat:p.cat,text:p.text}; openAccount("publicacoes"); setTimeout(()=>$("#edText")?.focus(),60); });
 $("#tomeQ").addEventListener("click", () => { const p=POSTS[tomeI%POSTS.length]; if(p) go("p-"+p.slug,false); });
