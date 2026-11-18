@@ -4,7 +4,7 @@ window.RECANTO={
   "name": "Andradeescritor",
   "location": "Fortaleza - Ceará - Brasil",
   "texts": 753,
-  "reads": 20597,
+  "reads": 20600,
   "url": "https://www.recantodasletras.com.br/autor.php?id=81643",
   "listUrl": "https://www.recantodasletras.com.br/autor_textos.php?id=81643&categoria=&lista=ultimas"
  },
@@ -724,5 +724,5 @@ window.RECANTO={
    "reads": null
   }
  ],
- "updated": "2026-11-12T00:50:09Z"
+ "updated": "2026-11-18T01:01:26Z"
 };
