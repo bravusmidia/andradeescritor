@@ -140,6 +140,14 @@ $("#turnBtn").addEventListener("click", () => {
   const q=$("#tomeQ"); q.classList.add("fade");
   setTimeout(()=>{ tomeI++; showTome(); q.classList.remove("fade"); }, matchMedia("(prefers-reduced-motion: reduce)").matches?0:320);
 });
+(function(){
+  const btn=$("#redesBtn"), menu=$("#redesMenu"); if(!btn) return;
+  const close=()=>{ menu.hidden=true; btn.setAttribute("aria-expanded","false"); };
+  btn.addEventListener("click",e=>{ e.stopPropagation(); const open=menu.hidden; menu.hidden=!open; btn.setAttribute("aria-expanded",String(open)); if(open) menu.querySelector("a")?.focus(); });
+  menu.addEventListener("click",()=>close(),true);
+  document.addEventListener("click",e=>{ if(!menu.hidden&&!e.target.closest("#redes")) close(); });
+  document.addEventListener("keydown",e=>{ if(e.key==="Escape"&&!menu.hidden){ close(); btn.focus(); } });
+})();
 $("#brandFoot").addEventListener("click", e => { e.preventDefault(); $("#brandLink").click(); });
 $("#brandLink").addEventListener("click", e => { e.preventDefault(); if(location.hash&&location.hash!=="#inicio") history.pushState(null,"",location.pathname+location.search+"#inicio"); route(); scrollTo({top:0,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"}); });
 $("#tomeEdit").addEventListener("click", () => { if(!isAdmin()) return; const p=POSTS[tomeI%POSTS.length]; if(!p) return; editing={mode:"editar",slug:p.slug,title:p.title,cat:p.cat,text:p.text}; openAccount("publicacoes"); setTimeout(()=>$("#edText")?.focus(),60); });
@@ -665,7 +673,7 @@ $("#memBtn").addEventListener("click",()=>openAccount(S.role==="membro"||isAdmin
 function applyRole(){
   const b=$("#accountBtn"); b.dataset.role=S.role;
   $("#tomeEdit").hidden=!isAdmin();
-  const lbl = isAdmin()?"Painel do autor":S.role==="membro"?"Área de membros":S.role==="leitor"?"Minha área":"Entrar";
+  const lbl = isAdmin()?"Painel":S.role==="membro"?"Área de membros":S.role==="leitor"?"Minha área":"Entrar";
   $("#accountLbl").textContent=lbl; b.setAttribute("aria-label",lbl);
   const n=S.members.filter(m=>m.id!=="_acesso").length;
   $("#memState").textContent = isAdmin()||S.role==="membro" ? `${n} ${n===1?"texto exclusivo":"textos exclusivos"}` : "";
@@ -767,8 +775,11 @@ function recWhen(t){
 function allPublished(){
   const site=POSTS.map(p=>{ const d=new Date(p.em||""); return {kind:"site",ts:isNaN(d)?0:+d,real:!isNaN(d),hasTime:true,title:p.title,cat:catOf(p.cat).one,text:p.text,slug:p.slug}; });
   const R=window.RECANTO; const rec=(R&&Array.isArray(R.texts)?R.texts:[]).filter(t=>t&&t.title&&/^https:\/\/www\.recantodasletras\.com\.br\//.test(t.url||"")).map((t,i)=>{ const w=recWhen(t); return {kind:"rec",...w,ord:i,title:t.title,cat:t.cat||"Texto",url:t.url}; });
+  /* O Recanto lista do mais novo ao mais antigo: texto sem data herda a data do vizinho mais antigo com data, para não passar na frente */
+  let carry=0; for(let i=rec.length-1;i>=0;i--){ const it=rec[i]; if(it.real){ if(!it.hasTime) it.ts+=12*3600e3; carry=Math.max(carry,it.ts); } else { it.ts=carry; } }
+  for(let i=1;i<rec.length;i++){ if(rec[i].ts>rec[i-1].ts&&!rec[i-1].real) rec[i-1].ts=rec[i].ts; }
   /* textos do Recanto sem data mantêm a ordem do próprio Recanto (do mais novo ao mais antigo) */
-  return [...site,...rec].sort((a,b)=> (b.ts-a.ts) || ((a.ord??0)-(b.ord??0)));
+  return [...site,...rec].sort((a,b)=> (b.ts-a.ts) || (a.kind===b.kind ? (a.ord??0)-(b.ord??0) : (a.kind==="site"?-1:1)));
 }
 function fmtStamp(it){
   if(it.kind==="site"&&!it.real) return "Publicado no site";
