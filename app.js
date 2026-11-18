@@ -78,7 +78,7 @@ const header = $("#top");
 addEventListener("scroll", () => header.classList.toggle("scrolled", scrollY>8), {passive:true});
 const navLinks = [...document.querySelectorAll("nav.main a[data-nav]")];
 /* Páginas: cada área abre como uma página própria */
-const PAGES={inicio:["hero","caminhos","inscrever"],publicacoes:["publicacoes"],livros:["livros"],sobre:["sobre","projetos","membros"],recanto:["recanto"],inscrever:["inscrever"]};
+const PAGES={inicio:["hero","ultimas","caminhos","inscrever"],publicacoes:["publicacoes"],livros:["livros"],sobre:["sobre","projetos","membros"],recanto:["recanto"],inscrever:["inscrever"]};
 const SECTIONS=[...new Set(Object.values(PAGES).flat())];
 let page=null;
 function pageOf(h){ if(!h||h==="inicio"||h==="top") return "inicio"; if(h==="publicacoes"||CAT_IDS.includes(h)||h.startsWith("p-")) return "publicacoes"; if(h==="livros") return "livros"; if(["sobre","projetos","membros"].includes(h)) return "sobre"; if(h==="recanto") return "recanto"; if(h==="inscrever") return "inscrever"; return null; }
@@ -667,7 +667,7 @@ function applyAbout(){
 
 /* Sincronização */
 let refreshT;
-function refresh(){ clearTimeout(refreshT); refreshT=setTimeout(()=>{ rebuildPosts(); renderGrid(); showTome(); renderComments(); applyRole(); if(sheetMode==="account") safeRedraw(); keepAnchor(); },40); }
+function refresh(){ clearTimeout(refreshT); refreshT=setTimeout(()=>{ rebuildPosts(); renderGrid(); renderLatest(); showTome(); renderComments(); applyRole(); if(sheetMode==="account") safeRedraw(); keepAnchor(); },40); }
 function ingestComments(snap){
   const all=[], byUser={};
   snap.docs.forEach(d=>{ const v=d.data()||{}; const itens=Array.isArray(v.itens)?v.itens:[]; byUser[d.id]={nome:typeof v.nome==="string"?v.nome.slice(0,40):"",itens};
@@ -739,6 +739,48 @@ function reveal(){
   more.addEventListener("click",()=>{ rShown+=RSTEP; renderRec(); });
   renderRec();
 })();
+/* Últimas publicações: site + Recanto juntos, 3 por página */
+const ULT={page:1,per:3};
+function recWhen(t){
+  if(t.date&&/^\d{2}\/\d{2}\/\d{4}$/.test(t.date)){ const [d,m,y]=t.date.split("/"); const hm=/^\d{1,2}:\d{2}$/.test(t.time||"")?t.time.padStart(5,"0"):"00:00"; const x=new Date(`${y}-${m}-${d}T${hm}:00-03:00`); if(!isNaN(x)) return {ts:+x,real:true,hasTime:!!t.time}; }
+  const sn=new Date(t.seen||""); return {ts:isNaN(sn)?0:+sn,real:false,hasTime:false};
+}
+function allPublished(){
+  const site=POSTS.map(p=>{ const d=new Date(p.em||""); return {kind:"site",ts:isNaN(d)?0:+d,real:!isNaN(d),hasTime:true,title:p.title,cat:catOf(p.cat).one,text:p.text,slug:p.slug}; });
+  const R=window.RECANTO; const rec=(R&&Array.isArray(R.texts)?R.texts:[]).filter(t=>t&&t.title&&/^https:\/\/www\.recantodasletras\.com\.br\//.test(t.url||"")).map((t,i)=>{ const w=recWhen(t); return {kind:"rec",...w,ord:i,title:t.title,cat:t.cat||"Texto",url:t.url}; });
+  /* textos do Recanto sem data mantêm a ordem do próprio Recanto (do mais novo ao mais antigo) */
+  return [...site,...rec].sort((a,b)=> (b.ts-a.ts) || ((a.ord??0)-(b.ord??0)));
+}
+function fmtStamp(it){
+  if(it.kind==="site"&&!it.real) return "Publicado no site";
+  if(!it.ts||!it.real) return "Recanto · data em atualização";
+  const d=new Date(it.ts); const day=d.toLocaleDateString("pt-BR",{day:"2-digit",month:"2-digit",year:"numeric",timeZone:"America/Sao_Paulo"});
+  return it.hasTime ? `${day} às ${d.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit",timeZone:"America/Sao_Paulo"})}` : day;
+}
+function renderLatest(){
+  const list=$("#ultList"), pager=$("#ultPager"); if(!list) return;
+  const all=allPublished(), pages=Math.max(1,Math.ceil(all.length/ULT.per));
+  ULT.page=Math.min(Math.max(1,ULT.page),pages);
+  list.replaceChildren();
+  all.slice((ULT.page-1)*ULT.per, ULT.page*ULT.per).forEach(it=>{
+    const ex = it.kind==="site" ? (it.text.length>160?it.text.slice(0,157).trim()+"…":it.text) : "Publicado no Recanto das Letras. Toque para ler.";
+    const card = it.kind==="site" ? el("a",{class:"proj",href:"#p-"+it.slug}) : el("a",{class:"proj",href:it.url,target:"_blank",rel:"noopener noreferrer"});
+    card.append(el("div",{class:"meta"},el("span",{class:"mono",text:it.cat}),el("span",{class:"src "+(it.kind==="site"?"site":""),text:it.kind==="site"?"Site":"Recanto ↗"})),
+      el("h3",{text:it.title}), el("p",{class:"ex",text:ex}), el("span",{class:"when",text:fmtStamp(it)}));
+    list.append(card);
+  });
+  pager.replaceChildren();
+  if(pages<=1) return;
+  const mk=(label,n,opts={})=>{ const b=el("button",{type:"button","aria-label":opts.aria||("Página "+n)},label); if(n===ULT.page&&!opts.nav) b.setAttribute("aria-current","page"); if(opts.disabled) b.disabled=true;
+    b.addEventListener("click",()=>{ ULT.page=n; renderLatest(); $("#ultimas").scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"}); }); return b; };
+  pager.append(mk("‹",ULT.page-1,{nav:true,aria:"Página anterior",disabled:ULT.page===1}));
+  const show=new Set([1,pages,ULT.page-1,ULT.page,ULT.page+1].filter(n=>n>=1&&n<=pages));
+  if(ULT.page<=3){ [2,3,4].forEach(n=>n<=pages&&show.add(n)); } if(ULT.page>=pages-2){ [pages-1,pages-2,pages-3].forEach(n=>n>=1&&show.add(n)); }
+  let prevN=0; [...show].sort((a,b)=>a-b).forEach(n=>{ if(n-prevN>1) pager.append(el("span",{class:"gap",text:"…"})); pager.append(mk(String(n),n)); prevN=n; });
+  pager.append(mk("›",ULT.page+1,{nav:true,aria:"Próxima página",disabled:ULT.page===pages}));
+  pager.append(el("span",{class:"info",text:`Página ${ULT.page} de ${pages} · ${all.length.toLocaleString("pt-BR")} publicações carregadas`}));
+}
+
 /* País do visitante: pelo fuso horário do aparelho (sem rastreamento), com o idioma como reserva */
 const GEO=window.ESCRITOR_GEO||{tz:{},codes:[]};
 let regionNames=null; try{ regionNames=new Intl.DisplayNames(["pt-BR"],{type:"region"}); }catch{}
@@ -798,5 +840,5 @@ const LANGS=["pt","en","es","fr","de","it","nl","pl","ru","uk","tr","ar","he","f
     finally{ b.disabled=false; }
   });
 })();
-rebuildPosts(); renderGrid(); showTome(); applyRole(); reveal(); route(); init();
+rebuildPosts(); renderGrid(); renderLatest(); showTome(); applyRole(); reveal(); route(); init();
 })();

@@ -183,6 +183,35 @@ def main():
             return 0
         return 1
 
+    # Data e hora de cada texto: reaproveita o que já foi lido; para textos novos sem data,
+    # abre a página do texto (no máximo 20 por execução). "seen" = quando o robô viu o texto pela 1ª vez.
+    prev_by_id = {x.get("id"): x for x in prev.get("texts", []) if isinstance(x, dict)}
+    now_iso = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    budget = 20
+    for x in texts:
+        old_x = prev_by_id.get(x["id"], {})
+        x["seen"] = old_x.get("seen") or now_iso
+        if not x.get("time") and old_x.get("time"):
+            x["time"] = old_x["time"]
+        if not x.get("date") and old_x.get("date"):
+            x["date"] = old_x["date"]
+        if not x.get("date") and not old_x.get("checked") and budget > 0:
+            budget -= 1
+            try:
+                page = Tree(); page.feed(fetch(x["url"])); txt = page.root.text()
+                m = (re.search(r"(?:Publicado|Enviado)[^\n]{0,80}?(\d{2}/\d{2}/\d{4})(?:[^\d]{1,12}(\d{1,2}[:h]\d{2}))?", txt, re.I)
+                     or re.search(r"(\d{2}/\d{2}/\d{4})(?:[^\d]{1,12}(\d{1,2}[:h]\d{2}))?", txt))
+                if m:
+                    x["date"] = m.group(1)
+                    if m.group(2):
+                        x["time"] = m.group(2).replace("h", ":")
+                time.sleep(1.5)
+            except Exception as e:
+                errors.append(f"texto {x['id']}: {e}")
+            x["checked"] = True
+        elif old_x.get("checked"):
+            x["checked"] = True
+
     dedup_cats = list({c["label"]: c for c in cats}.values())
     data = {
         "profile": {

@@ -332,6 +332,20 @@ form.cform,.aform{margin-top:24px;display:grid;gap:16px;border:1px solid var(--l
 #tomeEdit[hidden]{display:none!important}
 nav.main a{white-space:nowrap}
 a.sym{display:inline-flex;align-items:center;gap:8px}
+.latest .proj{min-height:260px}
+.latest .proj h3{font-size:26px}
+.latest .meta{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.latest .src{font:500 10px var(--mono, monospace);letter-spacing:.14em;text-transform:uppercase;border:1px solid var(--line-2);padding:3px 7px;color:var(--mute)}
+.latest .src.site{color:var(--volt);border-color:var(--volt)}
+.latest .when{font:500 12px var(--mono, monospace);letter-spacing:.06em;color:var(--mute-2)}
+.latest .ex{font-family:var(--serif);font-style:italic;font-size:18px;line-height:1.45;color:var(--paper);opacity:.86}
+.pager{display:flex;justify-content:center;align-items:center;gap:6px;flex-wrap:wrap;margin-top:22px}
+.pager button{min-width:40px;height:40px;padding:0 10px;background:transparent;color:var(--mute);border:1px solid var(--line-2);border-radius:var(--radius);font:500 14px var(--sans);cursor:pointer}
+.pager button[aria-current="page"]{background:var(--volt);color:var(--ink);border-color:var(--volt)}
+.pager button:hover:not([disabled]):not([aria-current="page"]){color:var(--paper);border-color:var(--volt)}
+.pager button[disabled]{opacity:.35;cursor:default}
+.pager .gap{color:var(--mute-2);padding:0 4px}
+.pager .info{width:100%;text-align:center;font:500 11px var(--mono, monospace);letter-spacing:.12em;text-transform:uppercase;color:var(--mute-2);margin-top:6px}
 a.sym svg{width:18px;height:18px;flex:none}
 .formrow{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
 .formrow small{color:var(--mute-2);font-size:12px;max-width:48ch}
@@ -604,6 +618,17 @@ a.sym svg{width:18px;height:18px;flex:none}
       <span class="mono" id="stat"></span>
       <span class="mono credit">Foto: Mishaal Zahed · Unsplash</span>
       <a class="mono" href="https://www.instagram.com/andradeescritor/" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:var(--paper)">@andradeescritor ↗</a>
+    </div>
+  </section>
+
+  <section class="block" id="ultimas" aria-labelledby="h-ult">
+    <div class="wrap">
+      <div class="head">
+        <span class="mono">Recentes</span>
+        <div><h2 id="h-ult">Últimas publicações</h2><p id="ultSub">Tudo o que foi publicado, do mais novo para o mais antigo: aqui no site e no Recanto das Letras.</p></div>
+      </div>
+      <div class="projects paths latest" id="ultList" aria-live="polite"></div>
+      <nav class="pager" id="ultPager" aria-label="Páginas das publicações"></nav>
     </div>
   </section>
 
