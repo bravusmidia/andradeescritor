@@ -77,13 +77,19 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;transitio
 header.top.scrolled{background:rgba(19,14,10,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-color:var(--line)}
 .bar{display:flex;align-items:center;justify-content:space-between;gap:16px;height:72px}
 .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
-.brand .pyr{position:relative;width:36px;height:40px;flex:none;display:grid;place-items:center;perspective:200px}
-.brand .pyr svg{width:34px;height:34px;display:block;filter:drop-shadow(0 3px 6px rgba(201,160,90,.35));animation:pyrFloat 4.2s ease-in-out infinite;transform-origin:50% 60%}
-.brand .pyr-shadow{position:absolute;left:50%;bottom:-2px;width:22px;height:4px;margin-left:-11px;border-radius:50%;background:radial-gradient(rgba(0,0,0,.55),transparent 70%);animation:pyrShadow 4.2s ease-in-out infinite}
-.brand:hover .pyr svg{animation-duration:2.2s}
-@keyframes pyrFloat{0%,100%{transform:translateY(1px) rotateY(-14deg)}50%{transform:translateY(-4px) rotateY(14deg)}}
-@keyframes pyrShadow{0%,100%{transform:scaleX(1);opacity:.8}50%{transform:scaleX(.7);opacity:.45}}
-@media (prefers-reduced-motion:reduce){.brand .pyr svg,.brand .pyr-shadow{animation:none}}
+.brand .pyr{position:relative;width:48px;height:52px;flex:none;display:grid;place-items:center;perspective:240px;margin:-6px 0}
+.brand .pyr svg{width:46px;height:46px;display:block;overflow:visible;filter:drop-shadow(0 4px 7px rgba(0,0,0,.55)) drop-shadow(0 0 10px rgba(201,160,90,.25));animation:pyrFloat 5s ease-in-out infinite;transform-origin:50% 60%}
+.brand .pyr-shadow{position:absolute;left:50%;bottom:0;width:28px;height:5px;margin-left:-14px;border-radius:50%;background:radial-gradient(rgba(0,0,0,.65),transparent 70%);animation:pyrShadow 5s ease-in-out infinite}
+.brand .pyr .pyr-halo{animation:pyrHalo 5s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+.brand .pyr .pyr-star{animation:pyrStar 3.2s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+.brand .pyr .pyr-sheen{animation:pyrSheen 6s ease-in-out infinite}
+.brand:hover .pyr svg{animation-duration:2.6s}
+@keyframes pyrFloat{0%,100%{transform:translateY(1px) rotateY(-12deg)}50%{transform:translateY(-5px) rotateY(12deg)}}
+@keyframes pyrShadow{0%,100%{transform:scaleX(1);opacity:.85}50%{transform:scaleX(.68);opacity:.4}}
+@keyframes pyrHalo{0%,100%{opacity:.55;transform:scale(.92)}50%{opacity:1;transform:scale(1.06)}}
+@keyframes pyrStar{0%,100%{opacity:.55;transform:scale(.7) rotate(0deg)}50%{opacity:1;transform:scale(1.15) rotate(45deg)}}
+@keyframes pyrSheen{0%,55%{transform:translateX(0)}85%,100%{transform:translateX(48px)}}
+@media (prefers-reduced-motion:reduce){.brand .pyr svg,.brand .pyr-shadow,.brand .pyr .pyr-halo,.brand .pyr .pyr-star,.brand .pyr .pyr-sheen{animation:none}}
 .brand .sig{display:flex;flex-direction:column;line-height:1}
 .brand .sig b{font:600 15px/1 var(--sans);letter-spacing:.42em}
 .brand .sig span{font:500 9px/1 var(--mono);letter-spacing:.5em;color:var(--mute);margin-top:6px}
@@ -545,17 +551,32 @@ a.sym svg{width:18px;height:18px;flex:none}
 <header class="top" id="top">
   <div class="wrap bar">
     <a class="brand" href="#inicio" id="brandLink" aria-label="Andrade Escritor — voltar ao início">
-      <span class="pyr" aria-hidden="true"><svg viewBox="0 0 40 40">
-        <defs>
-          <linearGradient id="pyrL" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F6DFA6"/><stop offset="1" stop-color="#B8893F"/></linearGradient>
-          <linearGradient id="pyrR" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9A6E2E"/><stop offset="1" stop-color="#4E3412"/></linearGradient>
-          <linearGradient id="pyrB" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#6B4A1C"/><stop offset="1" stop-color="#2E1F0B"/></linearGradient>
-        </defs>
-        <path d="M20 3 L5 31 L22 35 Z" fill="url(#pyrL)"/>
-        <path d="M20 3 L22 35 L35 30 Z" fill="url(#pyrR)"/>
-        <path d="M5 31 L22 35 L35 30" fill="none" stroke="url(#pyrB)" stroke-width=".8"/>
-        <path d="M20 3 L22 35" stroke="#FFF1C9" stroke-opacity=".55" stroke-width=".6"/>
-      </svg><i class="pyr-shadow"></i></span>
+      <span class="pyr" aria-hidden="true"><svg viewBox="0 0 48 48"><defs>
+  <linearGradient id="pyrL" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFF0C2"/><stop offset=".35" stop-color="#E6BE6E"/><stop offset="1" stop-color="#8C5E22"/></linearGradient>
+  <linearGradient id="pyrR" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5C3B14"/><stop offset=".55" stop-color="#3A250B"/><stop offset="1" stop-color="#22160A"/></linearGradient>
+  <linearGradient id="pyrB" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#C79A52"/><stop offset="1" stop-color="#3A2408"/></linearGradient>
+  <radialGradient id="pyrHalo" cx=".5" cy=".42" r=".5"><stop offset="0" stop-color="#F4D58C" stop-opacity=".55"/><stop offset=".45" stop-color="#C9A05A" stop-opacity=".18"/><stop offset="1" stop-color="#C9A05A" stop-opacity="0"/></radialGradient>
+  <radialGradient id="pyrStar" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFFBEA"/><stop offset=".4" stop-color="#FFE7A8" stop-opacity=".8"/><stop offset="1" stop-color="#FFE7A8" stop-opacity="0"/></radialGradient>
+  <linearGradient id="pyrSheen" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".45"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+  <clipPath id="pyrClipL"><path d="M24 4 L6 38 L26 43 Z"/></clipPath>
+</defs><g id="pyrArt">
+<circle class="pyr-halo" cx="24" cy="22" r="22" fill="url(#pyrHalo)"/>
+<path d="M24 4 L6 38 L26 43 Z" fill="url(#pyrL)"/>
+<path d="M24 4 L26 43 L42 37 Z" fill="url(#pyrR)"/>
+<g clip-path="url(#pyrClipL)" stroke="#7A5220" stroke-opacity=".28" stroke-width=".45" fill="none">
+  <path d="M19.6 12.4 L25.4 13.8 M15.8 19.6 L25.6 21.9 M12 26.8 L25.9 30 M8.5 33.6 L26.2 37.6"/>
+  <path d="M22 13 L21 21 M18 20.5 L17 28 M23 22 L22.4 30.5 M14 27.5 L13 35 M20 29 L19.5 36.5"/>
+</g>
+<g stroke="#000" stroke-opacity=".22" stroke-width=".45" fill="none">
+  <path d="M25.4 13.8 L33 11.6 M25.6 21.9 L36.4 18.4 M25.9 30 L39.4 25.4 M26.2 37.6 L41.6 32.6" opacity=".9"/>
+</g>
+<g clip-path="url(#pyrClipL)"><g class="pyr-sheen"><rect x="-14" y="0" width="10" height="48" fill="url(#pyrSheen)" transform="skewX(-18)"/></g></g>
+<path d="M24 4 L26 43" stroke="#FFF4D6" stroke-opacity=".75" stroke-width=".7"/>
+<path d="M24 4 L6 38" stroke="#FFF4D6" stroke-opacity=".35" stroke-width=".5"/>
+<path d="M6 38 L26 43 L42 37" fill="none" stroke="url(#pyrB)" stroke-width=".7"/>
+<circle class="pyr-star" cx="24" cy="4.4" r="4" fill="url(#pyrStar)"/>
+<path class="pyr-star" d="M24 0.6 L24.5 3.9 L27.8 4.4 L24.5 4.9 L24 8.2 L23.5 4.9 L20.2 4.4 L23.5 3.9 Z" fill="#FFF8E1"/>
+</g></svg><i class="pyr-shadow"></i></span>
       <span class="sig"><b>ANDRADE</b><span>ESCRITOR</span></span>
     </a>
     <nav class="main" aria-label="Navegação principal">
@@ -873,7 +894,7 @@ a.sym svg{width:18px;height:18px;flex:none}
   <div class="wrap">
     <div class="fgrid">
       <div>
-        <a class="brand" href="#inicio" id="brandFoot" aria-label="Voltar ao início"><span class="pyr" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M20 3 L5 31 L22 35 Z" fill="url(#pyrL)"/><path d="M20 3 L22 35 L35 30 Z" fill="url(#pyrR)"/><path d="M5 31 L22 35 L35 30" fill="none" stroke="url(#pyrB)" stroke-width=".8"/><path d="M20 3 L22 35" stroke="#FFF1C9" stroke-opacity=".55" stroke-width=".6"/></svg><i class="pyr-shadow"></i></span><span class="sig"><b>ANDRADE</b><span>ESCRITOR</span></span></a>
+        <a class="brand" href="#inicio" id="brandFoot" aria-label="Voltar ao início"><span class="pyr" aria-hidden="true"><svg viewBox="0 0 48 48"><use href="#pyrArt"/></svg><i class="pyr-shadow"></i></span><span class="sig"><b>ANDRADE</b><span>ESCRITOR</span></span></a>
         <p class="fquote">Menos ruído, mais significado.</p>
       </div>
       <div><h4>Navegação</h4><ul><li><a href="#inicio">Início</a></li><li><a href="#publicacoes">Publicações</a></li><li><a href="#livros">Livros</a></li><li><a href="#projetos">Projetos</a></li><li><a href="#membros">Área de membros</a></li><li><a href="#sobre">Sobre</a></li></ul></div>
