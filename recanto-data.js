@@ -3,8 +3,8 @@ window.RECANTO={
  "profile": {
   "name": "Andradeescritor",
   "location": "Fortaleza - Ceará - Brasil",
-  "texts": 753,
-  "reads": 20605,
+  "texts": 756,
+  "reads": 20611,
   "url": "https://www.recantodasletras.com.br/autor.php?id=81643",
   "listUrl": "https://www.recantodasletras.com.br/autor_textos.php?id=81643&categoria=&lista=ultimas"
  },
@@ -76,13 +76,48 @@ window.RECANTO={
  ],
  "texts": [
   {
+   "id": "8767135",
+   "title": "As vezes eu fico feliz",
+   "cat": "Pensamento",
+   "slug": "pensamentos",
+   "url": "https://www.recantodasletras.com.br/pensamentos/8767135",
+   "date": "18/11/2026",
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z",
+   "checked": true
+  },
+  {
+   "id": "8767132",
+   "title": "Eu queria tentar",
+   "cat": "Pensamento",
+   "slug": "pensamentos",
+   "url": "https://www.recantodasletras.com.br/pensamentos/8767132",
+   "date": "18/11/2026",
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z",
+   "checked": true
+  },
+  {
+   "id": "8767129",
+   "title": "Despedaçado",
+   "cat": "Pensamento",
+   "slug": "pensamentos",
+   "url": "https://www.recantodasletras.com.br/pensamentos/8767129",
+   "date": "18/11/2026",
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z",
+   "checked": true
+  },
+  {
    "id": "8726425",
    "title": "Não tem platéia",
    "cat": "Pensamento",
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/8726425",
-   "date": null,
-   "reads": null
+   "date": "23/09/2026",
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z",
+   "checked": true
   },
   {
    "id": "8726423",
@@ -90,8 +125,10 @@ window.RECANTO={
    "cat": "Pensamento",
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/8726423",
-   "date": null,
-   "reads": null
+   "date": "23/09/2026",
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z",
+   "checked": true
   },
   {
    "id": "8726422",
@@ -99,8 +136,10 @@ window.RECANTO={
    "cat": "Pensamento",
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/8726422",
-   "date": null,
-   "reads": null
+   "date": "23/09/2026",
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z",
+   "checked": true
   },
   {
    "id": "8341897",
@@ -108,8 +147,10 @@ window.RECANTO={
    "cat": "Pensamento",
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/8341897",
-   "date": null,
-   "reads": null
+   "date": "26/05/2025",
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z",
+   "checked": true
   },
   {
    "id": "8341896",
@@ -117,8 +158,10 @@ window.RECANTO={
    "cat": "Pensamento",
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/8341896",
-   "date": null,
-   "reads": null
+   "date": "26/05/2025",
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z",
+   "checked": true
   },
   {
    "id": "8341893",
@@ -126,8 +169,10 @@ window.RECANTO={
    "cat": "Resenha",
    "slug": "resenhasdelivros",
    "url": "https://www.recantodasletras.com.br/resenhasdelivros/8341893",
-   "date": null,
-   "reads": null
+   "date": "26/05/2025",
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z",
+   "checked": true
   },
   {
    "id": "8341834",
@@ -135,8 +180,10 @@ window.RECANTO={
    "cat": "Pensamento",
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/8341834",
-   "date": null,
-   "reads": null
+   "date": "25/05/2025",
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z",
+   "checked": true
   },
   {
    "id": "8341832",
@@ -144,8 +191,10 @@ window.RECANTO={
    "cat": "Pensamento",
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/8341832",
-   "date": null,
-   "reads": null
+   "date": "25/05/2025",
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z",
+   "checked": true
   },
   {
    "id": "8341831",
@@ -153,8 +202,10 @@ window.RECANTO={
    "cat": "Pensamento",
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/8341831",
-   "date": null,
-   "reads": null
+   "date": "25/05/2025",
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z",
+   "checked": true
   },
   {
    "id": "8338589",
@@ -162,8 +213,10 @@ window.RECANTO={
    "cat": "Pensamento",
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/8338589",
-   "date": null,
-   "reads": null
+   "date": "22/05/2025",
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z",
+   "checked": true
   },
   {
    "id": "8338585",
@@ -171,8 +224,10 @@ window.RECANTO={
    "cat": "Pensamento",
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/8338585",
-   "date": null,
-   "reads": null
+   "date": "22/05/2025",
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z",
+   "checked": true
   },
   {
    "id": "8338577",
@@ -180,8 +235,10 @@ window.RECANTO={
    "cat": "Pensamento",
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/8338577",
-   "date": null,
-   "reads": null
+   "date": "22/05/2025",
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z",
+   "checked": true
   },
   {
    "id": "8338532",
@@ -189,8 +246,10 @@ window.RECANTO={
    "cat": "Pensamento",
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/8338532",
-   "date": null,
-   "reads": null
+   "date": "21/05/2025",
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z",
+   "checked": true
   },
   {
    "id": "8338530",
@@ -198,8 +257,10 @@ window.RECANTO={
    "cat": "Frase",
    "slug": "frases",
    "url": "https://www.recantodasletras.com.br/frases/8338530",
-   "date": null,
-   "reads": null
+   "date": "21/05/2025",
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z",
+   "checked": true
   },
   {
    "id": "8338527",
@@ -207,8 +268,10 @@ window.RECANTO={
    "cat": "Frase",
    "slug": "frases",
    "url": "https://www.recantodasletras.com.br/frases/8338527",
-   "date": null,
-   "reads": null
+   "date": "21/05/2025",
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z",
+   "checked": true
   },
   {
    "id": "8336903",
@@ -216,8 +279,10 @@ window.RECANTO={
    "cat": "Mensagem",
    "slug": "mensagens",
    "url": "https://www.recantodasletras.com.br/mensagens/8336903",
-   "date": null,
-   "reads": null
+   "date": "20/05/2025",
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z",
+   "checked": true
   },
   {
    "id": "8336901",
@@ -225,8 +290,10 @@ window.RECANTO={
    "cat": "Pensamento",
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/8336901",
-   "date": null,
-   "reads": null
+   "date": "20/05/2025",
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z",
+   "checked": true
   },
   {
    "id": "8336898",
@@ -235,7 +302,8 @@ window.RECANTO={
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/8336898",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "8336847",
@@ -244,7 +312,8 @@ window.RECANTO={
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/8336847",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "8336843",
@@ -253,7 +322,8 @@ window.RECANTO={
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/8336843",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "8336842",
@@ -262,7 +332,8 @@ window.RECANTO={
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/8336842",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "8335348",
@@ -271,7 +342,8 @@ window.RECANTO={
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/8335348",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "8335346",
@@ -280,7 +352,8 @@ window.RECANTO={
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/8335346",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "8335342",
@@ -289,7 +362,8 @@ window.RECANTO={
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/8335342",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "8333740",
@@ -298,7 +372,8 @@ window.RECANTO={
    "slug": "discursos",
    "url": "https://www.recantodasletras.com.br/discursos/8333740",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "8333739",
@@ -307,7 +382,8 @@ window.RECANTO={
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/8333739",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "8333738",
@@ -316,7 +392,8 @@ window.RECANTO={
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/8333738",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "8333696",
@@ -325,7 +402,8 @@ window.RECANTO={
    "slug": "discursos",
    "url": "https://www.recantodasletras.com.br/discursos/8333696",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "8333693",
@@ -334,7 +412,8 @@ window.RECANTO={
    "slug": "mensagens-de-otimismo-fe-esperanca",
    "url": "https://www.recantodasletras.com.br/mensagens-de-otimismo-fe-esperanca/8333693",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "8333692",
@@ -343,7 +422,8 @@ window.RECANTO={
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/8333692",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "8332161",
@@ -352,7 +432,8 @@ window.RECANTO={
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/8332161",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "8332155",
@@ -361,7 +442,8 @@ window.RECANTO={
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/8332155",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "8329072",
@@ -370,7 +452,8 @@ window.RECANTO={
    "slug": "mensagens-de-otimismo-fe-esperanca",
    "url": "https://www.recantodasletras.com.br/mensagens-de-otimismo-fe-esperanca/8329072",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "8329070",
@@ -379,7 +462,8 @@ window.RECANTO={
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/8329070",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "8329066",
@@ -388,7 +472,8 @@ window.RECANTO={
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/8329066",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "8098803",
@@ -397,7 +482,8 @@ window.RECANTO={
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/8098803",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "8051358",
@@ -406,7 +492,8 @@ window.RECANTO={
    "slug": "mensagens-de-autoajuda",
    "url": "https://www.recantodasletras.com.br/mensagens-de-autoajuda/8051358",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "8051354",
@@ -415,7 +502,8 @@ window.RECANTO={
    "slug": "discursos",
    "url": "https://www.recantodasletras.com.br/discursos/8051354",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "8051352",
@@ -424,7 +512,8 @@ window.RECANTO={
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/8051352",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "8050917",
@@ -433,7 +522,8 @@ window.RECANTO={
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/8050917",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "8050914",
@@ -442,7 +532,8 @@ window.RECANTO={
    "slug": "mensagens-de-autoajuda",
    "url": "https://www.recantodasletras.com.br/mensagens-de-autoajuda/8050914",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "8050910",
@@ -451,7 +542,8 @@ window.RECANTO={
    "slug": "mensagens-de-autoajuda",
    "url": "https://www.recantodasletras.com.br/mensagens-de-autoajuda/8050910",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "8046978",
@@ -460,7 +552,8 @@ window.RECANTO={
    "slug": "poesias-de-esperanca",
    "url": "https://www.recantodasletras.com.br/poesias-de-esperanca/8046978",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "8046976",
@@ -469,7 +562,8 @@ window.RECANTO={
    "slug": "mensagens-de-autoajuda",
    "url": "https://www.recantodasletras.com.br/mensagens-de-autoajuda/8046976",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "8046975",
@@ -478,7 +572,8 @@ window.RECANTO={
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/8046975",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "8045647",
@@ -487,7 +582,8 @@ window.RECANTO={
    "slug": "mensagens-de-autoajuda",
    "url": "https://www.recantodasletras.com.br/mensagens-de-autoajuda/8045647",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "8045645",
@@ -496,7 +592,8 @@ window.RECANTO={
    "slug": "poesias-de-reflexao",
    "url": "https://www.recantodasletras.com.br/poesias-de-reflexao/8045645",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "8045644",
@@ -505,7 +602,8 @@ window.RECANTO={
    "slug": "mensagensreligiosas",
    "url": "https://www.recantodasletras.com.br/mensagensreligiosas/8045644",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "8045469",
@@ -514,7 +612,8 @@ window.RECANTO={
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/8045469",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "8045465",
@@ -523,7 +622,8 @@ window.RECANTO={
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/8045465",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "8045463",
@@ -532,7 +632,8 @@ window.RECANTO={
    "slug": "frases",
    "url": "https://www.recantodasletras.com.br/frases/8045463",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "8044015",
@@ -541,7 +642,8 @@ window.RECANTO={
    "slug": "frases",
    "url": "https://www.recantodasletras.com.br/frases/8044015",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "8044013",
@@ -550,7 +652,8 @@ window.RECANTO={
    "slug": "poesias-de-reflexao",
    "url": "https://www.recantodasletras.com.br/poesias-de-reflexao/8044013",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "8044009",
@@ -559,7 +662,8 @@ window.RECANTO={
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/8044009",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "8042650",
@@ -568,7 +672,8 @@ window.RECANTO={
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/8042650",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "8042648",
@@ -577,7 +682,8 @@ window.RECANTO={
    "slug": "poesias-de-esperanca",
    "url": "https://www.recantodasletras.com.br/poesias-de-esperanca/8042648",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "8042647",
@@ -586,7 +692,8 @@ window.RECANTO={
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/8042647",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "7391317",
@@ -595,7 +702,8 @@ window.RECANTO={
    "slug": "frases",
    "url": "https://www.recantodasletras.com.br/frases/7391317",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "7179669",
@@ -604,7 +712,8 @@ window.RECANTO={
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/7179669",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "7179667",
@@ -613,7 +722,8 @@ window.RECANTO={
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/7179667",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "7179665",
@@ -622,7 +732,8 @@ window.RECANTO={
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/7179665",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "7174870",
@@ -631,7 +742,8 @@ window.RECANTO={
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/7174870",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "7174868",
@@ -640,7 +752,8 @@ window.RECANTO={
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/7174868",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "7174867",
@@ -649,7 +762,8 @@ window.RECANTO={
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/7174867",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "7171670",
@@ -658,7 +772,8 @@ window.RECANTO={
    "slug": "cartas",
    "url": "https://www.recantodasletras.com.br/cartas/7171670",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "7157317",
@@ -667,7 +782,8 @@ window.RECANTO={
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/7157317",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "7129184",
@@ -676,7 +792,8 @@ window.RECANTO={
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/7129184",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "7129174",
@@ -685,7 +802,8 @@ window.RECANTO={
    "slug": "discursos",
    "url": "https://www.recantodasletras.com.br/discursos/7129174",
    "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   },
   {
    "id": "7129172",
@@ -694,35 +812,9 @@ window.RECANTO={
    "slug": "frases",
    "url": "https://www.recantodasletras.com.br/frases/7129172",
    "date": null,
-   "reads": null
-  },
-  {
-   "id": "7078707",
-   "title": "Dis-ciplina",
-   "cat": "Pensamento",
-   "slug": "pensamentos",
-   "url": "https://www.recantodasletras.com.br/pensamentos/7078707",
-   "date": null,
-   "reads": null
-  },
-  {
-   "id": "7078703",
-   "title": "Pisa firme",
-   "cat": "Frase",
-   "slug": "frases",
-   "url": "https://www.recantodasletras.com.br/frases/7078703",
-   "date": null,
-   "reads": null
-  },
-  {
-   "id": "7078690",
-   "title": "Meu Aniversário",
-   "cat": "Pensamento",
-   "slug": "pensamentos",
-   "url": "https://www.recantodasletras.com.br/pensamentos/7078690",
-   "date": null,
-   "reads": null
+   "reads": null,
+   "seen": "2026-11-18T19:00:48Z"
   }
  ],
- "updated": "2026-11-18T11:55:49Z"
+ "updated": "2026-11-18T19:01:20Z"
 };
