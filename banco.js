@@ -84,6 +84,12 @@ window.ESCRITOR_DB = {
     const { error } = await sb.auth.signInWithPassword({ email, password: senha });
     if (error) throw error;
   },
+  async uploadFoto(blob){
+    const path = "autor/foto-" + Date.now() + ".jpg";
+    const { error } = await sb.storage.from("escritor").upload(path, blob, { contentType: "image/jpeg", upsert: false, cacheControl: "31536000" });
+    if (error) throw fail(error);
+    return sb.storage.from("escritor").getPublicUrl(path).data.publicUrl;
+  },
   async ping(){ const { data, error } = await sb.rpc("escritor_ping"); if (error) throw fail(error); return data; },
   async signOut(){ await sb.auth.signOut(); },
   async resetPassword(email){

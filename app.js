@@ -66,7 +66,10 @@ function rebuildPosts(){
     .sort((a,b)=>a.em.localeCompare(b.em)).forEach((p,i)=>out.push({...p, ord:BASE.length+i}));
   out.forEach(p => p.n = String(p.ord+1).padStart(3,"0"));
   POSTS = out.sort((a,b)=>b.ord-a.ord);
-  $("#stat").textContent = `${POSTS.length} publicações · 1 livro publicado`;
+  const rec = window.RECANTO && window.RECANTO.profile && Number(window.RECANTO.profile.texts) || 0;
+  const tot = POSTS.length + rec;
+  $("#stat").textContent = `${tot.toLocaleString("pt-BR")} publicações · 1 livro publicado`;
+  $("#stat").title = rec ? `${POSTS.length} no site + ${rec.toLocaleString("pt-BR")} no Recanto das Letras` : "";
   renderNavCounts();
 }
 
@@ -366,7 +369,7 @@ function drawAccount(){
   const close=btn("Fechar","btn small",closeSheet); close.id="aClose";
   const out = S.role!=="visitante" && window.ESCRITOR_DB ? btn("Sair","btn small",async()=>{ try{ await window.ESCRITOR_DB.signOut(); }catch{} location.reload(); }) : null;
   box.append(el("div",{class:"acct-head"},
-    el("div",{class:"who"}, el("div",{class:"avatar",text:initial,"aria-hidden":"true"}),
+    el("div",{class:"who"}, (S.sobre&&FOTO_OK(S.sobre.foto)&&isAdmin() ? el("div",{class:"avatar","aria-hidden":"true",style:`background:url("${S.sobre.foto}") center/cover`}) : el("div",{class:"avatar",text:initial,"aria-hidden":"true"})),
       el("div",{}, el("span",{class:"mono",text:"Minha área"}), el("h2",{id:"aTitle",text:S.role==="visitante"?"Entrar":(S.name||"Sua conta")}), el("span",{class:"role",text:ROLE_LABEL[S.role]}))),
     out ? el("div",{class:"formrow",style:"gap:8px;margin:0"},out,close) : close));
   if (S.role==="visitante"){ box.append(visitorPanel()); return; }
@@ -514,19 +517,43 @@ function tabMembers(p){
   list.sort((a,b)=>String(b.em).localeCompare(String(a.em))).forEach(m=>{ const box=el("article",{class:"mtext"},el("span",{class:"mono",text:fmtDate(m.em)}),el("h4",{text:String(m.title||"").slice(0,120)}),el("p",{text:String(m.text||"").slice(0,5000)})); if(isAdmin()) box.append(el("div",{class:"cfoot",style:"margin-top:12px"},armed("Excluir",async()=>{ try{ await remove("membros/"+m.id); toast("Texto excluído."); }catch(err){ toast(errMsg(err)); } }))); wrap.append(box); });
   p.append(wrap);
 }
+const FOTO_OK = u => typeof u==="string" && u.startsWith("https://kfoapsxrzfebjyvmvktf.supabase.co/storage/v1/object/public/escritor/");
+const IDADE_OK = n => Number.isInteger(n) && n>0 && n<130;
+function resizeImage(file, max=900){
+  return new Promise((res,rej)=>{ const url=URL.createObjectURL(file); const img=new Image();
+    img.onload=()=>{ const k=Math.min(1,max/Math.max(img.width,img.height)); const c=document.createElement("canvas"); c.width=Math.round(img.width*k); c.height=Math.round(img.height*k);
+      c.getContext("2d").drawImage(img,0,0,c.width,c.height); URL.revokeObjectURL(url); c.toBlob(b=>b?res(b):rej(new Error("img")),"image/jpeg",.86); };
+    img.onerror=()=>{ URL.revokeObjectURL(url); rej(new Error("img")); }; img.src=url; });
+}
 function tabAbout(p){
   const cur=S.sobre||{big:$("#bioBig").textContent,p1:$("#bioP1").textContent,p2:$("#bioP2").textContent};
   const a=el("textarea",{id:"abBig",maxlength:"300"}); a.value=cur.big||"";
   const b=el("textarea",{id:"abP1",maxlength:"1200"}); b.value=cur.p1||"";
   const c=el("textarea",{id:"abP2",maxlength:"1200"}); c.value=cur.p2||"";
   const msg=el("div",{class:"msg",role:"status"});
+  let foto = FOTO_OK(cur.foto) ? cur.foto : "";
+  const prev=el("div",{style:"width:96px;height:120px;border:1px dashed var(--line-2);background:var(--slate) center/cover no-repeat;flex:none"});
+  const showPrev=()=>{ prev.style.backgroundImage = foto ? `url("${foto}")` : "none"; };
+  showPrev();
+  const fi=el("input",{id:"abFoto",type:"file",accept:"image/jpeg,image/png,image/webp",style:"max-width:100%"});
+  const rm=el("button",{class:"btn small",type:"button",text:"Remover foto"});
+  const fmsg=el("small",{text:"JPG, PNG ou WEBP. A foto é ajustada automaticamente."});
+  fi.addEventListener("change",async()=>{ const file=fi.files&&fi.files[0]; if(!file) return;
+    if(!/^image\/(jpeg|png|webp)$/.test(file.type)||file.size>15e6){ fmsg.textContent="Escolha uma imagem JPG, PNG ou WEBP de até 15 MB."; return; }
+    fmsg.textContent="Enviando foto…";
+    try{ const blob=await resizeImage(file); foto=await window.ESCRITOR_DB.uploadFoto(blob); showPrev(); fmsg.textContent="Foto enviada. Clique em Salvar para aplicar no site."; }
+    catch(err){ fmsg.textContent=errMsg(err); } });
+  rm.addEventListener("click",()=>{ foto=""; fi.value=""; showPrev(); fmsg.textContent="Foto removida. Clique em Salvar para aplicar."; });
+  const ag=el("input",{id:"abIdade",type:"number",min:"1",max:"129",inputmode:"numeric",style:"max-width:140px"}); if(IDADE_OK(cur.idade)) ag.value=String(cur.idade);
   const f=el("form",{class:"aform",novalidate:""},
+    el("div",{class:"field"},el("label",{for:"abFoto",text:"Foto oficial"}),el("div",{style:"display:flex;gap:16px;align-items:flex-end;flex-wrap:wrap"},prev,el("div",{style:"display:grid;gap:8px"},fi,rm,fmsg))),
+    el("div",{class:"field"},el("label",{for:"abIdade",text:"Idade"}),ag),
     el("div",{class:"field"},el("label",{for:"abBig",text:"Frase de apresentação"}),a),
     el("div",{class:"field"},el("label",{for:"abP1",text:"Primeiro parágrafo"}),b),
     el("div",{class:"field"},el("label",{for:"abP2",text:"Segundo parágrafo"}),c));
-  const s=el("button",{class:"btn small gold",type:"submit",text:"Salvar biografia"});
+  const s=el("button",{class:"btn small gold",type:"submit",text:"Salvar"});
   f.append(el("div",{class:"formrow"},el("small",{text:"Aparece na seção Sobre para todos os visitantes."}),s),msg);
-  f.addEventListener("submit",async e=>{ e.preventDefault(); const d={big:clean(a.value,300),p1:clean(b.value,1200),p2:clean(c.value,1200)}; if(d.big.length<3){ msg.className="msg bad"; msg.textContent="Escreva a frase de apresentação."; return; } s.disabled=true; try{ await write("site/sobre",d); toast("Biografia salva."); }catch(err){ msg.className="msg bad"; msg.textContent=errMsg(err); } finally{ s.disabled=false; } });
+  f.addEventListener("submit",async e=>{ e.preventDefault(); const n=parseInt(ag.value,10); const d={big:clean(a.value,300),p1:clean(b.value,1200),p2:clean(c.value,1200),foto:foto||"",idade:IDADE_OK(n)?n:null}; if(ag.value&&!IDADE_OK(n)){ msg.className="msg bad"; msg.textContent="Confira a idade."; return; } if(d.big.length<3){ msg.className="msg bad"; msg.textContent="Escreva a frase de apresentação."; return; } s.disabled=true; try{ await write("site/sobre",d); toast("Sobre salvo."); }catch(err){ msg.className="msg bad"; msg.textContent=errMsg(err); } finally{ s.disabled=false; } });
   p.append(el("h2",{text:"Sobre o autor",style:"margin:0"}),f);
 }
 function tabMine(p){
@@ -595,8 +622,13 @@ function applyRole(){
 }
 function applyAbout(){
   if (!S.sobre) return;
-  const v=S.sobre; if(typeof v.big==="string"&&v.big) $("#bioBig").textContent=v.big.slice(0,300);
+  const v=S.sobre;
+  const port=document.querySelector("#sobre .portrait");
+  if (port){ if (FOTO_OK(v.foto)){ port.replaceChildren(el("img",{src:v.foto,alt:"Foto de Andrade",loading:"lazy",style:"width:100%;height:100%;object-fit:cover;display:block"})); port.style.padding="0"; port.style.borderStyle="solid"; } }
+  let ida=$("#bioIdade"); if(!ida){ ida=el("span",{class:"mono",id:"bioIdade",style:"display:block;margin:0 0 14px"}); $("#bioBig").before(ida); }
+  ida.textContent = IDADE_OK(v.idade) ? `${v.idade} anos` : ""; ida.hidden = !ida.textContent; if(typeof v.big==="string"&&v.big) $("#bioBig").textContent=v.big.slice(0,300);
   $("#bioP1").textContent=typeof v.p1==="string"?v.p1.slice(0,1200):""; $("#bioP2").textContent=typeof v.p2==="string"?v.p2.slice(0,1200):"";
+  { const p2=$("#bioP2"), t=p2.textContent, k="Comprar o livro", i=t.indexOf(k); if(i>=0){ p2.replaceChildren(t.slice(0,i), el("a",{href:"https://pay.kiwify.com.br/RNsQhYc",target:"_blank",rel:"noopener noreferrer",text:k}), t.slice(i+k.length)); } }
   $("#bioP1").hidden=!$("#bioP1").textContent; $("#bioP2").hidden=!$("#bioP2").textContent; $("#bioDraft").hidden=true;
 }
 
