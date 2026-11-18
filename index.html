@@ -77,7 +77,13 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;transitio
 header.top.scrolled{background:rgba(19,14,10,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-color:var(--line)}
 .bar{display:flex;align-items:center;justify-content:space-between;gap:16px;height:72px}
 .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
-.brand svg{width:26px;height:26px;flex:none}
+.brand .pyr{position:relative;width:36px;height:40px;flex:none;display:grid;place-items:center;perspective:200px}
+.brand .pyr svg{width:34px;height:34px;display:block;filter:drop-shadow(0 3px 6px rgba(201,160,90,.35));animation:pyrFloat 4.2s ease-in-out infinite;transform-origin:50% 60%}
+.brand .pyr-shadow{position:absolute;left:50%;bottom:-2px;width:22px;height:4px;margin-left:-11px;border-radius:50%;background:radial-gradient(rgba(0,0,0,.55),transparent 70%);animation:pyrShadow 4.2s ease-in-out infinite}
+.brand:hover .pyr svg{animation-duration:2.2s}
+@keyframes pyrFloat{0%,100%{transform:translateY(1px) rotateY(-14deg)}50%{transform:translateY(-4px) rotateY(14deg)}}
+@keyframes pyrShadow{0%,100%{transform:scaleX(1);opacity:.8}50%{transform:scaleX(.7);opacity:.45}}
+@media (prefers-reduced-motion:reduce){.brand .pyr svg,.brand .pyr-shadow{animation:none}}
 .brand .sig{display:flex;flex-direction:column;line-height:1}
 .brand .sig b{font:600 15px/1 var(--sans);letter-spacing:.42em}
 .brand .sig span{font:500 9px/1 var(--mono);letter-spacing:.5em;color:var(--mute);margin-top:6px}
@@ -506,8 +512,18 @@ nav.main a{white-space:nowrap}
 
 <header class="top" id="top">
   <div class="wrap bar">
-    <a class="brand" href="#inicio" aria-label="Andrade Escritor — início">
-      <svg aria-hidden="true"><use href="#tri"/></svg>
+    <a class="brand" href="#inicio" id="brandLink" aria-label="Andrade Escritor — voltar ao início">
+      <span class="pyr" aria-hidden="true"><svg viewBox="0 0 40 40">
+        <defs>
+          <linearGradient id="pyrL" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F6DFA6"/><stop offset="1" stop-color="#B8893F"/></linearGradient>
+          <linearGradient id="pyrR" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9A6E2E"/><stop offset="1" stop-color="#4E3412"/></linearGradient>
+          <linearGradient id="pyrB" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#6B4A1C"/><stop offset="1" stop-color="#2E1F0B"/></linearGradient>
+        </defs>
+        <path d="M20 3 L5 31 L22 35 Z" fill="url(#pyrL)"/>
+        <path d="M20 3 L22 35 L35 30 Z" fill="url(#pyrR)"/>
+        <path d="M5 31 L22 35 L35 30" fill="none" stroke="url(#pyrB)" stroke-width=".8"/>
+        <path d="M20 3 L22 35" stroke="#FFF1C9" stroke-opacity=".55" stroke-width=".6"/>
+      </svg><i class="pyr-shadow"></i></span>
       <span class="sig"><b>ANDRADE</b><span>ESCRITOR</span></span>
     </a>
     <nav class="main" aria-label="Navegação principal">
