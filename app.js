@@ -47,10 +47,21 @@ const S = {
   ready:false, db:null, user:null, uid:null, name:"", role:"visitante",
   postsDb:{}, drafts:[], members:[], sobre:null,
   all:[], byUser:{}, mod:{aprovados:[],ocultos:[]}, reports:[], myReports:new Set(), writable:true, lastSend:0,
-  visible(c){ return this.mod.aprovados.includes(c.id) && !this.mod.ocultos.includes(c.id); },
+  legacy:[], pub:[],
+  visible(c){ return cApproved(c) && !cHidden(c); },
   countFor(slug){ return this.all.filter(c=>c.post===slug && this.visible(c)).length; }
 };
 const isAdmin = () => S.role==="admin";
+/* Comentários: os antigos (c/…) usam a lista de moderação; os de leitores (tabela própria) têm status no servidor */
+const cApproved = c => c.pub ? c.st==="aprovado" : S.mod.aprovados.includes(c.id);
+const cHidden = c => c.pub ? c.st==="oculto" : S.mod.ocultos.includes(c.id);
+function mergeComments(){ S.all=[...S.legacy, ...S.pub]; }
+async function loadPubComments(){
+  if(!window.ESCRITOR_DB) return;
+  try{ const rows=await window.ESCRITOR_DB.comentarios();
+    S.pub=rows.map(r=>({id:r.id,post:r.post,texto:String(r.texto||"").slice(0,600),em:r.criado_em,nome:r.nome||"Anônimo",anon:!r.nome,pub:true,st:r.status,uid:null}));
+    mergeComments(); refresh(); }catch{}
+}
 
 function sanitizePost(o){
   return { cat: CAT_IDS.includes(o.cat) ? o.cat : "textos",
@@ -222,12 +233,17 @@ addEventListener("load",keepAnchor);
 /* Folha (políticas / conta) */
 const SHEETS={
   privacidade:["Política de privacidade",[
-    "Este site não usa cookies de publicidade nem ferramentas de rastreamento.",
-    "Leitores não precisam de cadastro: nenhum dado pessoal de visitante é coletado. Só o autor e membros convidados têm login, com e-mail e senha guardados de forma protegida no Supabase.",
-    "As fontes são carregadas do Google Fonts. Comentários sobre os textos são feitos no Instagram @andradeescritor, seguindo a política do próprio Instagram."]],
+    "Esta política segue a Lei Geral de Proteção de Dados (LGPD, Lei 13.709/2018). O responsável pelos dados é Andrade, autor deste site. Contato: Instagram @andradeescritor.",
+    "Visitas: para saber quantas pessoas leem o site, contamos cada visita uma vez por dia, por aparelho, junto com o país, que é estimado pelo fuso horário do aparelho. Não guardamos IP, nome, localização exata nem qualquer dado que identifique você. Para não contar a mesma pessoa duas vezes no dia, o navegador guarda só a data da última visita.",
+    "Inscrição: se você se inscrever, guardamos nome, sobrenome, e-mail, país e a data da sua autorização, com a única finalidade de enviar novas publicações por e-mail (base legal: consentimento). Você pode cancelar e pedir para ver, corrigir ou apagar seus dados a qualquer momento pelo Instagram @andradeescritor.",
+    "Comentários: você pode comentar com nome ou como anônimo. Guardamos só o nome escolhido (se houver), o texto e a data. Todo comentário passa por moderação antes de aparecer.",
+    "Este site não usa cookies de publicidade, pixels nem ferramentas de rastreamento de terceiros. Seus dados não são vendidos nem compartilhados.",
+    "Serviços usados: os dados ficam guardados no Supabase, com acesso restrito ao autor. As fontes vêm do Google Fonts. Se você escolher outro idioma, a página é aberta pelo Google Tradutor, que segue a política do Google.",
+    "Seus direitos (LGPD, art. 18): confirmar se temos dados seus, acessar, corrigir, apagar, revogar o consentimento e pedir informações sobre o uso. É só pedir pelo Instagram @andradeescritor."]],
   comentarios:["Política de comentários",[
     "Os comentários são bem-vindos quando conversam com o texto.",
     "Todo comentário passa por moderação antes de ficar público.",
+    "Você pode comentar com seu nome ou como anônimo. Comentários anônimos seguem as mesmas regras.",
     "Não são aprovados: ofensas, discriminação, ameaças, spam, propaganda, links suspeitos ou dados pessoais de terceiros.",
     "Qualquer leitor pode denunciar um comentário. Comentários denunciados são revisados e podem ser ocultados ou removidos.",
     "Limite: 600 caracteres por comentário e um envio a cada 30 segundos."]]
@@ -277,33 +293,33 @@ function renderComments(){
     st.append(el("div",{class:"notice"},"Comente esta publicação no ", el("a",{href:IG,target:"_blank",rel:"noopener noreferrer",text:"Instagram @andradeescritor"}),"."));
     return;
   }
-  const items=S.all.filter(c=>c.post===current.slug&&(S.visible(c)||c.uid===S.uid||isAdmin())).sort((a,b)=>b.em.localeCompare(a.em));
+  const items=S.all.filter(c=>c.post===current.slug&&(S.visible(c)||(c.uid&&c.uid===S.uid)||isAdmin())).sort((a,b)=>b.em.localeCompare(a.em));
   $("#cCount").textContent=pad(items.filter(c=>S.visible(c)).length);
   if (!items.length) st.append(el("p",{class:"mono",style:"margin-top:16px",text:"Seja o primeiro a comentar."}));
   list.hidden=!items.length;
   items.slice(0,cShown).forEach(c=>list.append(commentItem(c)));
   $("#cMore").hidden=items.length<=cShown;
   form.hidden=!S.writable;
-  if (!S.writable) st.append(el("div",{class:"notice"},"Seu acesso permite ler, mas não comentar. Comente pelo ", el("a",{href:IG,target:"_blank",rel:"noopener noreferrer",text:"Instagram"}),"."));
+
   const saved=store.get("ae-nome"); if(saved&&!$("#cName").value) $("#cName").value=saved;
 }
 $("#cMore").addEventListener("click",()=>{ cShown+=10; renderComments(); });
 function fmtDate(iso){ try{ const d=new Date(iso); if(isNaN(d)) return ""; return d.toLocaleDateString("pt-BR",{day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"}); }catch{ return ""; } }
 function commentItem(c, withPost=false){
-  const approved=S.mod.aprovados.includes(c.id), hidden=S.mod.ocultos.includes(c.id), reported=S.reports.some(r=>r.cid===c.id);
+  const approved=cApproved(c), hidden=cHidden(c), reported=S.reports.some(r=>r.cid===c.id);
   const li=el("li",{});
   if (withPost){ const p=POSTS.find(x=>x.slug===c.post); li.append(el("span",{class:"mono",text:"Em: "+(p?p.title:c.post)})); }
   li.append(el("div",{class:"chead"},el("b",{text:c.nome||"Leitor"}),el("time",{datetime:c.em,text:fmtDate(c.em)})), el("p",{class:"ctext",text:c.texto}));
   const foot=el("div",{class:"cfoot"});
-  if (!approved&&!hidden) foot.append(el("span",{class:"tag pend",text:c.uid===S.uid?"Aguardando aprovação":"Pendente"}));
+  if (!approved&&!hidden) foot.append(el("span",{class:"tag pend",text:c.uid&&c.uid===S.uid?"Aguardando aprovação":"Pendente"}));
   if (hidden) foot.append(el("span",{class:"tag hid",text:"Oculto"}));
   if (isAdmin()&&reported) foot.append(el("span",{class:"tag rep",text:"Denunciado"}));
   if (isAdmin()){
     if (!approved||hidden) foot.append(btn("Aprovar","mini ok",()=>moderate(c,"aprovar")));
     if (!hidden) foot.append(btn("Ocultar","mini bad",()=>moderate(c,"ocultar")));
     foot.append(armed("Excluir",()=>removeComment(c)));
-  } else if (c.uid===S.uid){ foot.append(armed("Excluir meu comentário",()=>removeComment(c))); }
-  else if (approved){ const done=S.myReports.has(c.id); const b=btn(done?"Denunciado":"Denunciar","mini",()=>report(c,b)); if(done) b.disabled=true; foot.append(b); }
+  } else if (c.uid&&c.uid===S.uid){ foot.append(armed("Excluir meu comentário",()=>removeComment(c))); }
+  else if (approved&&S.uid){ const done=S.myReports.has(c.id); const b=btn(done?"Denunciado":"Denunciar","mini",()=>report(c,b)); if(done) b.disabled=true; foot.append(b); }
   li.append(foot); return li;
 }
 function setErr(f,e,msg){ const box=$(f); msg?box.setAttribute("data-invalid",""):box.removeAttribute("data-invalid"); $(e).textContent=msg||""; const inp=box.querySelector("input,textarea"); inp.setAttribute("aria-invalid",msg?"true":"false"); if(msg) inp.setAttribute("aria-describedby",e.slice(1)); }
@@ -313,9 +329,10 @@ $("#cForm").addEventListener("submit", async e=>{
   e.preventDefault(); if(sending||!current) return;
   const msg=$("#cMsg"); msg.className="msg"; msg.textContent="";
   if ($("#cSite").value){ msg.textContent="Comentário enviado para moderação."; msg.className="msg ok"; return; }
-  const nome=clean($("#cName").value).replace(/\n/g," "), texto=clean($("#cText").value);
+  const anon=$("#cAnon").checked;
+  const nome=anon?"":clean($("#cName").value).replace(/\n/g," "), texto=clean($("#cText").value);
   let bad=false;
-  if (nome.length<2||nome.length>40){ setErr("#fName","#eName","Escreva um nome entre 2 e 40 caracteres."); bad=true; } else setErr("#fName","#eName","");
+  if (!anon&&(nome.length<2||nome.length>40)){ setErr("#fName","#eName","Escreva um nome entre 2 e 40 caracteres ou marque Comentar como anônimo."); bad=true; } else setErr("#fName","#eName","");
   const links=(texto.match(/https?:\/\/|www\./gi)||[]).length;
   if (texto.length<3){ setErr("#fText","#eText","O comentário precisa ter pelo menos 3 caracteres."); bad=true; }
   else if (texto.length>600){ setErr("#fText","#eText","Reduza o comentário para até 600 caracteres."); bad=true; }
@@ -324,23 +341,23 @@ $("#cForm").addEventListener("submit", async e=>{
   if (bad){ const f=document.querySelector("[data-invalid] input,[data-invalid] textarea"); if(f) f.focus(); return; }
   const last=Number(store.get("ae-ult")||0), wait=30000-(Date.now()-Math.max(last,S.lastSend));
   if (wait>0){ msg.textContent=`Aguarde ${Math.ceil(wait/1000)} s para enviar outro comentário.`; msg.className="msg bad"; return; }
-  const mine=S.byUser[S.uid]?.itens||[];
-  if (mine.some(c=>c.post===current.slug&&c.texto===texto)){ msg.textContent="Você já enviou este mesmo comentário."; msg.className="msg bad"; return; }
-  if (mine.length>=60){ msg.textContent="Você atingiu o limite de comentários. Exclua algum antigo para enviar outro."; msg.className="msg bad"; return; }
   sending=true; const b=$("#cSend"); b.disabled=true; b.replaceChildren(el("span",{class:"spin","aria-hidden":"true"}),el("span",{text:"Enviando…"}));
   try{
-    await write("c/"+S.uid,{nome,itens:[...mine,{id:newId(),post:current.slug,texto,em:new Date().toISOString()}]});
-    S.lastSend=Date.now(); store.set("ae-ult",String(S.lastSend)); store.set("ae-nome",nome);
+    await window.ESCRITOR_DB.comentar(current.slug,nome,texto);
+    S.lastSend=Date.now(); store.set("ae-ult",String(S.lastSend)); if(nome) store.set("ae-nome",nome);
+    if(isAdmin()) loadPubComments();
     $("#cText").value=""; $("#cCounter").textContent="0 / 600";
-    msg.textContent=isAdmin()?"Comentário salvo. Aprove-o para torná-lo público.":"Comentário enviado. Ele aparece para todos depois da moderação."; msg.className="msg ok";
-  }catch(err){ msg.className="msg bad"; msg.textContent=errMsg(err); if(err&&err.code==="invalid_argument"){ S.writable=false; renderComments(); } }
+    msg.textContent=isAdmin()?"Comentário salvo. Aprove-o para torná-lo público.":(anon?"Comentário anônimo enviado. Ele aparece depois da moderação.":"Comentário enviado. Ele aparece para todos depois da moderação."); msg.className="msg ok";
+  }catch(err){ msg.className="msg bad"; msg.textContent="Não foi possível enviar agora. Confira o texto (no máximo 1 link) e tente de novo."; }
   finally{ sending=false; b.disabled=false; b.replaceChildren(el("span",{text:"Enviar comentário"})); }
 });
 async function removeComment(c){
+  if(c.pub){ try{ await window.ESCRITOR_DB.excluirComentario(c.id); toast("Comentário excluído."); loadPubComments(); }catch(err){ toast(errMsg(err)); } return; }
   try{ const d=S.byUser[c.uid]; if(!d) return; await write("c/"+c.uid,{nome:d.nome||"",itens:d.itens.filter(x=>x.id!==c.id)}); toast("Comentário excluído."); }
   catch(err){ toast(errMsg(err)); }
 }
 async function moderate(c,action){
+  if(c.pub){ try{ await window.ESCRITOR_DB.moderarComentario(c.id, action==="aprovar"?"aprovado":"oculto"); toast(action==="aprovar"?"Comentário aprovado.":"Comentário ocultado."); loadPubComments(); }catch(err){ toast(errMsg(err)); } return; }
   const m={aprovados:[...S.mod.aprovados],ocultos:[...S.mod.ocultos]}; const live=new Set(S.all.map(x=>x.id));
   if (action==="aprovar"){ if(!m.aprovados.includes(c.id)) m.aprovados.push(c.id); m.ocultos=m.ocultos.filter(x=>x!==c.id); }
   else if(!m.ocultos.includes(c.id)) m.ocultos.push(c.id);
@@ -362,7 +379,7 @@ function openAccount(tab){
   drawAccount(); showSheet(true,"aTitle");
   setTimeout(()=>{ const c=$("#aClose"); if(c) c.focus(); },30);
 }
-const pendingCount=()=>S.all.filter(c=>!S.mod.aprovados.includes(c.id)&&!S.mod.ocultos.includes(c.id)).length;
+const pendingCount=()=>S.all.filter(c=>!cApproved(c)&&!cHidden(c)).length;
 function drawAccount(){
   if (sheetMode!=="account") return;
   const box=$("#sBox"); const keep=box.scrollTop;
@@ -492,8 +509,8 @@ function tabDrafts(p){
 }
 function tabComments(p){
   p.append(el("h2",{text:"Comentários",style:"margin:0"}),el("p",{text:"Aprove para publicar, oculte para esconder ou exclua de vez."}));
-  const pend=S.all.filter(c=>!S.mod.aprovados.includes(c.id)&&!S.mod.ocultos.includes(c.id));
-  const repIds=new Set(S.reports.map(r=>r.cid)); const rep=S.all.filter(c=>repIds.has(c.id)&&!S.mod.ocultos.includes(c.id));
+  const pend=S.all.filter(c=>!cApproved(c)&&!cHidden(c));
+  const repIds=new Set(S.reports.map(r=>r.cid)); const rep=S.all.filter(c=>repIds.has(c.id)&&!cHidden(c));
   const recent=S.all.filter(c=>S.visible(c)).sort((a,b)=>b.em.localeCompare(a.em)).slice(0,20);
   [["Aguardando aprovação",pend],["Denunciados",rep],["Publicados recentemente",recent]].forEach(([t,arr])=>{
     p.append(el("h3",{class:"mono",style:"margin:24px 0 8px",text:`${t} · ${arr.length}`}));
@@ -612,10 +629,10 @@ function tabPublic(p){
   const top=Object.entries(byC).sort((a,b)=>b[1]-a[1]).slice(0,10);
   if(top.length){ p.append(el("h3",{text:"Visitantes por país",style:"margin:26px 0 8px;font-size:15px"})); const ol=el("ul",{class:"alist"}); top.forEach(([c,n])=>ol.append(el("li",{},el("div",{class:"tx"},el("b",{text:countryLabel(c)}),el("span",{text:nf(n)+" visitas"}))))); p.append(ol); }
   p.append(el("div",{class:"formrow",style:"margin-top:26px"},el("h3",{text:`Inscritos (${nf(PUB.ins.length)})`,style:"margin:0;font-size:15px"}),
-    PUB.ins.length?btn("Baixar lista (CSV)","btn small",()=>{ const q=v=>`"${String(v??"").replace(/"/g,'""')}"`; const csv="\ufeffNome;E-mail;País;Data\n"+PUB.ins.map(r=>[r.nome,r.email,countryLabel(r.pais||"??"),new Date(r.criado_em).toLocaleString("pt-BR")].map(q).join(";")).join("\n"); const a=el("a",{href:URL.createObjectURL(new Blob([csv],{type:"text/csv"})),download:"inscritos-andrade-escritor.csv"}); document.body.append(a); a.click(); a.remove(); }):el("span")));
+    PUB.ins.length?btn("Baixar lista (CSV)","btn small",()=>{ const q=v=>`"${String(v??"").replace(/"/g,'""')}"`; const csv="\ufeffNome;Sobrenome;E-mail;País;Inscrição;Autorizou em\n"+PUB.ins.map(r=>[r.nome,r.sobrenome,r.email,countryLabel(r.pais||"??"),new Date(r.criado_em).toLocaleString("pt-BR"),r.consentiu_em?new Date(r.consentiu_em).toLocaleString("pt-BR"):"antes do registro"].map(q).join(";")).join("\n"); const a=el("a",{href:URL.createObjectURL(new Blob([csv],{type:"text/csv"})),download:"inscritos-andrade-escritor.csv"}); document.body.append(a); a.click(); a.remove(); }):el("span")));
   if(!PUB.ins.length){ p.append(el("p",{class:"mono",text:"Ainda não há inscritos."})); return; }
   const list=el("ul",{class:"alist"});
-  PUB.ins.forEach(r=>list.append(el("li",{},el("div",{class:"tx"},el("b",{text:r.nome}),el("span",{text:`${r.email} · ${countryLabel(r.pais||"??")} · ${new Date(r.criado_em).toLocaleDateString("pt-BR")}`})),
+  PUB.ins.forEach(r=>list.append(el("li",{},el("div",{class:"tx"},el("b",{text:[r.nome,r.sobrenome].filter(Boolean).join(" ")}),el("span",{text:`${r.email} · ${countryLabel(r.pais||"??")} · ${new Date(r.criado_em).toLocaleDateString("pt-BR")}`})),
     armed("Remover",async()=>{ try{ await window.ESCRITOR_DB.removerInscrito(r.id); PUB.ins=PUB.ins.filter(x=>x.id!==r.id); toast("Inscrito removido."); safeRedraw(); }catch(err){ toast(errMsg(err)); } }))));
   p.append(list);
 }
@@ -634,7 +651,8 @@ function tabSecurity(p){
     ["Ativo","Validação e limites","Tamanho máximo nos campos, um comentário a cada 30 s, bloqueio de repetição, no máximo 1 link por comentário e armadilha anti-robô."],
     ["Ativo","Política de segurança de conteúdo","A página só carrega scripts e fontes de origens autorizadas; o resto é bloqueado pelo navegador. Links externos abrem sem dar acesso à página."],
     ["Ativo","Exclusão em duas etapas","Apagar qualquer item pede confirmação, para evitar perdas por clique acidental."],
-    ["Ativo","Sem rastreadores","Nenhum script de terceiros, cookie de publicidade ou pixel."],
+    ["Ativo","Sem rastreadores","Nenhum cookie de publicidade ou pixel. A contagem de visitas guarda só data e país, sem dados pessoais (LGPD)."],
+    ["Ativo","Comentários e inscrições protegidos","Leitores enviam sem login, mas o servidor valida tudo, limita envios em sequência e nunca mostra comentários antes da sua aprovação."],
     ["Recomendado","Senha forte e única","Use uma senha longa no seu login, guardada num gerenciador de senhas, e ative a verificação em duas etapas do e-mail. É a principal defesa do painel do autor."],
     ["Ativo","Dados no servidor","Publicações, rascunhos e textos de membros ficam no banco de dados do site, não no navegador: abra o painel de qualquer aparelho."]
   ];
@@ -672,7 +690,7 @@ function ingestComments(snap){
   const all=[], byUser={};
   snap.docs.forEach(d=>{ const v=d.data()||{}; const itens=Array.isArray(v.itens)?v.itens:[]; byUser[d.id]={nome:typeof v.nome==="string"?v.nome.slice(0,40):"",itens};
     itens.forEach(x=>{ if(!x||typeof x.id!=="string"||typeof x.post!=="string"||typeof x.texto!=="string") return; all.push({id:x.id.slice(0,64),post:x.post,texto:x.texto.slice(0,600),em:String(x.em||""),uid:d.id,nome:byUser[d.id].nome}); }); });
-  S.all=all; S.byUser=byUser; refresh();
+  S.legacy=all; S.byUser=byUser; mergeComments(); refresh();
 }
 async function init(){
   const B=window.ESCRITOR_DB; if (!B) return;
@@ -685,12 +703,13 @@ async function init(){
     const member = user && !admin ? await user.isMember() : false;
     if (admin) S.name="Andrade"; /* no site, o autor aparece só como Andrade */
     S.role = admin ? "admin" : member ? "membro" : S.uid ? "leitor" : "visitante";
-    S.writable = !!S.uid;
+    S.writable = true;
     S.ready = true;
     if (S.uid) startPresence();
     db.collection("posts").onSnapshot(s=>{ const m={}; s.docs.forEach(d=>{ const v=d.data(); if(v&&typeof v==="object") m[d.id]=v; }); S.postsDb=m; refresh(); },()=>{});
     db.doc("site/sobre").onSnapshot(s=>{ S.sobre=s.exists?s.data():null; applyAbout(); },()=>{});
     db.collection("c").onSnapshot(ingestComments,()=>{});
+    loadPubComments(); setInterval(()=>{ if(document.visibilityState==="visible") loadPubComments(); },60000);
     db.doc("mod/estado").onSnapshot(s=>{ const v=s.exists?s.data():{}; S.mod={aprovados:Array.isArray(v.aprovados)?v.aprovados:[],ocultos:Array.isArray(v.ocultos)?v.ocultos:[]}; refresh(); },()=>{});
     if (admin||member) db.collection("membros").onSnapshot(s=>{ S.members=s.docs.map(d=>({id:d.id,...(d.data()||{})})); refresh(); },()=>{});
     if (admin){
@@ -829,13 +848,15 @@ const LANGS=["pt","en","es","fr","de","it","nl","pl","ru","uk","tr","ar","he","f
   let last=0;
   f.addEventListener("submit",async e=>{ e.preventDefault();
     if($("#inSite").value) return;
-    const nome=clean($("#inNome").value,80).replace(/\n/g," "), email=$("#inEmail").value.trim().toLowerCase();
+    const nome=clean($("#inNome").value,80).replace(/\n/g," "), sobrenome=clean($("#inSobrenome").value,80).replace(/\n/g," "), email=$("#inEmail").value.trim().toLowerCase();
     if(nome.length<2){ msg.className="msg bad"; msg.textContent="Digite seu nome."; $("#inNome").focus(); return; }
+    if(sobrenome.length<2){ msg.className="msg bad"; msg.textContent="Digite seu sobrenome."; $("#inSobrenome").focus(); return; }
     if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ msg.className="msg bad"; msg.textContent="Digite um e-mail válido."; $("#inEmail").focus(); return; }
+    if(!$("#inOk").checked){ msg.className="msg bad"; msg.textContent="Para se inscrever, marque a autorização de uso do e-mail."; $("#inOk").focus(); return; }
     if(Date.now()-last<10000){ msg.className="msg bad"; msg.textContent="Aguarde alguns segundos."; return; }
     if(!window.ESCRITOR_DB){ msg.className="msg bad"; msg.textContent="Não foi possível conectar. Tente de novo em instantes."; return; }
     last=Date.now(); b.disabled=true; msg.className="msg"; msg.textContent="Enviando…";
-    try{ await window.ESCRITOR_DB.inscrever(nome,email,sel.value,(navigator.language||"").slice(0,20)); store.set("ae_inscrito","1"); f.reset(); sel.value=MY_COUNTRY; msg.className="msg ok"; msg.textContent=`Pronto, ${nome.split(" ")[0]}! Você vai receber as novidades no seu e-mail.`; }
+    try{ await window.ESCRITOR_DB.inscrever(nome,sobrenome,email,sel.value,(navigator.language||"").slice(0,20),true); store.set("ae_inscrito","1"); f.reset(); sel.value=MY_COUNTRY; msg.className="msg ok"; msg.textContent=`Pronto, ${nome.split(" ")[0]}! Você vai receber as novidades no seu e-mail.`; }
     catch(err){ msg.className="msg bad"; msg.textContent="Não foi possível concluir agora. Confira os dados e tente de novo."; }
     finally{ b.disabled=false; }
   });

@@ -84,13 +84,23 @@ window.ESCRITOR_DB = {
     const { error } = await sb.auth.signInWithPassword({ email, password: senha });
     if (error) throw error;
   },
-  async inscrever(nome, email, pais, idioma){
-    const { error } = await sb.rpc("escritor_inscrever", { p_nome: nome, p_email: email, p_pais: pais, p_idioma: idioma });
+  async inscrever(nome, sobrenome, email, pais, idioma, consentimento){
+    const { error } = await sb.rpc("escritor_inscrever", { p_nome: nome, p_sobrenome: sobrenome, p_email: email, p_pais: pais, p_idioma: idioma, p_consentimento: consentimento === true });
     if (error) throw fail(error);
   },
+  async comentar(post, nome, texto){
+    const { error } = await sb.rpc("escritor_comentar", { p_post: post, p_nome: nome || null, p_texto: texto });
+    if (error) throw fail(error);
+  },
+  async comentarios(){
+    const { data, error } = await sb.from("escritor_comentarios").select("id,post,nome,texto,status,criado_em").order("criado_em", { ascending: false }).limit(3000);
+    if (error) throw fail(error); return data || [];
+  },
+  async moderarComentario(id, status){ const { error } = await sb.from("escritor_comentarios").update({ status }).eq("id", id); if (error) throw fail(error); },
+  async excluirComentario(id){ const { error } = await sb.from("escritor_comentarios").delete().eq("id", id); if (error) throw fail(error); },
   async visita(pais){ await sb.rpc("escritor_visita", { p_pais: pais }); },
   async inscritos(){
-    const { data, error } = await sb.from("escritor_inscritos").select("id,nome,email,pais,idioma,criado_em").order("criado_em", { ascending: false }).limit(5000);
+    const { data, error } = await sb.from("escritor_inscritos").select("id,nome,sobrenome,email,pais,idioma,criado_em,consentiu_em").order("criado_em", { ascending: false }).limit(5000);
     if (error) throw fail(error); return data || [];
   },
   async removerInscrito(id){ const { error } = await sb.from("escritor_inscritos").delete().eq("id", id); if (error) throw fail(error); },
