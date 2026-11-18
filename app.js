@@ -371,16 +371,16 @@ function drawAccount(){
     out ? el("div",{class:"formrow",style:"gap:8px;margin:0"},out,close) : close));
   if (S.role==="visitante"){ box.append(visitorPanel()); return; }
   const tabs = isAdmin()
-    ? [["publicacoes","Publicações",POSTS.length],["rascunhos","Rascunhos",S.drafts.length],["comentarios","Comentários",pendingCount()],["membros","Membros",S.members.filter(m=>m.id!=="_acesso").length],["sobre","Sobre",0],["seguranca","Segurança",0]]
-    : S.role==="membro" ? [["membros","Área de membros",S.members.filter(m=>m.id!=="_acesso").length],["meus","Meus comentários",0],["seguranca","Segurança",0]]
-    : [["meus","Meus comentários",0],["seguranca","Segurança",0]];
+    ? [["publicacoes","Publicações",POSTS.length],["rascunhos","Rascunhos",S.drafts.length],["comentarios","Comentários",pendingCount()],["membros","Membros",S.members.filter(m=>m.id!=="_acesso").length],["sobre","Sobre",0],["tempo","Tempo online",0],["seguranca","Segurança",0]]
+    : S.role==="membro" ? [["membros","Área de membros",S.members.filter(m=>m.id!=="_acesso").length],["meus","Meus comentários",0],["tempo","Tempo online",0],["seguranca","Segurança",0]]
+    : [["meus","Meus comentários",0],["tempo","Tempo online",0],["seguranca","Segurança",0]];
   if (!tabs.some(t=>t[0]===acctTab)) acctTab=tabs[0][0];
   const bar=el("div",{class:"tabs",role:"tablist","aria-label":"Seções da conta"});
   tabs.forEach(([id,label,n])=>{ const t=el("button",{class:"tab",role:"tab","aria-selected":String(id===acctTab),id:"tab-"+id,"aria-controls":"tabpanel",tabindex:id===acctTab?"0":"-1"}, label); if(n) t.append(el("span",{class:"n",text:String(n)})); t.addEventListener("click",()=>{ acctTab=id; drawAccount(); document.getElementById("tab-"+id)?.focus(); }); bar.append(t); });
   bar.addEventListener("keydown",e=>{ if(e.key!=="ArrowRight"&&e.key!=="ArrowLeft") return; const i=tabs.findIndex(t=>t[0]===acctTab); acctTab=tabs[(i+(e.key==="ArrowRight"?1:-1)+tabs.length)%tabs.length][0]; drawAccount(); document.getElementById("tab-"+acctTab)?.focus(); });
   box.append(bar);
   const pnl=el("div",{class:"tabpanel",role:"tabpanel",id:"tabpanel","aria-labelledby":"tab-"+acctTab});
-  ({publicacoes:tabPosts,rascunhos:tabDrafts,comentarios:tabComments,membros:tabMembers,sobre:tabAbout,seguranca:tabSecurity,meus:tabMine})[acctTab](pnl);
+  ({publicacoes:tabPosts,rascunhos:tabDrafts,comentarios:tabComments,membros:tabMembers,sobre:tabAbout,tempo:tabTime,seguranca:tabSecurity,meus:tabMine})[acctTab](pnl);
   box.append(pnl); box.scrollTop=keep;
   if (active) document.getElementById(active)?.focus();
 }
@@ -535,6 +535,37 @@ function tabMine(p){
   if(!mine.length){ p.append(el("p",{class:"mono",text:"Você ainda não comentou."})); return; }
   const ol=el("ol",{class:"clist"}); mine.forEach(c=>ol.append(commentItem(c,true))); p.append(ol);
 }
+/* Tempo online: o site avisa o servidor a cada minuto enquanto a página está aberta e visível */
+const fmtDur = sec => { sec=Math.max(0,Math.floor(Number(sec)||0)); const d=Math.floor(sec/86400), h=Math.floor(sec%86400/3600), m=Math.floor(sec%3600/60);
+  if (d) return `${d}d ${h}h ${pad(m)}min`; if (h) return `${h}h ${pad(m)}min`; return `${m} min`; };
+const fmtWhen = iso => { const d=new Date(iso); if(isNaN(d)) return "—"; return d.toLocaleDateString("pt-BR",{weekday:"long",day:"2-digit",month:"long",year:"numeric"})+" às "+d.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"}); };
+function tabTime(p){
+  const r=S.presenca;
+  p.append(el("h2",{text:"Tempo online",style:"margin:0"}),el("p",{text:"Conta o tempo em que você fica no site conectado, com a página aberta na tela. Atualiza a cada minuto."}));
+  if(!r){ p.append(el("p",{class:"mono",text:"Carregando… se não aparecer em 1 minuto, recarregue a página."})); return; }
+  const rows=[
+    ["Agora","Online · nesta sessão "+fmtDur(r.sessao_segundos)],
+    ["Última vez online",r.vez_anterior?fmtWhen(r.vez_anterior):"Este é o seu primeiro acesso registrado."],
+    ["Hoje",fmtDur(r.hoje_segundos)],
+    ["Tempo total online",fmtDur(r.total_segundos)]
+  ];
+  const ul=el("ul",{class:"checks"}); rows.forEach(([t,d],i)=>ul.append(el("li",{},el("span",{class:"tag "+(i===0?"ok":""),text:String(i+1)}),el("div",{},el("b",{text:t}),d)))); p.append(ul);
+  const dias=r.dias&&typeof r.dias==="object"?r.dias:{};
+  const ult=[]; for(let i=6;i>=0;i--){ const d=new Date(Date.now()-i*864e5); const k=d.toLocaleDateString("sv-SE",{timeZone:"America/Sao_Paulo"}); ult.push([d,Number(dias[k])||0]); }
+  const max=Math.max(60,...ult.map(x=>x[1]));
+  const bars=el("div",{style:"display:grid;grid-template-columns:repeat(7,1fr);gap:8px;align-items:end;height:120px;margin-top:18px"});
+  ult.forEach(([d,v])=>bars.append(el("div",{style:"display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end",title:fmtDur(v)},
+    el("span",{class:"mono",style:"font-size:11px",text:v?fmtDur(v):""}),
+    el("div",{style:`width:100%;max-width:36px;height:${Math.max(2,Math.round(v/max*80))}px;background:var(--volt);border-radius:2px;opacity:${v?1:.25}`}),
+    el("span",{class:"mono",style:"font-size:11px",text:d.toLocaleDateString("pt-BR",{weekday:"short"}).replace(".","")}))));
+  p.append(el("h3",{text:"Últimos 7 dias",style:"margin:26px 0 0;font-size:15px"}),bars);
+}
+let pingT=null;
+async function presencePing(){
+  if(!S.uid||!window.ESCRITOR_DB||document.visibilityState!=="visible") return;
+  try{ const r=await window.ESCRITOR_DB.ping(); if(r){ S.presenca=r; if(sheetMode==="account"&&acctTab==="tempo") safeRedraw(); } }catch{}
+}
+function startPresence(){ if(pingT) return; presencePing(); pingT=setInterval(presencePing,60000); document.addEventListener("visibilitychange",()=>{ if(document.visibilityState==="visible") presencePing(); }); }
 function tabSecurity(p){
   const rows=[
     ["Ativo","Login protegido","E-mail e senha verificados pelo Supabase. A senha nunca fica salva na página, e depois de 5 tentativas erradas o formulário trava por 1 minuto."],
@@ -590,6 +621,7 @@ async function init(){
     S.role = admin ? "admin" : member ? "membro" : S.uid ? "leitor" : "visitante";
     S.writable = !!S.uid;
     S.ready = true;
+    if (S.uid) startPresence();
     db.collection("posts").onSnapshot(s=>{ const m={}; s.docs.forEach(d=>{ const v=d.data(); if(v&&typeof v==="object") m[d.id]=v; }); S.postsDb=m; refresh(); },()=>{});
     db.doc("site/sobre").onSnapshot(s=>{ S.sobre=s.exists?s.data():null; applyAbout(); },()=>{});
     db.collection("c").onSnapshot(ingestComments,()=>{});

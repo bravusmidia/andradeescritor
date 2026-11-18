@@ -84,6 +84,7 @@ window.ESCRITOR_DB = {
     const { error } = await sb.auth.signInWithPassword({ email, password: senha });
     if (error) throw error;
   },
+  async ping(){ const { data, error } = await sb.rpc("escritor_ping"); if (error) throw fail(error); return data; },
   async signOut(){ await sb.auth.signOut(); },
   async resetPassword(email){
     const { error } = await sb.auth.resetPasswordForEmail(email); /* o link abre a tela de nova senha do login compartilhado */
