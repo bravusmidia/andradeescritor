@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://images.unsplash.com https://kfoapsxrzfebjyvmvktf.supabase.co; connect-src https://kfoapsxrzfebjyvmvktf.supabase.co; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://images.unsplash.com https://kfoapsxrzfebjyvmvktf.supabase.co https://flagcdn.com; connect-src https://kfoapsxrzfebjyvmvktf.supabase.co; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="theme-color" content="#130E0A">
 <link rel="canonical" href="https://bravusmidia.github.io/andradeescritor/">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -332,6 +332,14 @@ form.cform,.aform{margin-top:24px;display:grid;gap:16px;border:1px solid var(--l
 #tomeEdit[hidden]{display:none!important}
 nav.main a{white-space:nowrap}
 a.sym{display:inline-flex;align-items:center;gap:8px}
+.visits{position:absolute;top:28px;right:0;z-index:2;max-width:240px;padding:10px 12px;border:1px solid rgba(201,160,90,.28);background:rgba(19,14,10,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border-radius:var(--radius);display:grid;gap:8px;align-content:start;height:auto}
+.visits .vrow{display:flex;align-items:baseline;gap:6px;font:500 11px var(--mono, monospace);letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.visits b{font:600 18px var(--sans);letter-spacing:0;color:var(--paper)}
+.visits .vdot{width:6px;height:6px;border-radius:50%;background:#7BC67E;box-shadow:0 0 0 3px rgba(123,198,126,.18);align-self:center}
+.visits .vflags{display:grid;grid-template-columns:repeat(auto-fill,16px);grid-auto-rows:12px;gap:4px;align-items:center;max-width:204px}
+.visits .vflags img{width:16px;height:12px;object-fit:cover;border-radius:1px;box-shadow:0 0 0 1px rgba(0,0,0,.35);display:block}
+.visits .vflags .vmore{grid-column:span 2;font:500 10px/12px var(--mono, monospace);color:var(--mute-2)}
+@media (max-width:900px){.visits{position:static;justify-self:start;align-self:flex-start;margin:0 0 22px;max-width:none;padding:8px 10px}.visits .vflags{max-width:260px}.visits b{font-size:15px}}
 .check{display:flex;gap:10px;align-items:flex-start;font:400 14px/1.5 var(--sans);color:var(--mute);cursor:pointer}
 .check input{width:18px;height:18px;margin-top:2px;accent-color:var(--volt);flex:none}
 .grid2.even{grid-template-columns:1fr 1fr}
@@ -603,6 +611,10 @@ a.sym svg{width:18px;height:18px;flex:none}
     <div class="hero-bg" aria-hidden="true">
       <img src="https://images.unsplash.com/photo-1617936805450-ae3b3796137f?w=1920&h=1080&q=72&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1617936805450-ae3b3796137f?w=900&h=1200&q=70&auto=format&fit=crop 900w, https://images.unsplash.com/photo-1617936805450-ae3b3796137f?w=1600&h=900&q=72&auto=format&fit=crop 1600w, https://images.unsplash.com/photo-1617936805450-ae3b3796137f?w=2400&h=1350&q=72&auto=format&fit=crop 2400w" sizes="100vw" alt="" fetchpriority="high" decoding="async">
     </div>
+    <aside class="visits" id="visits" aria-label="Visitantes do site" hidden>
+      <div class="vrow"><span class="vdot" aria-hidden="true"></span><b id="visTotal">0</b><span>visitas</span></div>
+      <div class="vflags" id="visFlags"></div>
+    </aside>
     <div class="hero-grid">
       <div>
         <div class="eyebrow"><i></i><span class="mono">O lado positivo da vida</span></div>

@@ -99,6 +99,7 @@ window.ESCRITOR_DB = {
   async moderarComentario(id, status){ const { error } = await sb.from("escritor_comentarios").update({ status }).eq("id", id); if (error) throw fail(error); },
   async excluirComentario(id){ const { error } = await sb.from("escritor_comentarios").delete().eq("id", id); if (error) throw fail(error); },
   async visita(pais){ await sb.rpc("escritor_visita", { p_pais: pais }); },
+  async visitasPublico(){ const { data, error } = await sb.rpc("escritor_visitas_publico"); if (error) throw fail(error); return data; },
   async inscritos(){
     const { data, error } = await sb.from("escritor_inscritos").select("id,nome,sobrenome,email,pais,idioma,criado_em,consentiu_em").order("criado_em", { ascending: false }).limit(5000);
     if (error) throw fail(error); return data || [];

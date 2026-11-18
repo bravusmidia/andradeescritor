@@ -831,9 +831,23 @@ const LANGS=["pt","en","es","fr","de","it","nl","pl","ru","uk","tr","ar","he","f
 (function(){
   const B=window.ESCRITOR_DB; if(!B) return;
   const hoje=new Date().toLocaleDateString("sv-SE",{timeZone:"America/Sao_Paulo"});
-  if(store.get("ae_visita")===hoje) return;
-  store.set("ae_visita",hoje);
-  B.visita(MY_COUNTRY).catch(()=>{});
+  const first = store.get("ae_visita")!==hoje;
+  if(first) store.set("ae_visita",hoje);
+  (first ? B.visita(MY_COUNTRY).catch(()=>{}) : Promise.resolve()).then(showVisits);
+  async function showVisits(){
+    try{
+      const d=await B.visitasPublico(); if(!d) return;
+      const total=Number(d.total)||0, paises=(Array.isArray(d.paises)?d.paises:[]).filter(c=>/^[A-Z]{2}$/.test(c));
+      if(!total) return;
+      $("#visTotal").textContent=total.toLocaleString("pt-BR");
+      const box=$("#visFlags"); box.replaceChildren();
+      const MAX=18;
+      paises.slice(0,MAX).forEach(c=>box.append(el("img",{src:`https://flagcdn.com/w40/${c.toLowerCase()}.png`,alt:countryLabel(c),title:countryLabel(c),width:"16",height:"12",loading:"lazy",referrerpolicy:"no-referrer"})));
+      if(paises.length>MAX) box.append(el("span",{class:"vmore",text:`+${paises.length-MAX}`,title:paises.slice(MAX).map(countryLabel).join(", ")}));
+      $("#visits").setAttribute("aria-label",`${total.toLocaleString("pt-BR")} visitas de ${paises.length} ${paises.length===1?"país":"países"}`);
+      $("#visits").hidden=false;
+    }catch{}
+  }
 })();
 
 /* Inscrição sem login */
