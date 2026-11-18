@@ -84,6 +84,20 @@ window.ESCRITOR_DB = {
     const { error } = await sb.auth.signInWithPassword({ email, password: senha });
     if (error) throw error;
   },
+  async inscrever(nome, email, pais, idioma){
+    const { error } = await sb.rpc("escritor_inscrever", { p_nome: nome, p_email: email, p_pais: pais, p_idioma: idioma });
+    if (error) throw fail(error);
+  },
+  async visita(pais){ await sb.rpc("escritor_visita", { p_pais: pais }); },
+  async inscritos(){
+    const { data, error } = await sb.from("escritor_inscritos").select("id,nome,email,pais,idioma,criado_em").order("criado_em", { ascending: false }).limit(5000);
+    if (error) throw fail(error); return data || [];
+  },
+  async removerInscrito(id){ const { error } = await sb.from("escritor_inscritos").delete().eq("id", id); if (error) throw fail(error); },
+  async visitas(){
+    const { data, error } = await sb.from("escritor_visitas").select("dia,pais,visitas").order("dia", { ascending: false }).limit(20000);
+    if (error) throw fail(error); return data || [];
+  },
   async uploadFoto(blob){
     const path = "autor/foto-" + Date.now() + ".jpg";
     const { error } = await sb.storage.from("escritor").upload(path, blob, { contentType: "image/jpeg", upsert: false, cacheControl: "31536000" });

@@ -68,8 +68,8 @@ function rebuildPosts(){
   POSTS = out.sort((a,b)=>b.ord-a.ord);
   const rec = window.RECANTO && window.RECANTO.profile && Number(window.RECANTO.profile.texts) || 0;
   const tot = POSTS.length + rec;
-  $("#stat").textContent = `${tot.toLocaleString("pt-BR")} publicações · 1 livro publicado`;
-  $("#stat").title = rec ? `${POSTS.length} no site + ${rec.toLocaleString("pt-BR")} no Recanto das Letras` : "";
+  const nf = n => n.toLocaleString("pt-BR");
+  $("#stat").textContent = rec ? `${nf(POSTS.length)} no site · ${nf(rec)} no Recanto · ${nf(tot)} publicações no total · 1 livro` : `${nf(POSTS.length)} publicações · 1 livro publicado`;
   renderNavCounts();
 }
 
@@ -78,15 +78,15 @@ const header = $("#top");
 addEventListener("scroll", () => header.classList.toggle("scrolled", scrollY>8), {passive:true});
 const navLinks = [...document.querySelectorAll("nav.main a[data-nav]")];
 /* Páginas: cada área abre como uma página própria */
-const PAGES={inicio:["hero","caminhos"],publicacoes:["publicacoes"],livros:["livros"],sobre:["sobre","projetos","membros"],recanto:["recanto"]};
-const SECTIONS=Object.values(PAGES).flat();
+const PAGES={inicio:["hero","caminhos","inscrever"],publicacoes:["publicacoes"],livros:["livros"],sobre:["sobre","projetos","membros"],recanto:["recanto"],inscrever:["inscrever"]};
+const SECTIONS=[...new Set(Object.values(PAGES).flat())];
 let page=null;
-function pageOf(h){ if(!h||h==="inicio"||h==="top") return "inicio"; if(h==="publicacoes"||CAT_IDS.includes(h)||h.startsWith("p-")) return "publicacoes"; if(h==="livros") return "livros"; if(["sobre","projetos","membros"].includes(h)) return "sobre"; if(h==="recanto") return "recanto"; return null; }
+function pageOf(h){ if(!h||h==="inicio"||h==="top") return "inicio"; if(h==="publicacoes"||CAT_IDS.includes(h)||h.startsWith("p-")) return "publicacoes"; if(h==="livros") return "livros"; if(["sobre","projetos","membros"].includes(h)) return "sobre"; if(h==="recanto") return "recanto"; if(h==="inscrever") return "inscrever"; return null; }
 function showPage(p){
   const changed=p!==page; page=p; document.body.dataset.page=p;
   SECTIONS.forEach(id=>{ const s=document.getElementById(id); if(s) s.hidden=!PAGES[p].includes(id); });
   navLinks.forEach(a=>a.setAttribute("aria-current", a.dataset.nav===p?"true":"false"));
-  const titles={inicio:"Andrade Escritor",publicacoes:"Publicações · Andrade Escritor",livros:"Livros · Andrade Escritor",sobre:"Sobre · Andrade Escritor",recanto:"Recanto das Letras · Andrade Escritor"};
+  const titles={inicio:"Andrade Escritor",publicacoes:"Publicações · Andrade Escritor",livros:"Livros · Andrade Escritor",sobre:"Sobre · Andrade Escritor",recanto:"Recanto das Letras · Andrade Escritor",inscrever:"Inscreva-se · Andrade Escritor"};
   document.title=titles[p];
   return changed;
 }
@@ -129,6 +129,7 @@ $("#turnBtn").addEventListener("click", () => {
   const q=$("#tomeQ"); q.classList.add("fade");
   setTimeout(()=>{ tomeI++; showTome(); q.classList.remove("fade"); }, matchMedia("(prefers-reduced-motion: reduce)").matches?0:320);
 });
+$("#tomeEdit").addEventListener("click", () => { if(!isAdmin()) return; const p=POSTS[tomeI%POSTS.length]; if(!p) return; editing={mode:"editar",slug:p.slug,title:p.title,cat:p.cat,text:p.text}; openAccount("publicacoes"); setTimeout(()=>$("#edText")?.focus(),60); });
 $("#tomeQ").addEventListener("click", () => { const p=POSTS[tomeI%POSTS.length]; if(p) go("p-"+p.slug,false); });
 
 /* Grade */
@@ -374,7 +375,7 @@ function drawAccount(){
     out ? el("div",{class:"formrow",style:"gap:8px;margin:0"},out,close) : close));
   if (S.role==="visitante"){ box.append(visitorPanel()); return; }
   const tabs = isAdmin()
-    ? [["publicacoes","Publicações",POSTS.length],["rascunhos","Rascunhos",S.drafts.length],["comentarios","Comentários",pendingCount()],["membros","Membros",S.members.filter(m=>m.id!=="_acesso").length],["sobre","Sobre",0],["tempo","Tempo online",0],["seguranca","Segurança",0]]
+    ? [["publicacoes","Publicações",POSTS.length],["rascunhos","Rascunhos",S.drafts.length],["comentarios","Comentários",pendingCount()],["membros","Membros",S.members.filter(m=>m.id!=="_acesso").length],["sobre","Sobre",0],["publico","Público",0],["tempo","Tempo online",0],["seguranca","Segurança",0]]
     : S.role==="membro" ? [["membros","Área de membros",S.members.filter(m=>m.id!=="_acesso").length],["meus","Meus comentários",0],["tempo","Tempo online",0],["seguranca","Segurança",0]]
     : [["meus","Meus comentários",0],["tempo","Tempo online",0],["seguranca","Segurança",0]];
   if (!tabs.some(t=>t[0]===acctTab)) acctTab=tabs[0][0];
@@ -383,7 +384,7 @@ function drawAccount(){
   bar.addEventListener("keydown",e=>{ if(e.key!=="ArrowRight"&&e.key!=="ArrowLeft") return; const i=tabs.findIndex(t=>t[0]===acctTab); acctTab=tabs[(i+(e.key==="ArrowRight"?1:-1)+tabs.length)%tabs.length][0]; drawAccount(); document.getElementById("tab-"+acctTab)?.focus(); });
   box.append(bar);
   const pnl=el("div",{class:"tabpanel",role:"tabpanel",id:"tabpanel","aria-labelledby":"tab-"+acctTab});
-  ({publicacoes:tabPosts,rascunhos:tabDrafts,comentarios:tabComments,membros:tabMembers,sobre:tabAbout,tempo:tabTime,seguranca:tabSecurity,meus:tabMine})[acctTab](pnl);
+  ({publicacoes:tabPosts,rascunhos:tabDrafts,comentarios:tabComments,membros:tabMembers,sobre:tabAbout,tempo:tabTime,publico:tabPublic,seguranca:tabSecurity,meus:tabMine})[acctTab](pnl);
   box.append(pnl); box.scrollTop=keep;
   if (active) document.getElementById(active)?.focus();
 }
@@ -587,6 +588,35 @@ function tabTime(p){
     el("span",{class:"mono",style:"font-size:11px",text:d.toLocaleDateString("pt-BR",{weekday:"short"}).replace(".","")}))));
   p.append(el("h3",{text:"Últimos 7 dias",style:"margin:26px 0 0;font-size:15px"}),bars);
 }
+/* Público: inscritos e visitantes (só o autor vê) */
+const PUB={ins:null,vis:null,loading:false,err:""};
+async function loadPublic(force){
+  if(PUB.loading||(!force&&PUB.ins)) return; PUB.loading=true; PUB.err="";
+  try{ const [i,v]=await Promise.all([window.ESCRITOR_DB.inscritos(),window.ESCRITOR_DB.visitas()]); PUB.ins=i; PUB.vis=v; }
+  catch(err){ PUB.err=errMsg(err); } finally{ PUB.loading=false; if(sheetMode==="account"&&acctTab==="publico") safeRedraw(); }
+}
+function tabPublic(p){
+  p.append(el("div",{class:"formrow"},el("h2",{text:"Público",style:"margin:0"}),btn("Atualizar","btn small",()=>loadPublic(true))));
+  if(!PUB.ins&&!PUB.err){ p.append(el("p",{class:"mono",text:"Carregando…"})); loadPublic(); return; }
+  if(PUB.err){ p.append(el("p",{class:"msg bad",text:PUB.err})); return; }
+  const vis=PUB.vis||[], hoje=new Date().toLocaleDateString("sv-SE",{timeZone:"America/Sao_Paulo"});
+  const daysAgo=n=>new Date(Date.now()-n*864e5).toLocaleDateString("sv-SE",{timeZone:"America/Sao_Paulo"});
+  const sum=f=>vis.filter(f).reduce((a,r)=>a+r.visitas,0);
+  const nf=n=>Number(n).toLocaleString("pt-BR");
+  const cards=[["Visitantes hoje",sum(r=>r.dia===hoje)],["Últimos 7 dias",sum(r=>r.dia>daysAgo(7))],["Últimos 30 dias",sum(r=>r.dia>daysAgo(30))],["Total de visitantes",sum(()=>true)],["Inscritos",PUB.ins.length]];
+  const ul=el("ul",{class:"checks"}); cards.forEach(([t,v],i)=>ul.append(el("li",{},el("span",{class:"tag "+(i===0?"ok":""),text:String(i+1)}),el("div",{},el("b",{text:t}),nf(v))))); p.append(ul);
+  p.append(el("p",{class:"mono",style:"margin-top:8px;font-size:12px",text:"Cada pessoa conta uma vez por dia, por aparelho."}));
+  const byC={}; vis.forEach(r=>{ byC[r.pais]=(byC[r.pais]||0)+r.visitas; });
+  const top=Object.entries(byC).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  if(top.length){ p.append(el("h3",{text:"Visitantes por país",style:"margin:26px 0 8px;font-size:15px"})); const ol=el("ul",{class:"alist"}); top.forEach(([c,n])=>ol.append(el("li",{},el("div",{class:"tx"},el("b",{text:countryLabel(c)}),el("span",{text:nf(n)+" visitas"}))))); p.append(ol); }
+  p.append(el("div",{class:"formrow",style:"margin-top:26px"},el("h3",{text:`Inscritos (${nf(PUB.ins.length)})`,style:"margin:0;font-size:15px"}),
+    PUB.ins.length?btn("Baixar lista (CSV)","btn small",()=>{ const q=v=>`"${String(v??"").replace(/"/g,'""')}"`; const csv="\ufeffNome;E-mail;País;Data\n"+PUB.ins.map(r=>[r.nome,r.email,countryLabel(r.pais||"??"),new Date(r.criado_em).toLocaleString("pt-BR")].map(q).join(";")).join("\n"); const a=el("a",{href:URL.createObjectURL(new Blob([csv],{type:"text/csv"})),download:"inscritos-andrade-escritor.csv"}); document.body.append(a); a.click(); a.remove(); }):el("span")));
+  if(!PUB.ins.length){ p.append(el("p",{class:"mono",text:"Ainda não há inscritos."})); return; }
+  const list=el("ul",{class:"alist"});
+  PUB.ins.forEach(r=>list.append(el("li",{},el("div",{class:"tx"},el("b",{text:r.nome}),el("span",{text:`${r.email} · ${countryLabel(r.pais||"??")} · ${new Date(r.criado_em).toLocaleDateString("pt-BR")}`})),
+    armed("Remover",async()=>{ try{ await window.ESCRITOR_DB.removerInscrito(r.id); PUB.ins=PUB.ins.filter(x=>x.id!==r.id); toast("Inscrito removido."); safeRedraw(); }catch(err){ toast(errMsg(err)); } }))));
+  p.append(list);
+}
 let pingT=null;
 async function presencePing(){
   if(!S.uid||!window.ESCRITOR_DB||document.visibilityState!=="visible") return;
@@ -614,6 +644,7 @@ $("#memBtn").addEventListener("click",()=>openAccount(S.role==="membro"||isAdmin
 
 function applyRole(){
   const b=$("#accountBtn"); b.dataset.role=S.role;
+  $("#tomeEdit").hidden=!isAdmin();
   const lbl = isAdmin()?"Painel do autor":S.role==="membro"?"Área de membros":S.role==="leitor"?"Minha área":"Entrar";
   $("#accountLbl").textContent=lbl; b.setAttribute("aria-label",lbl);
   const n=S.members.filter(m=>m.id!=="_acesso").length;
@@ -705,6 +736,65 @@ function reveal(){
   }
   more.addEventListener("click",()=>{ rShown+=RSTEP; renderRec(); });
   renderRec();
+})();
+/* País do visitante: pelo fuso horário do aparelho (sem rastreamento), com o idioma como reserva */
+const GEO=window.ESCRITOR_GEO||{tz:{},codes:[]};
+let regionNames=null; try{ regionNames=new Intl.DisplayNames(["pt-BR"],{type:"region"}); }catch{}
+function countryLabel(c){ if(!c||c==="??") return "Não informado"; try{ return regionNames?regionNames.of(c):c; }catch{ return c; } }
+function detectCountry(){
+  try{ const z=Intl.DateTimeFormat().resolvedOptions().timeZone; if(GEO.tz[z]) return GEO.tz[z]; }catch{}
+  const m=(navigator.languages||[navigator.language||""]).map(l=>(l.split("-")[1]||"").toUpperCase()).find(r=>/^[A-Z]{2}$/.test(r));
+  return m||"";
+}
+const MY_COUNTRY=detectCountry();
+
+/* Tradução: abre o site pelo Google Tradutor no idioma escolhido */
+const LANGS=["pt","en","es","fr","de","it","nl","pl","ru","uk","tr","ar","he","fa","hi","bn","ur","zh-CN","zh-TW","ja","ko","vi","th","id","ms","tl","sw","el","sv","no","da","fi","cs","ro","hu","bg","hr","sr","sk","lt","lv","et","ga","is","af","am","yo","zu","ht","eo"];
+(function(){
+  const sel=$("#langSel"); if(!sel) return;
+  let names=null; try{ names=new Intl.DisplayNames(["pt-BR"],{type:"language"}); }catch{}
+  const nm=c=>{ try{ const n=names?names.of(c):c; return n.charAt(0).toUpperCase()+n.slice(1); }catch{ return c; } };
+  const onProxy=/\.translate\.goog$/.test(location.hostname);
+  const cur=onProxy ? (new URLSearchParams(location.search).get("_x_tr_tl")||"pt") : "pt";
+  LANGS.forEach(c=>{ const o=el("option",{value:c,text:c==="pt"?"Português":nm(c)}); if(c===cur) o.selected=true; sel.append(o); });
+  sel.addEventListener("change",()=>{
+    const tl=sel.value, hash=location.hash;
+    if(tl==="pt"){ location.href="https://bravusmidia.github.io/andradeescritor/"+hash; return; }
+    location.href=`https://bravusmidia-github-io.translate.goog/andradeescritor/?_x_tr_sl=pt&_x_tr_tl=${encodeURIComponent(tl)}&_x_tr_hl=${encodeURIComponent(tl)}${hash}`;
+  });
+})();
+
+/* Contador de visitantes: uma vez por dia por aparelho, só o país (nenhum dado pessoal) */
+(function(){
+  const B=window.ESCRITOR_DB; if(!B) return;
+  const hoje=new Date().toLocaleDateString("sv-SE",{timeZone:"America/Sao_Paulo"});
+  if(store.get("ae_visita")===hoje) return;
+  store.set("ae_visita",hoje);
+  B.visita(MY_COUNTRY).catch(()=>{});
+})();
+
+/* Inscrição sem login */
+(function(){
+  const f=$("#inscForm"); if(!f) return;
+  const sel=$("#inPais"), hint=$("#inPaisHint"), msg=$("#inMsg"), b=$("#inBtn");
+  const codes=[...GEO.codes].sort((a,b)=>countryLabel(a).localeCompare(countryLabel(b),"pt-BR"));
+  sel.append(el("option",{value:"",text:"Selecione"}));
+  codes.forEach(c=>{ const o=el("option",{value:c,text:countryLabel(c)}); if(c===MY_COUNTRY) o.selected=true; sel.append(o); });
+  hint.textContent = MY_COUNTRY ? `Detectamos que você está em ${countryLabel(MY_COUNTRY)}. Se não for, é só trocar.` : "Escolha o seu país.";
+  if(store.get("ae_inscrito")){ msg.className="msg ok"; msg.textContent="Você já está inscrito neste aparelho. Obrigado!"; }
+  let last=0;
+  f.addEventListener("submit",async e=>{ e.preventDefault();
+    if($("#inSite").value) return;
+    const nome=clean($("#inNome").value,80).replace(/\n/g," "), email=$("#inEmail").value.trim().toLowerCase();
+    if(nome.length<2){ msg.className="msg bad"; msg.textContent="Digite seu nome."; $("#inNome").focus(); return; }
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ msg.className="msg bad"; msg.textContent="Digite um e-mail válido."; $("#inEmail").focus(); return; }
+    if(Date.now()-last<10000){ msg.className="msg bad"; msg.textContent="Aguarde alguns segundos."; return; }
+    if(!window.ESCRITOR_DB){ msg.className="msg bad"; msg.textContent="Não foi possível conectar. Tente de novo em instantes."; return; }
+    last=Date.now(); b.disabled=true; msg.className="msg"; msg.textContent="Enviando…";
+    try{ await window.ESCRITOR_DB.inscrever(nome,email,sel.value,(navigator.language||"").slice(0,20)); store.set("ae_inscrito","1"); f.reset(); sel.value=MY_COUNTRY; msg.className="msg ok"; msg.textContent=`Pronto, ${nome.split(" ")[0]}! Você vai receber as novidades no seu e-mail.`; }
+    catch(err){ msg.className="msg bad"; msg.textContent="Não foi possível concluir agora. Confira os dados e tente de novo."; }
+    finally{ b.disabled=false; }
+  });
 })();
 rebuildPosts(); renderGrid(); showTome(); applyRole(); reveal(); route(); init();
 })();

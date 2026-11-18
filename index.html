@@ -323,6 +323,8 @@ form.cform,.aform{margin-top:24px;display:grid;gap:16px;border:1px solid var(--l
 .hint{display:flex;justify-content:space-between;gap:12px;font:400 11px var(--mono);color:var(--mute-2)}
 .err{color:var(--bad)}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+#tomeEdit[hidden]{display:none!important}
+nav.main a{white-space:nowrap}
 .formrow{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
 .formrow small{color:var(--mute-2);font-size:12px;max-width:48ch}
 .btns{display:flex;gap:8px;flex-wrap:wrap}
@@ -462,6 +464,21 @@ form.cform,.aform{margin-top:24px;display:grid;gap:16px;border:1px solid var(--l
   .hero-bg::after{background:linear-gradient(180deg,rgba(19,14,10,.7) 0%,rgba(19,14,10,.82) 45%,rgba(19,14,10,.6) 70%,var(--ink) 100%),var(--noise)}
   .leaf-wrap{justify-items:start;margin-top:12px}
 }
+.langpick{position:relative;display:inline-flex;align-items:center;gap:6px;color:var(--mute);border:1px solid var(--line-2);border-radius:var(--radius);padding:0 8px 0 10px;min-height:40px;margin-left:8px}
+.langpick svg{width:15px;height:15px;flex:none}
+.langpick select{background:transparent;color:var(--paper);border:0;font:500 13px var(--sans);padding:8px 2px;max-width:128px;cursor:pointer}
+.langpick select option{background:var(--ink);color:var(--paper)}
+.langpick:focus-within{border-color:var(--volt)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.insc{max-width:860px}
+.insc .hint{color:var(--mute-2);font-size:12px}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+#tomeEdit[hidden]{display:none!important}
+nav.main a{white-space:nowrap}
+.counts{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:10px}
+.counts span{font:500 12px var(--mono, monospace);letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.counts b{color:var(--volt);font-weight:600}
+@media (max-width:720px){ .langpick select{max-width:90px} }
 </style>
 <style>
 #membros,a[href="#membros"],#bioDraft{display:none!important}
@@ -499,8 +516,10 @@ form.cform,.aform{margin-top:24px;display:grid;gap:16px;border:1px solid var(--l
       <a href="#livros" data-nav="livros">Livros</a>
       <a href="#sobre" data-nav="sobre">Sobre</a>
       <a href="#recanto" data-nav="recanto">Recanto</a>
+      <a href="#inscrever" data-nav="inscrever">Inscreva-se</a>
       <a href="https://www.instagram.com/andradeescritor/" target="_blank" rel="noopener noreferrer">Instagram</a>
       <button class="explore" id="exploreBtn" aria-expanded="false" aria-controls="explorePanel">Explorar <svg aria-hidden="true"><use href="#i-down"/></svg></button>
+      <label class="langpick" title="Traduzir o site"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3 12h18M12 3c2.8 3 2.8 15 0 18M12 3c-2.8 3-2.8 15 0 18" fill="none" stroke="currentColor" stroke-width="1.6"/></svg><span class="sr">Idioma</span><select id="langSel" aria-label="Traduzir o site"></select></label>
       <button class="account" id="accountBtn" data-role="visitante" aria-haspopup="dialog"><svg aria-hidden="true"><use href="#i-key"/></svg><span class="lbl" id="accountLbl">Entrar</span><span class="dot" aria-hidden="true"></span></button>
       <button class="burger" id="burgerBtn" aria-expanded="false" aria-controls="explorePanel" aria-label="Abrir menu"><span></span></button>
     </nav>
@@ -514,6 +533,7 @@ form.cform,.aform{margin-top:24px;display:grid;gap:16px;border:1px solid var(--l
         <li><a href="#livros">Livros</a></li>
         <li><a href="#sobre">Sobre</a></li>
         <li><a href="#recanto">Recanto</a></li>
+        <li><a href="#inscrever">Inscreva-se</a></li>
         <li><a href="#projetos">Projetos</a></li>
         <li><a href="#membros">Área de membros</a></li>
       </ul>
@@ -561,7 +581,7 @@ form.cform,.aform{margin-top:24px;display:grid;gap:16px;border:1px solid var(--l
           <p class="q" id="tomeQ"></p>
           <div class="folio"><span>— Andrade</span><span><span id="folioL" hidden></span><span id="folioR">iii</span></span></div>
         </div>
-        <figcaption class="cap"><button class="turn" id="turnBtn"><svg aria-hidden="true"><use href="#i-turn"/></svg> Virar a página</button></figcaption>
+        <figcaption class="cap"><button class="turn" id="turnBtn"><svg aria-hidden="true"><use href="#i-turn"/></svg> Virar a página</button> <button class="turn" id="tomeEdit" hidden>✎ Editar este texto</button></figcaption>
       </figure>
     </div>
     <div class="motto">
@@ -763,6 +783,25 @@ form.cform,.aform{margin-top:24px;display:grid;gap:16px;border:1px solid var(--l
     </div>
   </section>
 
+  <section class="block" id="inscrever" aria-labelledby="h-insc">
+    <div class="wrap">
+      <div class="head">
+        <span class="mono">Leitores</span>
+        <div><h2 id="h-insc">Inscreva-se</h2><p>Receba os novos textos, frases e livros. Sem cadastro, sem senha: só seu nome e e-mail.</p></div>
+      </div>
+      <form class="aform insc reveal" id="inscForm" novalidate>
+        <div class="grid2">
+          <div class="field"><label for="inNome">Seu nome</label><input id="inNome" autocomplete="name" maxlength="80" required></div>
+          <div class="field"><label for="inEmail">Seu e-mail</label><input id="inEmail" type="email" autocomplete="email" maxlength="160" required></div>
+        </div>
+        <div class="field"><label for="inPais">Seu país</label><select id="inPais"></select><small class="hint" id="inPaisHint"></small></div>
+        <div class="hp" aria-hidden="true"><label for="inSite">Não preencha</label><input id="inSite" tabindex="-1" autocomplete="off"></div>
+        <div class="formrow"><small>Seu e-mail é usado só para avisar sobre novas publicações. Para sair da lista, é só pedir pelo Instagram @andradeescritor.</small><button class="btn gold" type="submit" id="inBtn">Quero me inscrever</button></div>
+        <div class="msg" id="inMsg" role="status"></div>
+      </form>
+    </div>
+  </section>
+
 </main>
 
 <footer>
@@ -845,6 +884,7 @@ form.cform,.aform{margin-top:24px;display:grid;gap:16px;border:1px solid var(--l
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script src="vendor/supabase-2.119.1.js" defer></script>
+<script src="geo.js" defer></script>
 <script src="banco.js" defer></script>
 <script src="recanto-data.js" defer></script>
 <script src="app.js" defer></script>
