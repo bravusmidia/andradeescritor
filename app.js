@@ -618,6 +618,7 @@ async function init(){
     const admin = user ? await user.canEdit() : false;
     if (user){ try{ const me=await user.me(); S.name=(me&&me.name)||""; S.email=(me&&me.email)||""; }catch{} }
     const member = user && !admin ? await user.isMember() : false;
+    if (admin) S.name="Andrade"; /* no site, o autor aparece só como Andrade */
     S.role = admin ? "admin" : member ? "membro" : S.uid ? "leitor" : "visitante";
     S.writable = !!S.uid;
     S.ready = true;
