@@ -4,7 +4,7 @@ window.RECANTO={
   "name": "Andradeescritor",
   "location": "Fortaleza - Ceará - Brasil",
   "texts": 756,
-  "reads": 20617,
+  "reads": 20622,
   "url": "https://www.recantodasletras.com.br/autor.php?id=81643",
   "listUrl": "https://www.recantodasletras.com.br/autor_textos.php?id=81643&categoria=&lista=ultimas"
  },
@@ -741,9 +741,10 @@ window.RECANTO={
    "cat": "Frase",
    "slug": "frases",
    "url": "https://www.recantodasletras.com.br/frases/7391317",
-   "date": null,
+   "date": "22/11/2021",
    "reads": null,
-   "seen": "2026-11-18T19:00:48Z"
+   "seen": "2026-11-18T19:00:48Z",
+   "checked": true
   },
   {
    "id": "7179669",
@@ -751,9 +752,10 @@ window.RECANTO={
    "cat": "Pensamento",
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/7179669",
-   "date": null,
+   "date": "08/02/2021",
    "reads": null,
-   "seen": "2026-11-18T19:00:48Z"
+   "seen": "2026-11-18T19:00:48Z",
+   "checked": true
   },
   {
    "id": "7179667",
@@ -761,9 +763,10 @@ window.RECANTO={
    "cat": "Pensamento",
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/7179667",
-   "date": null,
+   "date": "08/02/2021",
    "reads": null,
-   "seen": "2026-11-18T19:00:48Z"
+   "seen": "2026-11-18T19:00:48Z",
+   "checked": true
   },
   {
    "id": "7179665",
@@ -771,9 +774,10 @@ window.RECANTO={
    "cat": "Pensamento",
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/7179665",
-   "date": null,
+   "date": "08/02/2021",
    "reads": null,
-   "seen": "2026-11-18T19:00:48Z"
+   "seen": "2026-11-18T19:00:48Z",
+   "checked": true
   },
   {
    "id": "7174870",
@@ -781,9 +785,10 @@ window.RECANTO={
    "cat": "Pensamento",
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/7174870",
-   "date": null,
+   "date": "02/02/2021",
    "reads": null,
-   "seen": "2026-11-18T19:00:48Z"
+   "seen": "2026-11-18T19:00:48Z",
+   "checked": true
   },
   {
    "id": "7174868",
@@ -791,9 +796,10 @@ window.RECANTO={
    "cat": "Pensamento",
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/7174868",
-   "date": null,
+   "date": "02/02/2021",
    "reads": null,
-   "seen": "2026-11-18T19:00:48Z"
+   "seen": "2026-11-18T19:00:48Z",
+   "checked": true
   },
   {
    "id": "7174867",
@@ -801,9 +807,10 @@ window.RECANTO={
    "cat": "Pensamento",
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/7174867",
-   "date": null,
+   "date": "02/02/2021",
    "reads": null,
-   "seen": "2026-11-18T19:00:48Z"
+   "seen": "2026-11-18T19:00:48Z",
+   "checked": true
   },
   {
    "id": "7171670",
@@ -811,9 +818,10 @@ window.RECANTO={
    "cat": "Carta",
    "slug": "cartas",
    "url": "https://www.recantodasletras.com.br/cartas/7171670",
-   "date": null,
+   "date": "29/01/2021",
    "reads": null,
-   "seen": "2026-11-18T19:00:48Z"
+   "seen": "2026-11-18T19:00:48Z",
+   "checked": true
   },
   {
    "id": "7157317",
@@ -821,9 +829,10 @@ window.RECANTO={
    "cat": "Pensamento",
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/7157317",
-   "date": null,
+   "date": "11/01/2021",
    "reads": null,
-   "seen": "2026-11-18T19:00:48Z"
+   "seen": "2026-11-18T19:00:48Z",
+   "checked": true
   },
   {
    "id": "7129184",
@@ -831,9 +840,10 @@ window.RECANTO={
    "cat": "Pensamento",
    "slug": "pensamentos",
    "url": "https://www.recantodasletras.com.br/pensamentos/7129184",
-   "date": null,
+   "date": "06/12/2020",
    "reads": null,
-   "seen": "2026-11-18T19:00:48Z"
+   "seen": "2026-11-18T19:00:48Z",
+   "checked": true
   },
   {
    "id": "7129174",
@@ -841,9 +851,10 @@ window.RECANTO={
    "cat": "Discurso",
    "slug": "discursos",
    "url": "https://www.recantodasletras.com.br/discursos/7129174",
-   "date": null,
+   "date": "06/12/2020",
    "reads": null,
-   "seen": "2026-11-18T19:00:48Z"
+   "seen": "2026-11-18T19:00:48Z",
+   "checked": true
   },
   {
    "id": "7129172",
@@ -851,10 +862,11 @@ window.RECANTO={
    "cat": "Frase",
    "slug": "frases",
    "url": "https://www.recantodasletras.com.br/frases/7129172",
-   "date": null,
+   "date": "06/12/2020",
    "reads": null,
-   "seen": "2026-11-18T19:00:48Z"
+   "seen": "2026-11-18T19:00:48Z",
+   "checked": true
   }
  ],
- "updated": "2026-11-19T02:39:56Z"
+ "updated": "2026-11-19T11:52:45Z"
 };
