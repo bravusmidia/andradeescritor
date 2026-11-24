@@ -1,0 +1,48 @@
+name: Acervo do escritor (textos completos)
+
+on:
+  schedule:
+    - cron: "41 6 * * *"   # todo dia, 03:41 de Brasília
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/acervo.py"
+      - ".github/workflows/acervo.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: acervo
+  cancel-in-progress: false
+
+jobs:
+  acervo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+      - name: Abrir a branch do acervo
+        run: |
+          if git ls-remote --exit-code --heads origin acervo >/dev/null; then
+            git fetch --depth 1 origin acervo
+            git worktree add acervo-out origin/acervo
+          else
+            git worktree add --detach acervo-out
+            cd acervo-out && git checkout --orphan acervo-new && git rm -rfq . && cd ..
+          fi
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Baixar textos
+        run: python scripts/acervo.py acervo-out
+      - name: Guardar
+        working-directory: acervo-out
+        run: |
+          git add -A
+          if git diff --cached --quiet; then echo "Nada novo."; exit 0; fi
+          git config user.name "acervo"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -qm "Acervo: textos atualizados"
+          git push origin HEAD:refs/heads/acervo
