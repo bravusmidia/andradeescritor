@@ -603,7 +603,10 @@ function tabMembers(p){
   list.sort((a,b)=>String(b.em).localeCompare(String(a.em))).forEach(m=>{ const box=el("article",{class:"mtext"},el("span",{class:"mono",text:fmtDate(m.em)}),el("h4",{text:String(m.title||"").slice(0,120)}),el("p",{text:String(m.text||"").slice(0,5000)})); if(isAdmin()) box.append(el("div",{class:"cfoot",style:"margin-top:12px"},armed("Excluir",async()=>{ try{ await remove("membros/"+m.id); toast("Texto excluído."); }catch(err){ toast(errMsg(err)); } }))); wrap.append(box); });
   p.append(wrap);
 }
-const FOTO_OK = u => typeof u==="string" && u.startsWith("https://kfoapsxrzfebjyvmvktf.supabase.co/storage/v1/object/public/escritor/");
+const FOTO_OK = u => typeof u==="string" && (u.startsWith("https://kfoapsxrzfebjyvmvktf.supabase.co/storage/v1/object/public/escritor/") || /^assets\/[a-z0-9-]+\.(jpg|jpeg|png|webp)$/.test(u));
+/* Ajuste da foto: posição (0–100 %) e zoom (1–3) */
+const AJ = v => ({ x: Number.isFinite(+v?.fotoX)?Math.min(100,Math.max(0,+v.fotoX)):50, y: Number.isFinite(+v?.fotoY)?Math.min(100,Math.max(0,+v.fotoY)):50, z: Number.isFinite(+v?.fotoZ)?Math.min(3,Math.max(1,+v.fotoZ)):1 });
+function fotoImg(src,aj,alt){ return el("img",{src,alt:alt||"",loading:"lazy",draggable:"false",style:`width:100%;height:100%;object-fit:cover;display:block;object-position:${aj.x}% ${aj.y}%;transform:scale(${aj.z});transform-origin:${aj.x}% ${aj.y}%;user-select:none;pointer-events:none`}); }
 const IDADE_OK = n => Number.isInteger(n) && n>0 && n<130;
 function resizeImage(file, max=900){
   return new Promise((res,rej)=>{ const url=URL.createObjectURL(file); const img=new Image();
@@ -618,28 +621,40 @@ function tabAbout(p){
   const c=el("textarea",{id:"abP2",maxlength:"1200"}); c.value=cur.p2||"";
   const msg=el("div",{class:"msg",role:"status"});
   let foto = FOTO_OK(cur.foto) ? cur.foto : "";
-  const prev=el("div",{style:"width:96px;height:120px;border:1px dashed var(--line-2);background:var(--slate) center/cover no-repeat;flex:none"});
-  const showPrev=()=>{ prev.style.backgroundImage = foto ? `url("${foto}")` : "none"; };
+  let aj = AJ(cur);
+  const prev=el("div",{class:"fotoaj",title:"Arraste para ajustar a posição"});
+  const zoom=el("input",{type:"range",min:"1",max:"3",step:"0.01","aria-label":"Zoom da foto"});
+  const centro=el("button",{class:"btn small",type:"button",text:"Centralizar"});
+  const ajBox=el("div",{class:"fotoaj-ctl"},el("span",{class:"mono",text:"Zoom"}),zoom,centro);
+  const showPrev=()=>{ prev.replaceChildren(foto?fotoImg(foto,aj):el("span",{class:"mono",text:"Sem foto"})); zoom.value=String(aj.z); ajBox.hidden=!foto; prev.classList.toggle("on",!!foto); };
   showPrev();
+  zoom.addEventListener("input",()=>{ aj.z=+zoom.value; showPrev(); });
+  centro.addEventListener("click",()=>{ aj={x:50,y:50,z:1}; showPrev(); });
+  { let drag=null;
+    prev.addEventListener("pointerdown",e=>{ if(!foto) return; drag={sx:e.clientX,sy:e.clientY,x:aj.x,y:aj.y}; prev.setPointerCapture(e.pointerId); });
+    prev.addEventListener("pointermove",e=>{ if(!drag) return; const r=prev.getBoundingClientRect(); const k=1.6/aj.z;
+      aj.x=Math.min(100,Math.max(0,drag.x-(e.clientX-drag.sx)/r.width*100*k)); aj.y=Math.min(100,Math.max(0,drag.y-(e.clientY-drag.sy)/r.height*100*k));
+      const im=prev.querySelector("img"); if(im){ im.style.objectPosition=`${aj.x}% ${aj.y}%`; im.style.transformOrigin=`${aj.x}% ${aj.y}%`; } });
+    const end=()=>{ drag=null; }; prev.addEventListener("pointerup",end); prev.addEventListener("pointercancel",end); }
   const fi=el("input",{id:"abFoto",type:"file",accept:"image/jpeg,image/png,image/webp",style:"max-width:100%"});
-  const rm=el("button",{class:"btn small",type:"button",text:"Remover foto"});
-  const fmsg=el("small",{text:"JPG, PNG ou WEBP. A foto é ajustada automaticamente."});
+  const rm=el("button",{class:"btn small",type:"button",text:"Apagar foto"});
+  const fmsg=el("small",{text:"JPG, PNG ou WEBP. Arraste a foto para posicionar e use o zoom."});
   fi.addEventListener("change",async()=>{ const file=fi.files&&fi.files[0]; if(!file) return;
     if(!/^image\/(jpeg|png|webp)$/.test(file.type)||file.size>15e6){ fmsg.textContent="Escolha uma imagem JPG, PNG ou WEBP de até 15 MB."; return; }
     fmsg.textContent="Enviando foto…";
-    try{ const blob=await resizeImage(file); foto=await window.ESCRITOR_DB.uploadFoto(blob); showPrev(); fmsg.textContent="Foto enviada. Clique em Salvar para aplicar no site."; }
+    try{ const blob=await resizeImage(file,1400); foto=await window.ESCRITOR_DB.uploadFoto(blob); aj={x:50,y:50,z:1}; showPrev(); fmsg.textContent="Foto enviada. Arraste e use o zoom para ajustar, depois clique em Salvar."; }
     catch(err){ fmsg.textContent=errMsg(err); } });
-  rm.addEventListener("click",()=>{ foto=""; fi.value=""; showPrev(); fmsg.textContent="Foto removida. Clique em Salvar para aplicar."; });
+  rm.addEventListener("click",()=>{ foto=""; fi.value=""; showPrev(); fmsg.textContent="Foto apagada. Clique em Salvar para aplicar."; });
   const ag=el("input",{id:"abIdade",type:"number",min:"1",max:"129",inputmode:"numeric",style:"max-width:140px"}); if(IDADE_OK(cur.idade)) ag.value=String(cur.idade);
   const f=el("form",{class:"aform",novalidate:""},
-    el("div",{class:"field"},el("label",{for:"abFoto",text:"Foto oficial"}),el("div",{style:"display:flex;gap:16px;align-items:flex-end;flex-wrap:wrap"},prev,el("div",{style:"display:grid;gap:8px"},fi,rm,fmsg))),
+    el("div",{class:"field"},el("label",{for:"abFoto",text:"Foto oficial"}),el("div",{style:"display:flex;gap:16px;align-items:flex-end;flex-wrap:wrap"},prev,el("div",{style:"display:grid;gap:8px;min-width:0;flex:1"},el("label",{class:"btn small",for:"abFoto",text:foto?"Trocar foto":"Adicionar foto"}),fi,rm,ajBox,fmsg))),
     el("div",{class:"field"},el("label",{for:"abIdade",text:"Idade"}),ag),
     el("div",{class:"field"},el("label",{for:"abBig",text:"Frase de apresentação"}),a),
     el("div",{class:"field"},el("label",{for:"abP1",text:"Primeiro parágrafo"}),b),
     el("div",{class:"field"},el("label",{for:"abP2",text:"Segundo parágrafo"}),c));
   const s=el("button",{class:"btn small gold",type:"submit",text:"Salvar"});
   f.append(el("div",{class:"formrow"},el("small",{text:"Aparece na seção Sobre para todos os visitantes."}),s),msg);
-  f.addEventListener("submit",async e=>{ e.preventDefault(); const n=parseInt(ag.value,10); const d={big:clean(a.value,300),p1:clean(b.value,1200),p2:clean(c.value,1200),foto:foto||"",idade:IDADE_OK(n)?n:null}; if(ag.value&&!IDADE_OK(n)){ msg.className="msg bad"; msg.textContent="Confira a idade."; return; } if(d.big.length<3){ msg.className="msg bad"; msg.textContent="Escreva a frase de apresentação."; return; } s.disabled=true; try{ await write("site/sobre",d); toast("Sobre salvo."); }catch(err){ msg.className="msg bad"; msg.textContent=errMsg(err); } finally{ s.disabled=false; } });
+  f.addEventListener("submit",async e=>{ e.preventDefault(); const n=parseInt(ag.value,10); const d={big:clean(a.value,300),p1:clean(b.value,1200),p2:clean(c.value,1200),foto:foto||"",fotoX:Math.round(aj.x*10)/10,fotoY:Math.round(aj.y*10)/10,fotoZ:Math.round(aj.z*100)/100,idade:IDADE_OK(n)?n:null}; if(ag.value&&!IDADE_OK(n)){ msg.className="msg bad"; msg.textContent="Confira a idade."; return; } if(d.big.length<3){ msg.className="msg bad"; msg.textContent="Escreva a frase de apresentação."; return; } s.disabled=true; try{ await write("site/sobre",d); toast("Sobre salvo."); }catch(err){ msg.className="msg bad"; msg.textContent=errMsg(err); } finally{ s.disabled=false; } });
   p.append(el("h2",{text:"Sobre o autor",style:"margin:0"}),f);
 }
 function tabMine(p){
@@ -741,7 +756,9 @@ function applyAbout(){
   if (!S.sobre) return;
   const v=S.sobre;
   const port=document.querySelector("#sobre .portrait");
-  if (port){ if (FOTO_OK(v.foto)){ port.replaceChildren(el("img",{src:v.foto,alt:"Foto de Andrade",loading:"lazy",style:"width:100%;height:100%;object-fit:cover;display:block"})); port.style.padding="0"; port.style.borderStyle="solid"; } }
+  if (port){ if(!port.dataset.vazio) port.dataset.vazio=port.innerHTML;
+    if (FOTO_OK(v.foto)){ port.replaceChildren(fotoImg(v.foto,AJ(v),"Foto de Andrade")); port.classList.add("com-foto"); }
+    else { port.innerHTML=port.dataset.vazio; port.classList.remove("com-foto"); } }
   let ida=$("#bioIdade"); if(!ida){ ida=el("span",{class:"mono",id:"bioIdade",style:"display:block;margin:0 0 14px"}); $("#bioBig").before(ida); }
   ida.textContent = IDADE_OK(v.idade) ? `${v.idade} anos` : ""; ida.hidden = !ida.textContent; if(typeof v.big==="string"&&v.big) $("#bioBig").textContent=v.big.slice(0,300);
   $("#bioP1").textContent=typeof v.p1==="string"?v.p1.slice(0,1200):""; $("#bioP2").textContent=typeof v.p2==="string"?v.p2.slice(0,1200):"";

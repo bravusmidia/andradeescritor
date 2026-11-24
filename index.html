@@ -272,6 +272,13 @@ body:not([data-page="inicio"]) main{padding-top:calc(48px + env(safe-area-inset-
 .about{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:56px;align-items:start}
 .portrait{aspect-ratio:4/5;max-width:100%;border:1px dashed var(--line-2);display:grid;place-items:center;text-align:center;padding:24px;background:var(--slate)}
 .portrait svg{width:72px;height:72px;margin-bottom:16px}
+.portrait.com-foto{padding:0;border-style:solid;overflow:hidden}
+.fotoaj{width:160px;aspect-ratio:4/5;border:1px dashed var(--line-2);background:var(--slate);overflow:hidden;display:grid;place-items:center;flex:none;touch-action:none}
+.fotoaj.on{border-style:solid;cursor:grab}
+.fotoaj.on:active{cursor:grabbing}
+.fotoaj-ctl{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.fotoaj-ctl input[type=range]{flex:1;min-width:120px;accent-color:var(--volt)}
+#abFoto{position:absolute;width:1px;height:1px;opacity:0}
 .about .big{font:400 clamp(28px,3.4vw,40px)/1.22 var(--serif);margin:0 0 24px;text-wrap:balance}
 .about p{color:var(--mute);max-width:60ch}
 .socials{display:flex;gap:12px;margin-top:32px;flex-wrap:wrap}
@@ -442,9 +449,9 @@ a.sym svg{width:18px;height:18px;flex:none}
 .mtext h4{margin:0 0 8px;font:500 24px/1.15 var(--serif)}
 .mtext p{margin:0;white-space:pre-line;color:var(--paper);font:400 19px/1.5 var(--serif)}
 .toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:var(--paper);color:var(--ink);font:500 13px var(--sans);padding:12px 18px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:120;max-width:calc(100vw - 32px)}
-/* cursor: pena de escrever (a ponta do bico é o clique) */
+/* cursor: caneta-tinteiro (a ponta do bico é o clique) */
 @media (hover:hover) and (pointer:fine){
-  *,*::before,*::after{cursor:url("assets/pena.svg?v=2") 1 31, auto !important}
+  *,*::before,*::after{cursor:url("assets/caneta.svg?v=1") 1 31, auto !important}
   input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="submit"]):not([type="button"]),textarea,[contenteditable="true"]{cursor:text !important}
   [disabled],button:disabled{cursor:not-allowed !important}
 }
