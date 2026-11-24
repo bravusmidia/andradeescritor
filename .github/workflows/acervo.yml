@@ -36,7 +36,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Baixar textos
-        run: python scripts/acervo.py acervo-out
+        run: python -u scripts/acervo.py acervo-out 2>&1 | tee acervo-out/_log.txt
       - name: Guardar
         working-directory: acervo-out
         run: |
