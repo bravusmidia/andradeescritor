@@ -442,6 +442,12 @@ a.sym svg{width:18px;height:18px;flex:none}
 .mtext h4{margin:0 0 8px;font:500 24px/1.15 var(--serif)}
 .mtext p{margin:0;white-space:pre-line;color:var(--paper);font:400 19px/1.5 var(--serif)}
 .toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:var(--paper);color:var(--ink);font:500 13px var(--sans);padding:12px 18px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:120;max-width:calc(100vw - 32px)}
+/* cursor: pena de escrever (a ponta do bico é o clique) */
+@media (hover:hover) and (pointer:fine){
+  *,*::before,*::after{cursor:url("assets/pena.svg?v=2") 1 31, auto !important}
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="submit"]):not([type="button"]),textarea,[contenteditable="true"]{cursor:text !important}
+  [disabled],button:disabled{cursor:not-allowed !important}
+}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 .pwbox{position:relative}
 .pwbox input{padding-right:48px}
