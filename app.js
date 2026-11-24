@@ -80,7 +80,9 @@ function rebuildPosts(){
   const rec = window.RECANTO && window.RECANTO.profile && Number(window.RECANTO.profile.texts) || 0;
   const tot = POSTS.length + rec;
   const nf = n => n.toLocaleString("pt-BR");
-  $("#stat").textContent = rec ? `${nf(POSTS.length)} no site · ${nf(rec)} no Recanto · ${nf(tot)} publicações no total · 1 livro` : `${nf(POSTS.length)} publicações · 1 livro publicado`;
+  const statTxt = rec ? `${nf(POSTS.length)} no site · ${nf(rec)} no Recanto · ${nf(tot)} publicações no total · 1 livro` : `${nf(POSTS.length)} publicações · 1 livro publicado`;
+  $("#stat").textContent = statTxt;
+  const sh = document.getElementById("statHero"); if (sh) sh.textContent = statTxt;
   renderNavCounts();
 }
 

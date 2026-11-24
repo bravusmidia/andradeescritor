@@ -525,6 +525,8 @@ a.sym svg{width:18px;height:18px;flex:none}
 .hero h1,.hero .lede{text-shadow:0 2px 24px rgba(0,0,0,.55)}
 .hero .sub{color:#CDBB98}
 .leaf-wrap{margin:0;display:grid;justify-items:end;align-self:end;gap:14px}
+.leaf-stat{margin:0 0 -4px;width:min(100%,420px);font-size:9px;letter-spacing:.07em;line-height:1.6;color:rgba(232,214,178,.72);text-align:center;text-shadow:0 1px 3px rgba(0,0,0,.6)}
+.leaf-stat:empty{display:none}
 .note{position:relative;width:min(100%,360px);padding:24px 24px 16px;color:var(--ink-text);transform:rotate(-1.6deg);
   background:var(--grain),var(--fox),linear-gradient(180deg,#EBDAB2,var(--parch) 65%,#D7BF8F);box-shadow:0 30px 50px -14px rgba(0,0,0,.8),inset 0 0 26px rgba(110,70,25,.28);border-radius:2px}
 .note .orn{display:block;font:400 11px var(--fell);letter-spacing:.32em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:10px}
@@ -691,6 +693,7 @@ a.sym svg{width:18px;height:18px;flex:none}
         </div>
       </div>
       <figure class="leaf-wrap">
+        <p class="mono leaf-stat" id="statHero" aria-live="polite"></p>
         <div class="note">
           <span class="orn" id="tomeCat">Pensamento</span>
           <p class="q" id="tomeQ"></p>
