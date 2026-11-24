@@ -1,0 +1,54 @@
+name: Versão do site (aviso de atualização)
+
+# A cada atualização do site, grava version.json. O site compara esse arquivo
+# e mostra o aviso "O site foi atualizado" para quem estiver com ele aberto.
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "version.json"
+      - "recanto-data.js"
+      - "scripts/**"
+      - ".github/**"
+      - "README.md"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: versao
+  cancel-in-progress: false
+
+jobs:
+  versao:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Gravar version.json
+        env:
+          MSG: ${{ github.event.head_commit.message }}
+        run: |
+          python3 - <<'PY'
+          import json, os, subprocess, datetime
+          hoje = (datetime.datetime.utcnow() - datetime.timedelta(hours=3)).strftime("%Y.%m.%d")
+          try: old = json.load(open("version.json", encoding="utf-8"))
+          except Exception: old = {}
+          n = int(old["v"].rsplit(".", 1)[1]) + 1 if str(old.get("v", "")).startswith(hoje + ".") else 1
+          mudou = "version.json" in subprocess.run(["git", "diff", "--name-only", "HEAD~1", "HEAD"], capture_output=True, text=True).stdout.split()
+          msg = (os.environ.get("MSG") or "").split("\n")[0].strip()
+          notas = old.get("notas") if mudou and old.get("notas") else (msg or "Melhorias no site.")
+          json.dump({"v": f"{hoje}.{n}", "notas": notas}, open("version.json", "w", encoding="utf-8"), ensure_ascii=False)
+          print(hoje, n, notas)
+          PY
+      - name: Publicar
+        run: |
+          git config user.name "versao-site"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add version.json
+          git diff --cached --quiet && exit 0
+          git commit -m "Versão do site"
+          git pull --rebase origin main
+          git push

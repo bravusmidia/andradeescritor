@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://images.unsplash.com https://kfoapsxrzfebjyvmvktf.supabase.co https://flagcdn.com; connect-src https://kfoapsxrzfebjyvmvktf.supabase.co; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://images.unsplash.com https://kfoapsxrzfebjyvmvktf.supabase.co https://flagcdn.com; connect-src 'self' https://kfoapsxrzfebjyvmvktf.supabase.co; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="theme-color" content="#130E0A">
 <link rel="canonical" href="https://bravusmidia.github.io/andradeescritor/">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -443,6 +443,22 @@ a.sym svg{width:18px;height:18px;flex:none}
 .mtext p{margin:0;white-space:pre-line;color:var(--paper);font:400 19px/1.5 var(--serif)}
 .toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:var(--paper);color:var(--ink);font:500 13px var(--sans);padding:12px 18px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:120;max-width:calc(100vw - 32px)}
 .toast.show{opacity:1;transform:translate(-50%,0)}
+.pwbox{position:relative}
+.pwbox input{padding-right:48px}
+.pwbox .eye{position:absolute;right:4px;top:50%;transform:translateY(-50%);width:40px;height:40px;display:grid;place-items:center;background:none;border:0;color:var(--mute);cursor:pointer;border-radius:var(--radius)}
+.pwbox .eye:hover,.pwbox .eye[aria-pressed="true"]{color:var(--volt)}
+.pwbox .eye svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.aviso-bg{position:fixed;inset:0;z-index:130;display:grid;place-items:center;padding:20px;background:rgba(8,5,3,.62);backdrop-filter:blur(3px);opacity:0;transition:opacity .25s}
+.aviso-bg.show{opacity:1}
+.aviso{position:relative;width:min(100%,420px);background:var(--ink);color:var(--paper);border:1px solid var(--volt);border-radius:var(--radius);padding:26px 24px 22px;box-shadow:0 20px 60px rgba(0,0,0,.55);transform:translateY(10px);transition:transform .25s}
+.aviso-bg.show .aviso{transform:none}
+.aviso h3{margin:8px 0 10px;font:400 24px/1.2 var(--serif)}
+.aviso p{margin:0 0 16px;color:var(--mute);line-height:1.55;white-space:pre-line}
+.aviso .formrow{justify-content:flex-end}
+.aviso .aform{margin-top:6px}
+.aviso-x{position:absolute;top:8px;right:10px;width:36px;height:36px;background:none;border:0;color:var(--mute);font-size:24px;cursor:pointer}
+.aviso-x:hover{color:var(--paper)}
+
 .reveal{transition:opacity .7s ease,transform .7s ease}
 .reveal.pre{opacity:.001;transform:translateY(14px)}
 

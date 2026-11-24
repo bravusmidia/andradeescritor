@@ -24,7 +24,7 @@ const PAGE = 6;
 const $ = s => document.querySelector(s);
 const el = (tag, attrs={}, ...kids) => {
   const e = document.createElement(tag);
-  for (const [k,v] of Object.entries(attrs)) { if (k==="class") e.className=v; else if (k==="text") e.textContent=v; else e.setAttribute(k,v); }
+  for (const [k,v] of Object.entries(attrs)) { if (k==="class") e.className=v; else if (k==="text") e.textContent=v; else if (k.startsWith("on") && typeof v==="function") e.addEventListener(k.slice(2),v); else e.setAttribute(k,v); }
   kids.forEach(k=>e.append(k)); return e;
 };
 const icon = id => { const s=document.createElementNS("http://www.w3.org/2000/svg","svg"); s.setAttribute("aria-hidden","true"); const u=document.createElementNS("http://www.w3.org/2000/svg","use"); u.setAttribute("href","#"+id); s.append(u); return s; };
@@ -419,6 +419,62 @@ function drawAccount(){
 }
 /* redesenhos automáticos não podem apagar o que o autor está digitando */
 function safeRedraw(){ const box=$("#sBox"); const typing=box.querySelector("form input:focus,form textarea:focus,form select:focus"); if(!typing) drawAccount(); }
+/* Campo de senha com o olho para mostrar/esconder o que está sendo digitado */
+function pwBox(pw){
+  const eye=el("button",{class:"eye",type:"button","aria-label":"Mostrar senha","aria-pressed":"false",title:"Mostrar senha"});
+  const draw=()=>{ const on=pw.type==="text"; eye.innerHTML=on
+    ? '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3l18 18M10.6 10.6a2 2 0 0 0 2.8 2.8M9.9 5.2A10.4 10.4 0 0 1 12 5c6 0 9.5 7 9.5 7a17 17 0 0 1-3.1 3.9M6.6 6.6C3.9 8.4 2.5 12 2.5 12s3.5 7 9.5 7a9.7 9.7 0 0 0 5.4-1.6"/></svg>'
+    : '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12S6 5 12 5s9.5 7 9.5 7-3.5 7-9.5 7S2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg>';
+    const t=on?"Esconder senha":"Mostrar senha"; eye.setAttribute("aria-label",t); eye.title=t; eye.setAttribute("aria-pressed",String(on)); };
+  eye.addEventListener("click",()=>{ const pos=pw.selectionStart; pw.type=pw.type==="password"?"text":"password"; draw(); pw.focus(); try{pw.setSelectionRange(pos,pos)}catch{} });
+  draw(); return el("div",{class:"pwbox"},pw,eye);
+}
+/* Janela pequena reutilizável (aviso de atualização e nova senha) */
+function aviso(conteudo,{fechar=true}={}){
+  document.querySelector(".aviso-bg")?.remove();
+  const bg=el("div",{class:"aviso-bg"}); const card=el("div",{class:"aviso",role:"dialog","aria-modal":"true"});
+  const close=()=>bg.remove();
+  if(fechar){ card.append(el("button",{class:"aviso-x",type:"button","aria-label":"Fechar",text:"×",onclick:close})); bg.addEventListener("click",e=>{ if(e.target===bg) close(); }); }
+  conteudo.forEach(c=>card.append(c)); bg.append(card); document.body.append(bg);
+  requestAnimationFrame(()=>bg.classList.add("show")); return close;
+}
+/* Tela "Criar nova senha" (aberta pelo link do e-mail) */
+async function checarRecuperacao(){
+  const r=await (window.ESCRITOR_RECOVERY||Promise.resolve(null)); if(!r) return;
+  if(r.erro){ aviso([el("span",{class:"mono",text:"Redefinir senha"}),el("h3",{text:"Link inválido"}),el("p",{text:r.erro})]); return; }
+  const p1=el("input",{id:"nvPass",type:"password",autocomplete:"new-password",minlength:"8",maxlength:"128",required:""});
+  const p2=el("input",{id:"nvPass2",type:"password",autocomplete:"new-password",minlength:"8",maxlength:"128",required:""});
+  const msg=el("div",{class:"msg",role:"status"}); const b=el("button",{class:"btn small gold",type:"submit",text:"Salvar nova senha"});
+  const f=el("form",{class:"aform",novalidate:""},
+    el("div",{class:"field"},el("label",{for:"nvPass",text:"Nova senha (mínimo 8 caracteres)"}),pwBox(p1)),
+    el("div",{class:"field"},el("label",{for:"nvPass2",text:"Repita a nova senha"}),pwBox(p2)),
+    el("div",{class:"formrow"},b),msg);
+  let close;
+  f.addEventListener("submit",async e=>{ e.preventDefault();
+    if(p1.value.length<8){ msg.className="msg bad"; msg.textContent="Use pelo menos 8 caracteres."; return; }
+    if(p1.value!==p2.value){ msg.className="msg bad"; msg.textContent="As duas senhas não são iguais."; return; }
+    b.disabled=true; msg.className="msg"; msg.textContent="Salvando…";
+    try{ await window.ESCRITOR_DB.novaSenha(p1.value); p1.value=p2.value=""; close(); toast("Senha alterada. Você já está conectado."); setTimeout(()=>location.reload(),1400); }
+    catch(err){ msg.className="msg bad"; msg.textContent=/same|different/i.test(err.message||"")?"A nova senha precisa ser diferente da antiga.":"Não foi possível salvar. Tente de novo."; b.disabled=false; }
+  });
+  close=aviso([el("span",{class:"mono",text:"Redefinir senha"}),el("h3",{text:"Criar nova senha"}),f],{fechar:false});
+  p1.focus();
+}
+/* Aviso de atualização: version.json muda a cada atualização do site */
+const VERSAO_URL="version.json";
+let versaoAtual=null;
+async function lerVersao(){ try{ const r=await fetch(VERSAO_URL+"?t="+Date.now(),{cache:"no-store"}); return r.ok?await r.json():null; }catch{ return null; } }
+function notasDe(v){ return el("p",{text:v&&v.notas?v.notas:"Melhorias no site."}); }
+async function checarVersao(){
+  const v=await lerVersao(); if(!v||!v.v) return;
+  if(!versaoAtual){ versaoAtual=v.v;
+    let vista=null; try{ vista=localStorage.getItem("ae-versao"); }catch{}
+    if(vista && vista!==v.v) aviso([el("span",{class:"mono",text:"Site atualizado · versão "+v.v}),el("h3",{text:"O site foi atualizado"}),notasDe(v),el("div",{class:"formrow"},el("button",{class:"btn small gold",type:"button",text:"Entendi",onclick:()=>document.querySelector(".aviso-bg")?.remove()}))]);
+    try{ localStorage.setItem("ae-versao",v.v); }catch{}
+    return; }
+  if(v.v!==versaoAtual){ versaoAtual=v.v; try{ localStorage.setItem("ae-versao",v.v); }catch{}
+    aviso([el("span",{class:"mono",text:"Nova versão · "+v.v}),el("h3",{text:"O site acabou de ser atualizado"}),notasDe(v),el("div",{class:"formrow"},el("button",{class:"btn small",type:"button",text:"Depois",onclick:()=>document.querySelector(".aviso-bg")?.remove()}),el("button",{class:"btn small gold",type:"button",text:"Atualizar agora",onclick:()=>location.reload()}))]); }
+}
 function loginForm(){
   const B=window.ESCRITOR_DB;
   const em=el("input",{id:"lgEmail",type:"email",autocomplete:"username",maxlength:"120",required:""});
@@ -428,7 +484,7 @@ function loginForm(){
   const forgot=el("button",{class:"btn small",type:"button",text:"Esqueci a senha"});
   const f=el("form",{class:"aform",novalidate:""},
     el("div",{class:"field"},el("label",{for:"lgEmail",text:"E-mail"}),em),
-    el("div",{class:"field"},el("label",{for:"lgPass",text:"Senha"}),pw),
+    el("div",{class:"field"},el("label",{for:"lgPass",text:"Senha"}),pwBox(pw)),
     el("div",{class:"formrow"},forgot,b),msg);
   let tries=0;
   f.addEventListener("submit",async e=>{ e.preventDefault();
@@ -443,7 +499,7 @@ function loginForm(){
   forgot.addEventListener("click",async()=>{ const email=em.value.trim().toLowerCase();
     if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ msg.className="msg bad"; msg.textContent="Digite seu e-mail acima e clique de novo."; return; }
     try{ await B.resetPassword(email); }catch{}
-    msg.className="msg ok"; msg.textContent="Se o e-mail tiver acesso, chega um link para criar uma nova senha.";
+    msg.className="msg ok"; msg.textContent="Enviamos um link para "+email+". Abra o e-mail (veja também o spam) e clique no link para criar uma nova senha.";
   });
   return f;
 }
@@ -889,4 +945,6 @@ const LANGS=["pt","en","es","fr","de","it","nl","pl","ru","uk","tr","ar","he","f
   });
 })();
 rebuildPosts(); renderGrid(); renderLatest(); showTome(); applyRole(); reveal(); route(); init();
+checarRecuperacao();
+checarVersao(); setInterval(checarVersao,60000); document.addEventListener("visibilitychange",()=>{ if(!document.hidden) checarVersao(); });
 })();

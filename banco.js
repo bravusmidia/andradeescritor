@@ -118,8 +118,23 @@ window.ESCRITOR_DB = {
   async ping(){ const { data, error } = await sb.rpc("escritor_ping"); if (error) throw fail(error); return data; },
   async signOut(){ await sb.auth.signOut(); },
   async resetPassword(email){
-    const { error } = await sb.auth.resetPasswordForEmail(email); /* o link abre a tela de nova senha do login compartilhado */
+    /* o link do e-mail volta para este site, que abre a tela "Criar nova senha" */
+    const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: location.origin + location.pathname });
+    if (error) throw error;
+  },
+  async novaSenha(senha){
+    const { error } = await sb.auth.updateUser({ password: senha });
     if (error) throw error;
   }
 };
+
+/* Volta do e-mail de redefinição: o link traz #access_token=…&type=recovery (ou um erro, se expirou). */
+window.ESCRITOR_RECOVERY = (async () => {
+  const h = new URLSearchParams(location.hash.replace(/^#/, ""));
+  if (h.get("type") !== "recovery" && !h.get("error_code")) return null;
+  history.replaceState(null, "", location.pathname + location.search);
+  if (h.get("error_code")) return { erro: h.get("error_code") === "otp_expired" ? "O link expirou ou já foi usado. Peça outro em Entrar → Esqueci a senha." : "Não foi possível abrir o link. Peça outro em Entrar → Esqueci a senha." };
+  const { error } = await sb.auth.setSession({ access_token: h.get("access_token") || "", refresh_token: h.get("refresh_token") || "" });
+  return error ? { erro: "O link expirou ou já foi usado. Peça outro em Entrar → Esqueci a senha." } : { ok: true };
+})();
 })();
