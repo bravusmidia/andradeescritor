@@ -47,7 +47,9 @@ jobs:
         run: |
           git config user.name "versao-site"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add version.json
+          V=$(git rev-parse --short HEAD)
+          sed -i -E "s#<script src=\"(banco|app|geo|recanto-data)\.js(\?v=[A-Za-z0-9.]+)?\" defer>#<script src=\"\1.js?v=$V\" defer>#g" index.html
+          git add version.json index.html
           git diff --cached --quiet && exit 0
           git commit -m "Versão do site"
           git pull --rebase origin main
