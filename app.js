@@ -464,6 +464,8 @@ async function checarRecuperacao(){
 const VERSAO_URL="version.json";
 let versaoAtual=null;
 async function lerVersao(){ try{ const r=await fetch(VERSAO_URL+"?t="+Date.now(),{cache:"no-store"}); return r.ok?await r.json():null; }catch{ return null; } }
+/* Baixa os arquivos novos (ignorando o cache do navegador) e recarrega */
+async function atualizarAgora(){ try{ await Promise.all(["./","index.html","app.js","banco.js","geo.js","recanto-data.js"].map(u=>fetch(u,{cache:"reload"}))); }catch{} location.reload(); }
 function notasDe(v){ return el("p",{text:v&&v.notas?v.notas:"Melhorias no site."}); }
 async function checarVersao(){
   const v=await lerVersao(); if(!v||!v.v) return;
@@ -473,7 +475,7 @@ async function checarVersao(){
     try{ localStorage.setItem("ae-versao",v.v); }catch{}
     return; }
   if(v.v!==versaoAtual){ versaoAtual=v.v; try{ localStorage.setItem("ae-versao",v.v); }catch{}
-    aviso([el("span",{class:"mono",text:"Nova versão · "+v.v}),el("h3",{text:"O site acabou de ser atualizado"}),notasDe(v),el("div",{class:"formrow"},el("button",{class:"btn small",type:"button",text:"Depois",onclick:()=>document.querySelector(".aviso-bg")?.remove()}),el("button",{class:"btn small gold",type:"button",text:"Atualizar agora",onclick:()=>location.reload()}))]); }
+    aviso([el("span",{class:"mono",text:"Nova versão · "+v.v}),el("h3",{text:"O site acabou de ser atualizado"}),notasDe(v),el("div",{class:"formrow"},el("button",{class:"btn small",type:"button",text:"Depois",onclick:()=>document.querySelector(".aviso-bg")?.remove()}),el("button",{class:"btn small gold",type:"button",text:"Atualizar agora",onclick:atualizarAgora}))]); }
 }
 function loginForm(){
   const B=window.ESCRITOR_DB;
